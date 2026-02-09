@@ -10,7 +10,7 @@ $halaman_awal = ($halaman > 1) ? ($halaman * $batas) - $batas : 0;
 
 // query utama
 if ($cari != "") {
-    $query = "SELECT * FROM template WHERE nama LIKE '%$cari%'";
+    $query = "SELECT * FROM template WHERE nama_template LIKE '%$cari%'";
 } else {
     $query = "SELECT * FROM template";
 }
