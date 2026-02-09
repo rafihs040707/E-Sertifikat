@@ -53,7 +53,7 @@ include 'config.php';
             <?php
             $q = mysqli_query($conn, "SELECT * FROM template");
             while ($t = mysqli_fetch_assoc($q)) {
-                echo "<option value='" . $t['id'] . "'>" . $t['nama'] . "</option>";
+                echo "<option value='" . $t['id'] . "'>" . $t['nama_template'] . "</option>";
             }
             ?>
         </select>

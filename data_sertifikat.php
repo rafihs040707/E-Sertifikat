@@ -39,39 +39,31 @@ include 'config.php';
             </thead>
             <tbody>
                 <?php
-                $data_sertifikat = mysqli_query($conn, "select * from sertifikat");
-                while ($sertifikat = mysqli_fetch_array($data_sertifikat)) {
-
-                    $awal  = strtotime($sertifikat['periode_awal']);
-                    $akhir = strtotime($sertifikat['periode_akhir']);
-
-                    // Jika bulan & tahun sama
-                    if (date('F Y', $awal) == date('F Y', $akhir)) {
-                        $periode = date('F d', $awal) . " - " . date('d, Y', $akhir);
-                    } else {
-                        $periode = date('F d', $awal) . " - " . date('F d, Y', $akhir);
-                    }
-
-                    $terbit = date('d-m-Y', strtotime($sertifikat['issued_date']));
-                }
-
                 $batas = 5;
                 $halaman = isset($_GET['halaman']) ? (int)$_GET['halaman'] : 1;
                 $halaman_awal = ($halaman > 1) ? ($halaman * $batas) - $batas : 0;
 
                 $previous = $halaman - 1;
                 $next = $halaman + 1;
-
                 $data = mysqli_query($conn, "select * from sertifikat");
                 $jumlah_data = mysqli_num_rows($data);
                 $total_halaman = ceil($jumlah_data / $batas);
 
-                $data_sertifikat = mysqli_query($conn, "SELECT s.*, t.nama FROM sertifikat s JOIN template t ON s.template_id = t.id LIMIT $batas OFFSET $halaman_awal ");
+                $data_sertifikat = mysqli_query($conn, "SELECT s.*, t.nama_template FROM sertifikat s JOIN template t ON s.template_id = t.id LIMIT $batas OFFSET $halaman_awal");
                 $nomor = $halaman_awal + 1;
                 while ($sertifikat = mysqli_fetch_array($data_sertifikat)) {
+                    $awal  = strtotime($sertifikat['periode_awal']);
+                    $akhir = strtotime($sertifikat['periode_akhir']);
+
+                    if (date('F Y', $awal) == date('F Y', $akhir)) {
+                        $periode = date('F d', $awal) . " - " . date('d, Y', $akhir);
+                    } else {
+                        $periode = date('F d', $awal) . " - " . date('F d, Y', $akhir);
+                    }
+                    $terbit = date('d-m-Y', strtotime($sertifikat['issued_date']));
                 ?>
                     <tr>
-                        <th><?php echo $nomor++; ?></th>
+                        <th><?php echo $nomor++; ?>.</th>
                         <td><?php echo $sertifikat['nama']; ?></td>
                         <td><?php echo $sertifikat['pelatihan']; ?></td>
                         <td><?php echo $periode ?></td>
@@ -90,13 +82,13 @@ include 'config.php';
                                 <?= $sertifikat['nomor_sertifikat']; ?>
                             <?php } ?>
                         </td>
-                        <td><?php echo $sertifikat['nama']; ?></td>
+                        <td><?php echo $sertifikat['nama_template']; ?></td>
                         <td>
                             <a href="edit_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-warning text-white">Edit</a>
                             <a href="hapus_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-danger text-white" onclick="return confirm('Apakah yakin data sertifikat ini akan dihapus?');">Hapus</a>
                             <a href="#" class="btn btn-sm btn-info text-white">Preview</a>
                             <a href="#" class="btn btn-sm btn-primary text-white">Generate</a>
-                            <a href="#" class="btn btn-sm btn-success text-white">Download PDF</a>
+                            <a href="#" class="btn btn-sm btn-success text-white mt-2">Download PDF</a>
                         </td>
                     </tr>
                 <?php
@@ -112,12 +104,7 @@ include 'config.php';
     $halaman = isset($_GET['halaman']) ? (int)$_GET['halaman'] : 1;
     $halaman_awal = ($halaman > 1) ? ($halaman * $batas) - $batas : 0;
 
-    $data_sertifikat = mysqli_query($conn, "
-    SELECT s.*, t.nama AS nama_template 
-    FROM sertifikat s 
-    JOIN template t ON s.template_id = t.id 
-    LIMIT $batas OFFSET $halaman_awal
-");
+    $data_sertifikat = mysqli_query($conn, "SELECT s.*, t.nama_template FROM sertifikat s JOIN template t ON s.template_id = t.id LIMIT $batas OFFSET $halaman_awal");
 
     $nomor = $halaman_awal + 1;
 
@@ -143,7 +130,11 @@ include 'config.php';
                         <div class="fw-bold">
                             <?= $nomor++; ?>. <?= $sertifikat['nama']; ?>
                         </div>
-                        <span class="badge bg-success"><?= $sertifikat['status']; ?></span>
+                            <?php if ($sertifikat['status'] == 0) { ?>
+                                <span class="badge bg-danger">Tidak Valid</span>
+                            <?php } else { ?>
+                                <span class="badge bg-success">Valid</span>
+                            <?php } ?>
                     </div>
 
                     <div class="text-muted small">
