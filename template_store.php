@@ -3,7 +3,7 @@ include "config.php";
 
 if (isset($_POST['submit'])) {
 
-    $nama = mysqli_real_escape_string($conn, $_POST['nama']);
+    $nama_template = mysqli_real_escape_string($conn, $_POST['nama_template']);
     $targetDir = "uploads/template/";
 
     if (!is_dir($targetDir)) {
@@ -36,12 +36,8 @@ if (isset($_POST['submit'])) {
     $tampak_depan = uploadFile('tampak_depan', $targetDir);
     $tampak_belakang = uploadFile('tampak_belakang', $targetDir);
 
-    if (!$tampak_depan || !$tampak_belakang) {
-        die("Gambar depan dan belakang wajib diupload!");
-    }
-
-    $stmt = $conn->prepare("INSERT INTO template (nama, tampak_depan, tampak_belakang) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $nama, $tampak_depan, $tampak_belakang);
+    $stmt = $conn->prepare("INSERT INTO template (nama_template, tampak_depan, tampak_belakang) VALUES (?, ?, ?)");
+    $stmt->bind_param("sss", $nama_template, $tampak_depan, $tampak_belakang);
     $query = $stmt->execute();
 
     if ($query) {

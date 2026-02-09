@@ -10,7 +10,7 @@
 
     <div class="mb-2">
         <label for="nama" class="form-label ms-3">Nama Template: </label>
-        <input type="text" name="nama" placeholder="Example: Untuk Cyber Security" class="form-control"
+        <input type="text" name="nama_template" placeholder="Example: Untuk Cyber Security" class="form-control"
             maxlength="64" required><br>
     </div>
 
@@ -21,7 +21,7 @@
 
     <div class="mb-2">
         <label for="tampak_belakang" class="form-label ms-3">Tampak Belakang: </label>
-        <input type="file" name="tampak_belakang" class="form-control" required accept="image/*"><br>
+        <input type="file" name="tampak_belakang" class="form-control" accept="image/*"><br>
     </div>
 
     <div class="d-grid gap-2 d-flex justify-content-center mt-3">

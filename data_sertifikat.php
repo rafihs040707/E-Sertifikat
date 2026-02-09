@@ -19,7 +19,7 @@ include 'config.php';
     <a href="./tambah_sertifikat.php" class="btn btn-primary btn-sm text-decoration-none text-white ms-4 mt-2 mb-4">Tambah Data Sertifikat</a>
 </div>
 
-<div class="container">
+<div class="container-fluid">
 
     <!-- TABEL (DESKTOP & TABLET) -->
     <div class="table-responsive d-none d-md-block">
@@ -54,13 +54,14 @@ include 'config.php';
                 while ($sertifikat = mysqli_fetch_array($data_sertifikat)) {
                     $awal  = strtotime($sertifikat['periode_awal']);
                     $akhir = strtotime($sertifikat['periode_akhir']);
+                    $tanggal_terbit = strtotime($sertifikat['issued_date']);
 
                     if (date('F Y', $awal) == date('F Y', $akhir)) {
                         $periode = date('F d', $awal) . " - " . date('d, Y', $akhir);
                     } else {
                         $periode = date('F d', $awal) . " - " . date('F d, Y', $akhir);
                     }
-                    $terbit = date('d-m-Y', strtotime($sertifikat['issued_date']));
+                    $terbit = date('F d, Y', strtotime($sertifikat['issued_date']));
                 ?>
                     <tr>
                         <th><?php echo $nomor++; ?>.</th>
@@ -86,9 +87,17 @@ include 'config.php';
                         <td>
                             <a href="edit_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-warning text-white">Edit</a>
                             <a href="hapus_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-danger text-white" onclick="return confirm('Apakah yakin data sertifikat ini akan dihapus?');">Hapus</a>
-                            <a href="#" class="btn btn-sm btn-info text-white">Preview</a>
-                            <a href="#" class="btn btn-sm btn-primary text-white">Generate</a>
-                            <a href="#" class="btn btn-sm btn-success text-white mt-2">Download PDF</a>
+                            <a href="generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>&preview=1" class="btn btn-sm btn-info text-white" target="_blank">Preview</a>
+                            <a href="generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-primary text-white">Generate</a>
+                            <?php
+                            $filePdf = "uploads/sertifikat/" . $sertifikat['file_sertifikat'];
+                            if (!empty($sertifikat['file_sertifikat']) && file_exists($filePdf)) {
+                                $link = "download.php?id=" . $sertifikat['id'];
+                            } else {
+                                $link = "generate_sertifikat.php?id=" . $sertifikat['id'];
+                            }
+                            ?>
+                            <a href="<?= $link; ?>" class="btn btn-sm btn-success text-white">Download PDF</a>
                         </td>
                     </tr>
                 <?php
@@ -130,11 +139,11 @@ include 'config.php';
                         <div class="fw-bold">
                             <?= $nomor++; ?>. <?= $sertifikat['nama']; ?>
                         </div>
-                            <?php if ($sertifikat['status'] == 0) { ?>
-                                <span class="badge bg-danger">Tidak Valid</span>
-                            <?php } else { ?>
-                                <span class="badge bg-success">Valid</span>
-                            <?php } ?>
+                        <?php if ($sertifikat['status'] == 0) { ?>
+                            <span class="badge bg-danger">Tidak Valid</span>
+                        <?php } else { ?>
+                            <span class="badge bg-success">Valid</span>
+                        <?php } ?>
                     </div>
 
                     <div class="text-muted small">
@@ -159,11 +168,18 @@ include 'config.php';
                     <!-- Action -->
                     <div class="d-flex gap-1 mt-2 flex-wrap">
                         <a href="edit_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-warning text-white w-100">Edit</a>
-                        <a href="hapus_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-danger text-white w-100"
-                            onclick="return confirm('Apakah yakin data sertifikat ini akan dihapus?');">Hapus</a>
-                        <a href="#" class="btn btn-sm btn-info text-white w-100">Preview</a>
-                        <a href="#" class="btn btn-sm btn-primary text-white w-100">Generate</a>
-                        <a href="#" class="btn btn-sm btn-success text-white w-100">Download PDF</a>
+                        <a href="hapus_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-danger text-white w-100" onclick="return confirm('Apakah yakin data sertifikat ini akan dihapus?');">Hapus</a>
+                        <a href="generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>&preview=1" class="btn btn-sm btn-info text-white w-100" target="_blank">Preview</a>
+                        <a href="generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-primary text-white w-100">Generate</a>
+                        <?php
+                            $filePdf = "uploads/sertifikat/" . $sertifikat['file_sertifikat'];
+                            if (!empty($sertifikat['file_sertifikat']) && file_exists($filePdf)) {
+                                $link = "download.php?id=" . $sertifikat['id'];
+                            } else {
+                                $link = "generate_sertifikat.php?id=" . $sertifikat['id'];
+                            }
+                            ?>
+                        <a href="<?= $link; ?>" class="btn btn-sm btn-success text-white w-100">Download PDF</a>
                     </div>
 
                 </div>

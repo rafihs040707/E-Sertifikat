@@ -52,9 +52,14 @@ include 'config.php';
                 ?>
                     <tr>
                         <th><?php echo $nomor++; ?></th>
-                        <td><?php echo $template['nama']; ?></td>
+                        <td><?php echo $template['nama_template']; ?></td>
                         <td><img src="uploads/template/<?php echo $template['tampak_depan']; ?>" width="80"></td>
-                        <td><img src="uploads/template/<?php echo $template['tampak_belakang']; ?>" width="80"></td>
+                        <td><?php if (empty($template['tampak_belakang'])) { ?>
+                                <span class="badge bg-secondary">Tidak ada Tampak Belakang</span>
+                            <?php } else { ?>
+                                <img src="uploads/template/<?php echo $template['tampak_belakang']; ?>" width="80">
+                            <?php } ?>
+                        </td>
                         <td>
                             <a href="edit_template.php?id=<?= $template['id']; ?>" class="btn btn-sm btn-info text-white mt-2">Edit</a>
                             <a href="hapus_template.php?id=<?= $template['id']; ?>" class="btn btn-sm btn-danger text-white mt-2" onclick="return confirm('Apakah yakin data template ini akan dihapus?');">Hapus</a>

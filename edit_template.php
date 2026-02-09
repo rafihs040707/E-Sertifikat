@@ -16,7 +16,7 @@ $template = mysqli_fetch_assoc($data_template);
 
     <div class="mb-2">
         <label class="form-label ms-3">Nama Template:</label>
-        <input type="text" name="nama" value="<?= $template['nama']; ?>" class="form-control" required>
+        <input type="text" name="nama_template" value="<?= $template['nama_template']; ?>" class="form-control" required>
     </div>
 
     <div class="mb-2">
