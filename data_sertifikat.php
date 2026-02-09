@@ -31,11 +31,30 @@ include 'config.php';
                     <th>Pelatihan</th>
                     <th>Periode</th>
                     <th>Issued Date</th>
+                    <th>Status</th>
+                    <th>nomor_sertifikat</th>
+                    <th>Template Yang Digunakan</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
+                $data_sertifikat = mysqli_query($conn, "select * from sertifikat");
+                while ($sertifikat = mysqli_fetch_array($data_sertifikat)) {
+
+                    $awal  = strtotime($sertifikat['periode_awal']);
+                    $akhir = strtotime($sertifikat['periode_akhir']);
+
+                    // Jika bulan & tahun sama
+                    if (date('F Y', $awal) == date('F Y', $akhir)) {
+                        $periode = date('F d', $awal) . " - " . date('d, Y', $akhir);
+                    } else {
+                        $periode = date('F d', $awal) . " - " . date('F d, Y', $akhir);
+                    }
+
+                    $terbit = date('d-m-Y', strtotime($sertifikat['issued_date']));
+                }
+
                 $batas = 5;
                 $halaman = isset($_GET['halaman']) ? (int)$_GET['halaman'] : 1;
                 $halaman_awal = ($halaman > 1) ? ($halaman * $batas) - $batas : 0;
@@ -47,7 +66,7 @@ include 'config.php';
                 $jumlah_data = mysqli_num_rows($data);
                 $total_halaman = ceil($jumlah_data / $batas);
 
-                $data_sertifikat = mysqli_query($conn, "select * from sertifikat limit $batas OFFSET $halaman_awal");
+                $data_sertifikat = mysqli_query($conn, "SELECT s.*, t.nama FROM sertifikat s JOIN template t ON s.template_id = t.id LIMIT $batas OFFSET $halaman_awal ");
                 $nomor = $halaman_awal + 1;
                 while ($sertifikat = mysqli_fetch_array($data_sertifikat)) {
                 ?>
@@ -55,12 +74,29 @@ include 'config.php';
                         <th><?php echo $nomor++; ?></th>
                         <td><?php echo $sertifikat['nama']; ?></td>
                         <td><?php echo $sertifikat['pelatihan']; ?></td>
-                        <td><?php echo $sertifikat['periode']; ?></td>
-                        <td><?php echo $sertifikat['issued_date']; ?></td>
+                        <td><?php echo $periode ?></td>
+                        <td><?php echo $terbit ?></td>
                         <td>
-                            <a href="edit_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-info text-white">Edit</a>
+                            <?php if ($sertifikat['status'] == 0) { ?>
+                                <span class="badge bg-danger">Tidak Valid</span>
+                            <?php } else { ?>
+                                <span class="badge bg-success">Valid</span>
+                            <?php } ?>
+                        </td>
+                        <td>
+                            <?php if (empty($sertifikat['nomor_sertifikat'])) { ?>
+                                <span class="badge bg-warning">Belum Generate</span>
+                            <?php } else { ?>
+                                <?= $sertifikat['nomor_sertifikat']; ?>
+                            <?php } ?>
+                        </td>
+                        <td><?php echo $sertifikat['nama']; ?></td>
+                        <td>
+                            <a href="edit_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-warning text-white">Edit</a>
                             <a href="hapus_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-danger text-white" onclick="return confirm('Apakah yakin data sertifikat ini akan dihapus?');">Hapus</a>
-                            <a href="#" class="btn btn-sm btn-secondary text-white">Preview</a>
+                            <a href="#" class="btn btn-sm btn-info text-white">Preview</a>
+                            <a href="#" class="btn btn-sm btn-primary text-white">Generate</a>
+                            <a href="#" class="btn btn-sm btn-success text-white">Download PDF</a>
                         </td>
                     </tr>
                 <?php
@@ -71,37 +107,79 @@ include 'config.php';
     </div>
 
 
-    <!-- CARD (MOBILE) -->
-    <?php $data_sertifikat = mysqli_query($conn, "select * from sertifikat");
-    while ($sertifikat = mysqli_fetch_array($data_sertifikat)) { ?>
+    <?php
+    $batas = 5;
+    $halaman = isset($_GET['halaman']) ? (int)$_GET['halaman'] : 1;
+    $halaman_awal = ($halaman > 1) ? ($halaman * $batas) - $batas : 0;
+
+    $data_sertifikat = mysqli_query($conn, "
+    SELECT s.*, t.nama AS nama_template 
+    FROM sertifikat s 
+    JOIN template t ON s.template_id = t.id 
+    LIMIT $batas OFFSET $halaman_awal
+");
+
+    $nomor = $halaman_awal + 1;
+
+    while ($sertifikat = mysqli_fetch_array($data_sertifikat)) {
+
+        $awal  = strtotime($sertifikat['periode_awal']);
+        $akhir = strtotime($sertifikat['periode_akhir']);
+
+        if (date('F Y', $awal) == date('F Y', $akhir)) {
+            $periode = date('F d', $awal) . " - " . date('d, Y', $akhir);
+        } else {
+            $periode = date('F d', $awal) . " - " . date('F d, Y', $akhir);
+        }
+
+        $terbit = date('d-m-Y', strtotime($sertifikat['issued_date']));
+    ?>
         <div class="d-block d-md-none">
             <div class="card mb-2 border-primary shadow-sm">
                 <div class="card-body p-2">
 
                     <!-- Header -->
                     <div class="d-flex justify-content-between">
-                        <div class="fw-bold"><?php echo $sertifikat['nama']; ?></div>
+                        <div class="fw-bold">
+                            <?= $nomor++; ?>. <?= $sertifikat['nama']; ?>
+                        </div>
+                        <span class="badge bg-success"><?= $sertifikat['status']; ?></span>
                     </div>
 
-                    <div class="text-muted small">Pelatihan: <?php echo $sertifikat['pelatihan']; ?></div>
+                    <div class="text-muted small">
+                        Pelatihan: <?= $sertifikat['pelatihan']; ?>
+                    </div>
                     <hr class="my-2">
 
                     <!-- Detail -->
                     <div class="small">
-                        <div><strong>Periode:</strong> <?php echo $sertifikat['periode']; ?></div>
-                        <div><strong>Issued Date:</strong> <?php echo $sertifikat['issued_date']; ?></div>
+                        <div><strong>Periode:</strong> <?= $periode; ?></div>
+                        <div><strong>Issued Date:</strong> <?= $terbit; ?></div>
+                        <div><strong>No Sertifikat:</strong>
+                            <?php if (empty($sertifikat['nomor_sertifikat'])) { ?>
+                                <span class="badge bg-warning">Belum Generate</span>
+                            <?php } else { ?>
+                                <?= $sertifikat['nomor_sertifikat']; ?>
+                            <?php } ?>
+                        </div>
+                        <div><strong>Template Yang Digunakan:</strong> <?= $sertifikat['nama_template']; ?></div>
                     </div>
 
                     <!-- Action -->
-                    <div class="d-flex gap-1 mt-2">
-                        <a href="edit_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-info text-white w-100">Edit</a>
-                        <a href="hapus_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-danger text-white w-100" onclick="return confirm('Apakah yakin data template ini akan dihapus?');">Hapus</a>
-                        <a href="#" class="btn btn-sm btn-secondary text-white w-100">Preview</a>
+                    <div class="d-flex gap-1 mt-2 flex-wrap">
+                        <a href="edit_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-warning text-white w-100">Edit</a>
+                        <a href="hapus_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-danger text-white w-100"
+                            onclick="return confirm('Apakah yakin data sertifikat ini akan dihapus?');">Hapus</a>
+                        <a href="#" class="btn btn-sm btn-info text-white w-100">Preview</a>
+                        <a href="#" class="btn btn-sm btn-primary text-white w-100">Generate</a>
+                        <a href="#" class="btn btn-sm btn-success text-white w-100">Download PDF</a>
                     </div>
+
                 </div>
             </div>
         </div>
     <?php } ?>
+
 </div>
 
 

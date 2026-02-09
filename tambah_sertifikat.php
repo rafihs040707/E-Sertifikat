@@ -41,14 +41,14 @@ include 'config.php';
         <label for="status" class="form-label ms-3">Status: </label>
         <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="status" required>
             <option selected disabled>Pilih Status</option>
-            <option value="Valid">Valid</option>
-            <option value="Tidak Valid">Tidak Valid</option>
+            <option value="1">Valid</option>
+            <option value="0">Tidak Valid</option>
         </select>
     </div>
 
     <div class="mb-4">
         <label for="template_id" class="form-label ms-3">Template Sertifikat: </label>
-        <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="status" required>
+        <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="template_id" required>
             <option selected disabled>Pilih Template Sertifikat</option>
             <?php
             $q = mysqli_query($conn, "SELECT * FROM template");
