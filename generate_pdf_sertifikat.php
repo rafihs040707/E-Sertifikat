@@ -63,7 +63,11 @@ $issued = date('F d, Y', strtotime($data['issued_date']));
 // ======================
 // QR TEXT (LINK VERIFIKASI)
 // ======================
-$qrText = "http://localhost/sertifikat/verify.php?id=" . $id;
+$parts = explode("-", $data['nomor_sertifikat']);
+$uuid = end($parts);
+
+$qrText = "http://localhost/sertifikat/verify.php?uuid=" . $uuid;
+
 
 // ======================
 // GENERATE QR CODE + SIMPAN FILE
