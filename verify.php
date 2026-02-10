@@ -92,6 +92,7 @@ $title = $statusValid ? "Sertifikat Valid dan Terdaftar" : "Sertifikat Tidak Val
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./vendor/bs.min.css">
+    <link rel="icon" type="image/png" href="./image/logo.png">
     <title>Halaman Verifikasi</title>
 </head>
 

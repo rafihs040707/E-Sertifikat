@@ -34,6 +34,7 @@ $nomor = $halaman_awal + 1;
     <meta charset="UTF-8">
     <title>Data Template</title>
     <link rel="stylesheet" href="./vendor/bs.min.css">
+    <link rel="icon" type="image/png" href="./image/logo.png">
 </head>
 
 <body>

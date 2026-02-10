@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./vendor/bs.min.css">
     <link rel="stylesheet" href="./vendor/style.css">
+    <link rel="icon" type="image/png" href="./image/logo.png">
 </head>
 
 <body>

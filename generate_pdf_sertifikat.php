@@ -258,11 +258,16 @@ ob_end_clean();
 
 $preview = isset($_GET['preview']);
 
-header("Content-Type: application/pdf");
+// setelah file_put_contents($pdfPath, ...)
+$pdfUrl = "uploads/sertifikat/" . $filename;
 
-$dompdf->stream($filename, [
-    "Attachment" => $preview ? false : true
-]);
+if ($preview) {
+    header("Location: $pdfUrl");
+    exit;
+}
 
+// kalau bukan preview, baru download
+$dompdf->stream($filename, ["Attachment" => true]);
 exit;
+
 ?>
