@@ -1,4 +1,6 @@
-<?php include 'header_lo.php'; ?>
+<?php include 'header_lo.php';
+include 'config.php';
+?>
 
 <head>
     <title>Tambah Data Sertifikat</title>
@@ -6,7 +8,7 @@
 
 <h2 class="ms-5 my-4">Tambah Data Sertifikat</h2>
 
-<form action="#" method="POST" class="mx-4">
+<form action="sertifikat_store_lo.php" method="POST" class="mx-4">
 
     <div class="mb-4">
         <label for="nama" class="form-label ms-3">Nama: </label>
@@ -21,6 +23,11 @@
     </div>
 
     <div class="mb-4">
+        <label for="periode_awal" class="form-label ms-3">Periode Awal: </label>
+        <input type="date" name="periode_awal" class="form-control" required onfocus="this.showPicker()">
+    </div>
+
+    <div class="mb-4">
         <label for="periode_akhir" class="form-label ms-3">Periode Akhir: </label>
         <input type="date" name="periode_akhir" class="form-control" required onfocus="this.showPicker()">
     </div>
@@ -31,27 +38,24 @@
     </div>
 
     <div class="mb-4">
-        <label for="issued_date" class="form-label ms-3">Issued Date: </label>
-        <input type="date" name="issued_date" class="form-control" required onfocus="this.showPicker()">
-    </div>
-
-    <div class="mb-4">
-        <label for="template" class="form-label ms-3">Template: </label>
-        <select for="template" name="template" class="form-select form-select-md"
-            aria-label=".form-select-md example" required>
-            <option value="" disabled selected>Pilih Template</option>
-            <option value="Template 1">Template 1</option>
-            <option value="Template 2">Template 2</option>
+        <label for="status" class="form-label ms-3">Status: </label>
+        <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="status" required>
+            <option selected disabled>Pilih Status</option>
+            <option value="1">Valid</option>
+            <option value="0">Tidak Valid</option>
         </select>
     </div>
 
     <div class="mb-4">
-        <label for="status" class="form-label ms-3">Status: </label>
-        <select for="status" name="status" class="form-select form-select-md"
-            aria-label=".form-select-md example" required>
-            <option value="" disabled selected>Pilih Status</option>
-            <option value="Valid">Valid</option>
-            <option value="Tidak Valid">Tidak Valid</option>
+        <label for="template_id" class="form-label ms-3">Template Sertifikat: </label>
+        <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="template_id" required>
+            <option selected disabled>Pilih Template Sertifikat</option>
+            <?php
+            $q = mysqli_query($conn, "SELECT * FROM template");
+            while ($t = mysqli_fetch_assoc($q)) {
+                echo "<option value='" . $t['id'] . "'>" . $t['nama_template'] . "</option>";
+            }
+            ?>
         </select>
     </div>
 
