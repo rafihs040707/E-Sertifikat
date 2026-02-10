@@ -4,6 +4,7 @@ include "config.php";
 if (isset($_POST['submit'])) {
 
     $nama_template = mysqli_real_escape_string($conn, $_POST['nama_template']);
+    $penyelenggara = mysqli_real_escape_string($conn, $_POST['penyelenggara']);
     $targetDir = "uploads/template/";
 
     if (!is_dir($targetDir)) {
@@ -35,8 +36,8 @@ if (isset($_POST['submit'])) {
 
     $tampak_depan = uploadFile('tampak_depan', $targetDir);
 
-    $stmt = $conn->prepare("INSERT INTO template (nama_template, tampak_depan) VALUES (?, ?)");
-    $stmt->bind_param("sss", $nama_template, $tampak_depan);
+    $stmt = $conn->prepare("INSERT INTO template (nama_template, penyelenggara, tampak_depan) VALUES (?, ?, ?)");
+    $stmt->bind_param("sss", $nama_template, $penyelenggara, $tampak_depan);
     $query = $stmt->execute();
 
     if ($query) {

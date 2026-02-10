@@ -19,6 +19,11 @@ $template = mysqli_fetch_assoc($data_template);
     </div>
 
     <div class="mb-2">
+        <label class="form-label ms-3">Penyelenggara:</label>
+        <input type="text" name="penyelenggara" value="<?= $template['penyelenggara']; ?>" class="form-control" required>
+    </div>
+
+    <div class="mb-2">
         <p class="ms-2">Gambar tampak depan lama:</p>
         <img src="uploads/template/<?= $template['tampak_depan']; ?>" width="100px" class="ms-5"><br>
         <label class="form-label ms-3">Tampak Depan:</label>

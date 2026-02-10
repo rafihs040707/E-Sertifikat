@@ -10,7 +10,7 @@ $halaman_awal = ($halaman > 1) ? ($halaman * $batas) - $batas : 0;
 
 // query utama
 if ($cari != "") {
-    $query = "SELECT * FROM template WHERE nama_template LIKE '%$cari%'";
+    $query = "SELECT * FROM template WHERE nama_template LIKE '%$cari%' OR LOWER(penyelenggara) LIKE '%$cari%'";
 } else {
     $query = "SELECT * FROM template";
 }
@@ -61,11 +61,12 @@ $nomor = $halaman_awal + 1;
         <?php } ?>
 
         <div class="table-responsive">
-            <table class="table table-sm table-bordered table-hover text-center align-middle">
+            <table class="table table-sm table-bordered border-primary table-hover text-center align-middle">
                 <thead>
                     <tr>
                         <th>No</th>
                         <th>Nama Template</th>
+                        <th>Penyelenggara</th>
                         <th>Tampak Depan</th>
                         <th>Aksi</th>
                     </tr>
@@ -75,12 +76,13 @@ $nomor = $halaman_awal + 1;
                         <?php while ($template = mysqli_fetch_assoc($data_template)) { ?>
                             <tr>
                                 <td><?= $nomor++; ?></td>
-                                <td><?= $template['nama']; ?></td>
+                                <td><?= $template['nama_template']; ?></td>
+                                <td><?= $template['penyelenggara']; ?></td>
                                 <td>
                                     <img src="uploads/template/<?= $template['tampak_depan']; ?>" width="80">
                                 </td>
                                 <td>
-                                    <a class="btn btn-sm btn-info text-white" href="edit_template.php?id=<?= $template['id']; ?>">Edit</a>
+                                    <a class="btn btn-sm btn-info text-black" href="edit_template.php?id=<?= $template['id']; ?>">Edit</a>
                                     <a class="btn btn-sm btn-danger text-white" href="hapus_template.php?id=<?= $template['id']; ?>">Hapus</a>
                                     <a class="btn btn-sm btn-secondary text-white" href="#">Preview</a>
                                 </td>

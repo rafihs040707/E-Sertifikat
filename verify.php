@@ -266,12 +266,12 @@ $title = $statusValid ? "Sertifikat Valid dan Terdaftar" : "Sertifikat Tidak Val
     <?php if ($statusValid && !empty($pdfFile) && file_exists($pdfFile)) { ?>
         <div class="d-flex justify-content-center align-items-center my-4 flex-wrap gap-2">
 
-            <a href="<?= $pdfFile; ?>" class="btn btn-primary px-4" download>
+            <a href="<?= $pdfFile; ?>" class="btn btn-success px-4" download>
                 <img src="./image/download.png" style="width: 25px; height: 25px;">
                 Download Sertifikat
             </a>
 
-            <a href="<?= $pdfFile; ?>" target="_blank" class="btn btn-secondary px-4">
+            <a href="<?= $pdfFile; ?>" target="_blank" class="btn btn-info text-black px-4">
                 <img src="./image/print.png" style="width: 25px; height: 25px;">
                 Print Sertifikat
             </a>

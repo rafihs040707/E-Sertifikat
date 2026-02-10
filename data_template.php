@@ -28,6 +28,7 @@ include 'config.php';
                 <tr>
                     <th>No</th>
                     <th>Nama Template</th>
+                    <th>Penyelenggara</th>
                     <th>Tampak Depan</th>
                     <th>Aksi</th>
                 </tr>
@@ -52,9 +53,10 @@ include 'config.php';
                     <tr>
                         <th><?php echo $nomor++; ?></th>
                         <td><?php echo $template['nama_template']; ?></td>
+                        <td><?php echo $template['penyelenggara']; ?></td>
                         <td><img src="uploads/template/<?php echo $template['tampak_depan']; ?>" width="80"></td>
                         <td>
-                            <a href="edit_template.php?id=<?= $template['id']; ?>" class="btn btn-sm btn-info text-white mt-2">Edit</a>
+                            <a href="edit_template.php?id=<?= $template['id']; ?>" class="btn btn-sm btn-info text-black mt-2">Edit</a>
                             <a href="hapus_template.php?id=<?= $template['id']; ?>" class="btn btn-sm btn-danger text-white mt-2" onclick="return confirm('Apakah yakin data template ini akan dihapus?');">Hapus</a>
                             <button class="btn btn-sm btn-secondary text-white mt-2" data-bs-toggle="modal" data-bs-target="#modalGambar<?= $template['id']; ?>">Preview</button>
                         </td>
@@ -70,6 +72,7 @@ include 'config.php';
 
                                 <div class="modal-body">
                                     <p class="fs-5"><strong>Nama Template:</strong> <?= $template['nama_template']; ?></p>
+                                    <p class="fs-5"><strong>Penyelenggara:</strong> <?= $template['penyelenggara']; ?></p>
 
                                     <div class="row">
                                         <div class="col-md-6 text-center">

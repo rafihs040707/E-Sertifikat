@@ -4,10 +4,10 @@ include 'config.php';
 if (isset($_POST['update'])) {
 
     $id   = $_POST['id'];
-    $nama = $_POST['nama'];
+    $nama_template = $_POST['nama_template'];
+    $penyelenggara = $_POST['penyelenggara'];
 
     $tampak_depan_lama    = $_POST['tampak_depan_lama'];
-    $tampak_belakang_lama = $_POST['tampak_belakang_lama'];
 
     // folder upload
     $folder = "uploads/template/";
@@ -27,7 +27,8 @@ if (isset($_POST['update'])) {
 
     // === UPDATE DATABASE ===
     $query = "UPDATE template SET 
-                nama='$nama',
+                nama_template='$nama_template',
+                penyelenggara='$penyelenggara',
                 tampak_depan='$tampak_depan'
                 WHERE id='$id'";
 

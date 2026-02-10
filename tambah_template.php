@@ -9,8 +9,14 @@
 <form action="template_store.php" method="POST" class="mx-4" enctype="multipart/form-data">
 
     <div class="mb-2">
-        <label for="nama" class="form-label ms-3">Nama Template: </label>
+        <label for="nama_template" class="form-label ms-3">Nama Template: </label>
         <input type="text" name="nama_template" placeholder="Example: Untuk Cyber Security" class="form-control"
+            maxlength="64" required><br>
+    </div>
+
+    <div class="mb-2">
+        <label for="penyelenggara" class="form-label ms-3">Penyelenggara: </label>
+        <input type="text" name="penyelenggara" placeholder="Example: PT ABC" class="form-control"
             maxlength="64" required><br>
     </div>
 
