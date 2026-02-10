@@ -9,7 +9,7 @@ include 'config.php';
 
 <div class="container">
     <h2 class="my-2 ms-3">Data Sertifikat</h2>
-    <form action="cari_sertifikat.php" method="GET" class="col-sm-3 mb-3 ms-4 mt-4">
+    <form action="cari_sertifikat_lo.php" method="GET" class="col-sm-3 mb-3 ms-4 mt-4">
         <label for="cari" class="ms-3">Masukkan Kata Kunci:</label>
         <div class="d-inline-flex ms-2">
             <input class="form-control form-control-ms" type="text" id="cari" name="cari" placeholder="Cari">
@@ -86,7 +86,6 @@ include 'config.php';
                         <td><?php echo $sertifikat['nama_template']; ?></td>
                         <td>
                             <a href="edit_sertifikat_lo.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-warning text-black mt-1">Edit</a>
-                            <a href="hapus_sertifikat_lo.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-danger text-white mt-1" onclick="return confirm('Apakah yakin data sertifikat ini akan dihapus?');">Hapus</a>
                             <a href="generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>&preview=1" class="btn btn-sm btn-info text-black mt-1" target="_blank">Preview</a>
                             <a href="generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-primary text-white mt-1">Generate</a>
                             <?php
