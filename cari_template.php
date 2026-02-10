@@ -40,19 +40,18 @@ $nomor = $halaman_awal + 1;
 <body>
 
     <div class="container mt-4">
-        <div class="d-flex align-items-center gap-2">
-            <!-- FORM SEARCH -->
-            <form method="GET" class="col-sm-3 mb-3 ms-4 mt-4">
-                <label for="cari" class="ms-3">Masukkan Kata Kunci:</label>
-                <div class="d-inline-flex ms-2">
-                    <input class="form-control form-control-ms" type="text" id="cari" name="cari" placeholder="Cari"
-                        value="<?= htmlspecialchars($cari); ?>">
-                    <button type="submit" class="btn btn-secondary ms-3">Cari</button>
-                </div>
-            </form>
-            <a href="data_template.php" class="btn btn-secondary text-decoration-none text-white mt-4">Kembali Ke Data
-                Template</a>
-        </div>
+        <!-- FORM SEARCH -->
+        <form method="GET" action="cari_template.php" class="col-sm-4 mb-3 ms-4 mt-4">
+            <label for="cari" class="ms-3">Masukkan Kata Kunci:</label>
+            <div class="d-inline-flex ms-2 w-100">
+                <input class="form-control form-control-ms" type="text" id="cari" name="cari" placeholder="Cari"
+                    value="<?= htmlspecialchars($cari); ?>">
+                <button type="submit" class="btn btn-secondary ms-3">Cari</button>
+            </div>
+            <a href="data_template.php" class="btn btn-secondary text-decoration-none text-white mt-4 ms-3 mb-2">
+                Kembali Ke Data Template
+            </a>
+        </form>
 
         <!-- PESAN JIKA DATA TIDAK DITEMUKAN -->
         <?php if ($cari != "" && $jumlah_data == 0) { ?>

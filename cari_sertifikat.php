@@ -57,9 +57,7 @@ $nomor = $halaman_awal + 1;
 
 <body>
 
-<div class="container-fluid mt-4">
-
-    <div class="d-flex align-items-center gap-2 flex-wrap">
+    <div class="container-fluid mt-4">
 
         <!-- FORM SEARCH -->
         <form method="GET" action="cari_sertifikat.php" class="col-sm-4 mb-3 ms-4 mt-4">
@@ -69,91 +67,204 @@ $nomor = $halaman_awal + 1;
                     value="<?= htmlspecialchars($cari); ?>">
                 <button type="submit" class="btn btn-secondary ms-3">Cari</button>
             </div>
+            <a href="data_sertifikat.php" class="btn btn-secondary text-decoration-none text-white mt-4 ms-3 mb-2">
+                Kembali Ke Data Sertifikat
+            </a>
         </form>
 
-        <a href="data_sertifikat.php" class="btn btn-secondary text-decoration-none text-white mt-4 ms-3 mb-2">
-            Kembali Ke Data Sertifikat
-        </a>
+        <!-- PESAN JIKA DATA TIDAK DITEMUKAN -->
+        <?php if ($cari != "" && $jumlah_data == 0) { ?>
+            <div class="alert alert-danger">
+                Data yang dicari tidak ditemukan!
+            </div>
+        <?php } ?>
 
-    </div>
+        <!-- ======================= -->
+        <!-- TABEL (DESKTOP & TABLET) -->
+        <!-- ======================= -->
+        <div class="table-responsive d-none d-md-block">
+            <table class="table table-sm table-bordered border-primary table-hover text-center align-middle">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama</th>
+                        <th>Pelatihan</th>
+                        <th>Periode</th>
+                        <th>Issued Date</th>
+                        <th>Status</th>
+                        <th>No Sertifikat</th>
+                        <th>Template Yang Digunakan</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
 
-    <!-- PESAN JIKA DATA TIDAK DITEMUKAN -->
-    <?php if ($cari != "" && $jumlah_data == 0) { ?>
-        <div class="alert alert-danger">
-            Data yang dicari tidak ditemukan!
-        </div>
-    <?php } ?>
+                <tbody>
+                    <?php if ($jumlah_data > 0) { ?>
+                        <?php while ($sertifikat = mysqli_fetch_array($data_sertifikat)) {
 
-    <!-- ======================= -->
-    <!-- TABEL (DESKTOP & TABLET) -->
-    <!-- ======================= -->
-    <div class="table-responsive d-none d-md-block">
-        <table class="table table-sm table-bordered border-primary table-hover text-center align-middle">
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>Nama</th>
-                    <th>Pelatihan</th>
-                    <th>Periode</th>
-                    <th>Issued Date</th>
-                    <th>Status</th>
-                    <th>No Sertifikat</th>
-                    <th>Template Yang Digunakan</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
+                            $awal  = strtotime($sertifikat['periode_awal']);
+                            $akhir = strtotime($sertifikat['periode_akhir']);
 
-            <tbody>
-                <?php if ($jumlah_data > 0) { ?>
-                    <?php while ($sertifikat = mysqli_fetch_array($data_sertifikat)) {
+                            if (date('F Y', $awal) == date('F Y', $akhir)) {
+                                $periode = date('F d', $awal) . " - " . date('d, Y', $akhir);
+                            } else {
+                                $periode = date('F d', $awal) . " - " . date('F d, Y', $akhir);
+                            }
 
-                        $awal  = strtotime($sertifikat['periode_awal']);
-                        $akhir = strtotime($sertifikat['periode_akhir']);
+                            $terbit = date('F d, Y', strtotime($sertifikat['issued_date']));
+                        ?>
+                            <tr>
+                                <th><?= $nomor++; ?>.</th>
+                                <td><?= $sertifikat['nama']; ?></td>
+                                <td><?= $sertifikat['pelatihan']; ?></td>
+                                <td><?= $periode ?></td>
+                                <td><?= $terbit ?></td>
 
-                        if (date('F Y', $awal) == date('F Y', $akhir)) {
-                            $periode = date('F d', $awal) . " - " . date('d, Y', $akhir);
-                        } else {
-                            $periode = date('F d', $awal) . " - " . date('F d, Y', $akhir);
-                        }
+                                <td>
+                                    <?php if ($sertifikat['status'] == 0) { ?>
+                                        <span class="badge bg-danger">Tidak Valid</span>
+                                    <?php } else { ?>
+                                        <span class="badge bg-success">Valid</span>
+                                    <?php } ?>
+                                </td>
 
-                        $terbit = date('F d, Y', strtotime($sertifikat['issued_date']));
-                    ?>
+                                <td>
+                                    <?php if (empty($sertifikat['nomor_sertifikat'])) { ?>
+                                        <span class="badge bg-warning">Belum Generate</span>
+                                    <?php } else { ?>
+                                        <?= $sertifikat['nomor_sertifikat']; ?>
+                                    <?php } ?>
+                                </td>
+
+                                <td><?= $sertifikat['nama_template']; ?></td>
+
+                                <td>
+                                    <a href="edit_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-warning text-black mt-1">Edit</a>
+
+                                    <a href="hapus_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-danger text-white mt-1"
+                                        onclick="return confirm('Apakah yakin data sertifikat ini akan dihapus?');">Hapus</a>
+
+                                    <a href="generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>&preview=1"
+                                        class="btn btn-sm btn-info text-black mt-1" target="_blank">Preview</a>
+
+                                    <a href="generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>"
+                                        class="btn btn-sm btn-primary text-white mt-1">Generate</a>
+
+                                    <?php
+                                    $filePdf = "uploads/sertifikat/" . $sertifikat['file_sertifikat'];
+                                    if (!empty($sertifikat['file_sertifikat']) && file_exists($filePdf)) {
+                                        $link = "download.php?id=" . $sertifikat['id'];
+                                    } else {
+                                        $link = "generate_pdf_sertifikat.php?id=" . $sertifikat['id'];
+                                    }
+                                    ?>
+
+                                    <a href="<?= $link; ?>" class="btn btn-sm btn-success text-white mt-1">Download PDF</a>
+                                </td>
+                            </tr>
+                        <?php } ?>
+                    <?php } else { ?>
                         <tr>
-                            <th><?= $nomor++; ?>.</th>
-                            <td><?= $sertifikat['nama']; ?></td>
-                            <td><?= $sertifikat['pelatihan']; ?></td>
-                            <td><?= $periode ?></td>
-                            <td><?= $terbit ?></td>
+                            <td colspan="9">Tidak ada data</td>
+                        </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </div>
 
-                            <td>
+        <!-- ======================= -->
+        <!-- PAGINATION -->
+        <!-- ======================= -->
+        <?php if ($jumlah_data > $batas) { ?>
+            <nav>
+                <ul class="pagination justify-content-end">
+                    <li class="page-item <?= ($halaman <= 1) ? 'disabled' : ''; ?>">
+                        <a class="page-link" href="?halaman=<?= $halaman - 1; ?>&cari=<?= urlencode($cari); ?>">Previous</a>
+                    </li>
+
+                    <?php for ($x = 1; $x <= $total_halaman; $x++) { ?>
+                        <li class="page-item <?= ($halaman == $x) ? 'active' : ''; ?>">
+                            <a class="page-link" href="?halaman=<?= $x; ?>&cari=<?= urlencode($cari); ?>"><?= $x; ?></a>
+                        </li>
+                    <?php } ?>
+
+                    <li class="page-item <?= ($halaman >= $total_halaman) ? 'disabled' : ''; ?>">
+                        <a class="page-link" href="?halaman=<?= $halaman + 1; ?>&cari=<?= urlencode($cari); ?>">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        <?php } ?>
+
+        <!-- ======================= -->
+        <!-- CARD (MOBILE) -->
+        <!-- ======================= -->
+        <div class="container mt-3">
+            <?php
+            // Query ulang khusus mobile (karena data desktop sudah habis dipakai while)
+            $data_mobile = mysqli_query($conn, $query_data);
+            $nomor_mobile = $halaman_awal + 1;
+
+            while ($sertifikat = mysqli_fetch_array($data_mobile)) {
+
+                $awal  = strtotime($sertifikat['periode_awal']);
+                $akhir = strtotime($sertifikat['periode_akhir']);
+
+                if (date('F Y', $awal) == date('F Y', $akhir)) {
+                    $periode = date('F d', $awal) . " - " . date('d, Y', $akhir);
+                } else {
+                    $periode = date('F d', $awal) . " - " . date('F d, Y', $akhir);
+                }
+
+                $terbit = date('d-m-Y', strtotime($sertifikat['issued_date']));
+            ?>
+                <div class="d-block d-md-none">
+                    <div class="card mb-2 border-primary shadow-sm">
+                        <div class="card-body p-2">
+
+                            <!-- Header -->
+                            <div class="d-flex justify-content-between">
+                                <div class="fw-bold">
+                                    <?= $nomor_mobile++; ?>. <?= $sertifikat['nama']; ?>
+                                </div>
                                 <?php if ($sertifikat['status'] == 0) { ?>
                                     <span class="badge bg-danger">Tidak Valid</span>
                                 <?php } else { ?>
                                     <span class="badge bg-success">Valid</span>
                                 <?php } ?>
-                            </td>
+                            </div>
 
-                            <td>
-                                <?php if (empty($sertifikat['nomor_sertifikat'])) { ?>
-                                    <span class="badge bg-warning">Belum Generate</span>
-                                <?php } else { ?>
-                                    <?= $sertifikat['nomor_sertifikat']; ?>
-                                <?php } ?>
-                            </td>
+                            <div class="text-muted small">
+                                Pelatihan: <?= $sertifikat['pelatihan']; ?>
+                            </div>
 
-                            <td><?= $sertifikat['nama_template']; ?></td>
+                            <hr class="my-2">
 
-                            <td>
-                                <a href="edit_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-warning text-black mt-1">Edit</a>
+                            <!-- Detail -->
+                            <div class="small">
+                                <div><strong>Periode:</strong> <?= $periode; ?></div>
+                                <div><strong>Issued Date:</strong> <?= $terbit; ?></div>
+                                <div><strong>No Sertifikat:</strong>
+                                    <?php if (empty($sertifikat['nomor_sertifikat'])) { ?>
+                                        <span class="badge bg-warning">Belum Generate</span>
+                                    <?php } else { ?>
+                                        <?= $sertifikat['nomor_sertifikat']; ?>
+                                    <?php } ?>
+                                </div>
+                                <div><strong>Template Yang Digunakan:</strong> <?= $sertifikat['nama_template']; ?></div>
+                            </div>
 
-                                <a href="hapus_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-danger text-white mt-1"
+                            <!-- Action -->
+                            <div class="d-flex gap-1 mt-2 flex-wrap">
+                                <a href="edit_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-warning text-black w-100">Edit</a>
+
+                                <a href="hapus_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-danger text-white w-100"
                                     onclick="return confirm('Apakah yakin data sertifikat ini akan dihapus?');">Hapus</a>
 
                                 <a href="generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>&preview=1"
-                                    class="btn btn-sm btn-info text-black mt-1" target="_blank">Preview</a>
+                                    class="btn btn-sm btn-info text-black w-100" target="_blank">Preview</a>
 
                                 <a href="generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>"
-                                    class="btn btn-sm btn-primary text-white mt-1">Generate</a>
+                                    class="btn btn-sm btn-primary text-white w-100">Generate</a>
 
                                 <?php
                                 $filePdf = "uploads/sertifikat/" . $sertifikat['file_sertifikat'];
@@ -164,134 +275,18 @@ $nomor = $halaman_awal + 1;
                                 }
                                 ?>
 
-                                <a href="<?= $link; ?>" class="btn btn-sm btn-success text-white mt-1">Download PDF</a>
-                            </td>
-                        </tr>
-                    <?php } ?>
-                <?php } else { ?>
-                    <tr>
-                        <td colspan="9">Tidak ada data</td>
-                    </tr>
-                <?php } ?>
-            </tbody>
-        </table>
-    </div>
-
-    <!-- ======================= -->
-    <!-- PAGINATION -->
-    <!-- ======================= -->
-    <?php if ($jumlah_data > $batas) { ?>
-        <nav>
-            <ul class="pagination justify-content-end">
-                <li class="page-item <?= ($halaman <= 1) ? 'disabled' : ''; ?>">
-                    <a class="page-link" href="?halaman=<?= $halaman - 1; ?>&cari=<?= urlencode($cari); ?>">Previous</a>
-                </li>
-
-                <?php for ($x = 1; $x <= $total_halaman; $x++) { ?>
-                    <li class="page-item <?= ($halaman == $x) ? 'active' : ''; ?>">
-                        <a class="page-link" href="?halaman=<?= $x; ?>&cari=<?= urlencode($cari); ?>"><?= $x; ?></a>
-                    </li>
-                <?php } ?>
-
-                <li class="page-item <?= ($halaman >= $total_halaman) ? 'disabled' : ''; ?>">
-                    <a class="page-link" href="?halaman=<?= $halaman + 1; ?>&cari=<?= urlencode($cari); ?>">Next</a>
-                </li>
-            </ul>
-        </nav>
-    <?php } ?>
-
-    <!-- ======================= -->
-    <!-- CARD (MOBILE) -->
-    <!-- ======================= -->
-    <div class="container mt-3">
-        <?php
-        // Query ulang khusus mobile (karena data desktop sudah habis dipakai while)
-        $data_mobile = mysqli_query($conn, $query_data);
-        $nomor_mobile = $halaman_awal + 1;
-
-        while ($sertifikat = mysqli_fetch_array($data_mobile)) {
-
-            $awal  = strtotime($sertifikat['periode_awal']);
-            $akhir = strtotime($sertifikat['periode_akhir']);
-
-            if (date('F Y', $awal) == date('F Y', $akhir)) {
-                $periode = date('F d', $awal) . " - " . date('d, Y', $akhir);
-            } else {
-                $periode = date('F d', $awal) . " - " . date('F d, Y', $akhir);
-            }
-
-            $terbit = date('d-m-Y', strtotime($sertifikat['issued_date']));
-        ?>
-            <div class="d-block d-md-none">
-                <div class="card mb-2 border-primary shadow-sm">
-                    <div class="card-body p-2">
-
-                        <!-- Header -->
-                        <div class="d-flex justify-content-between">
-                            <div class="fw-bold">
-                                <?= $nomor_mobile++; ?>. <?= $sertifikat['nama']; ?>
+                                <a href="<?= $link; ?>" class="btn btn-sm btn-success text-white w-100">Download PDF</a>
                             </div>
-                            <?php if ($sertifikat['status'] == 0) { ?>
-                                <span class="badge bg-danger">Tidak Valid</span>
-                            <?php } else { ?>
-                                <span class="badge bg-success">Valid</span>
-                            <?php } ?>
+
                         </div>
-
-                        <div class="text-muted small">
-                            Pelatihan: <?= $sertifikat['pelatihan']; ?>
-                        </div>
-
-                        <hr class="my-2">
-
-                        <!-- Detail -->
-                        <div class="small">
-                            <div><strong>Periode:</strong> <?= $periode; ?></div>
-                            <div><strong>Issued Date:</strong> <?= $terbit; ?></div>
-                            <div><strong>No Sertifikat:</strong>
-                                <?php if (empty($sertifikat['nomor_sertifikat'])) { ?>
-                                    <span class="badge bg-warning">Belum Generate</span>
-                                <?php } else { ?>
-                                    <?= $sertifikat['nomor_sertifikat']; ?>
-                                <?php } ?>
-                            </div>
-                            <div><strong>Template Yang Digunakan:</strong> <?= $sertifikat['nama_template']; ?></div>
-                        </div>
-
-                        <!-- Action -->
-                        <div class="d-flex gap-1 mt-2 flex-wrap">
-                            <a href="edit_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-warning text-black w-100">Edit</a>
-
-                            <a href="hapus_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-danger text-white w-100"
-                                onclick="return confirm('Apakah yakin data sertifikat ini akan dihapus?');">Hapus</a>
-
-                            <a href="generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>&preview=1"
-                                class="btn btn-sm btn-info text-black w-100" target="_blank">Preview</a>
-
-                            <a href="generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>"
-                                class="btn btn-sm btn-primary text-white w-100">Generate</a>
-
-                            <?php
-                            $filePdf = "uploads/sertifikat/" . $sertifikat['file_sertifikat'];
-                            if (!empty($sertifikat['file_sertifikat']) && file_exists($filePdf)) {
-                                $link = "download.php?id=" . $sertifikat['id'];
-                            } else {
-                                $link = "generate_pdf_sertifikat.php?id=" . $sertifikat['id'];
-                            }
-                            ?>
-
-                            <a href="<?= $link; ?>" class="btn btn-sm btn-success text-white w-100">Download PDF</a>
-                        </div>
-
                     </div>
                 </div>
-            </div>
-        <?php } ?>
+            <?php } ?>
+        </div>
+
     </div>
 
-</div>
-
-<script src="./vendor/bs.bundle.min.js"></script>
+    <script src="./vendor/bs.bundle.min.js"></script>
 </body>
 
 </html>

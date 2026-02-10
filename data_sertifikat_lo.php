@@ -12,7 +12,7 @@ include 'config.php';
     <form action="cari_sertifikat_lo.php" method="GET" class="col-sm-3 mb-3 ms-4 mt-4">
         <label for="cari" class="ms-3">Masukkan Kata Kunci:</label>
         <div class="d-inline-flex ms-2">
-            <input class="form-control form-control-ms" type="text" id="cari" name="cari" placeholder="Cari">
+            <input class="form-control form-control-ms" type="text" id="cari" name="cari" placeholder="Cari" required>
             <button type="submit" class="btn btn-secondary ms-3">Cari</button>
         </div>
     </form>
