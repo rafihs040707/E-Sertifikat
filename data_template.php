@@ -103,8 +103,8 @@ include 'config.php';
                         <td><img src="uploads/template/<?php echo $template['tampak_depan']; ?>" width="80"></td>
                         <td>
                             <a href="edit_template.php?id=<?= $template['id']; ?>" class="btn btn-sm btn-info text-black mt-2">Edit</a>
-                            <a href="hapus_template.php?id=<?= $template['id']; ?>" class="btn btn-sm btn-danger text-white mt-2" onclick="return confirm('Apakah yakin data template ini akan dihapus?');">Hapus</a>
                             <button class="btn btn-sm btn-secondary text-white mt-2" data-bs-toggle="modal" data-bs-target="#modalGambar<?= $template['id']; ?>">Preview</button>
+                            <a href="hapus_template.php?id=<?= $template['id']; ?>" class="btn btn-sm btn-danger text-white mt-2" onclick="return confirm('Apakah yakin data template ini akan dihapus?');">Hapus</a>
                         </td>
                     </tr>
 

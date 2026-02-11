@@ -130,7 +130,7 @@ include 'config.php';
                             <?php } ?>
                         </td>
                         <td><?php echo $sertifikat['nama_template']; ?></td>
-                        <td>
+                        <td class="text-nowrap">
                             <a href="edit_sertifikat_lo.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-warning text-black mt-1">Edit</a>
                             <a href="generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>&preview=1" class="btn btn-sm btn-info text-black mt-1" target="_blank">Preview</a>
                             <a href="generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-primary text-white mt-1">Generate</a>
@@ -234,9 +234,8 @@ include 'config.php';
 
                     <!-- Action -->
                     <div class="d-flex gap-1 mt-2 flex-wrap">
-                        <a href="edit_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-warning text-white w-100">Edit</a>
-                        <a href="hapus_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-danger text-white w-100" onclick="return confirm('Apakah yakin data sertifikat ini akan dihapus?');">Hapus</a>
-                        <a href="generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>&preview=1" class="btn btn-sm btn-info text-white w-100" target="_blank">Preview</a>
+                        <a href="edit_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-warning text-black w-100">Edit</a>
+                        <a href="generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>&preview=1" class="btn btn-sm btn-info text-black w-100" target="_blank">Preview</a>
                         <a href="generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-primary text-white w-100">Generate</a>
                         <?php
                         $filePdf = "uploads/sertifikat/" . $sertifikat['file_sertifikat'];
