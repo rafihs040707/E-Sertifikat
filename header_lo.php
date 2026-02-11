@@ -10,6 +10,7 @@ include "cek_login.php";
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./vendor/bs.min.css">
+    <link rel="stylesheet" href="./vendor/bs-icon.css">
     <link rel="stylesheet" href="./vendor/style.css">
     <link rel="icon" type="image/png" href="./image/logo.png">
 </head>

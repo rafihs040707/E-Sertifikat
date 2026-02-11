@@ -10,7 +10,7 @@ include 'config.php';
 </head>
 
 <?php if (isset($_SESSION['success'])) { ?>
-    <div id="successAlert" class="alert alert-success fade show text-center" role="alert">
+    <div id="successAlert" class="alert alert-success fade show d-flex position-absolute w-100" role="alert">
         <?= $_SESSION['success']; ?>
     </div>
 
@@ -20,20 +20,20 @@ include 'config.php';
             if (alertBox) {
                 alertBox.classList.remove("show"); // fade out
             }
-        }, 3000);
+        }, 5000);
 
         setTimeout(() => {
             let alertBox = document.getElementById("successAlert");
             if (alertBox) {
                 alertBox.remove(); // hapus element setelah fade selesai
             }
-        }, 4000);
+        }, 6000);
     </script>
 <?php unset($_SESSION['success']);
 } ?>
 
 <?php if (isset($_SESSION['error'])) { ?>
-    <div id="errorAlert" class="alert alert-danger fade show text-center" role="alert">
+    <div id="errorAlert" class="alert alert-danger fade show d-flex position-absolute w-100" role="alert">
         <?= $_SESSION['error']; ?>
     </div>
 
