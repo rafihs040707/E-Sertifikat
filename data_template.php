@@ -42,14 +42,14 @@ include 'config.php';
             if (alertBox) {
                 alertBox.classList.remove("show");
             }
-        }, 3000);
+        }, 5000);
 
         setTimeout(() => {
             let alertBox = document.getElementById("errorAlert");
             if (alertBox) {
                 alertBox.remove();
             }
-        }, 4000);
+        }, 6000);
     </script>
 <?php unset($_SESSION['error']); } ?>
 
