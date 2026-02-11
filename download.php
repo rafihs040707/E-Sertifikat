@@ -1,4 +1,6 @@
 <?php
+$allowed_roles = ["admin", "lo"];
+include "cek_login.php";
 include "config.php";
 
 $id = $_GET['id'] ?? null;

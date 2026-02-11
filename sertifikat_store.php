@@ -1,4 +1,6 @@
 <?php
+$allowed_roles = ["admin"];
+include "cek_login.php";
 include "config.php";
 
 if (isset($_POST['submit'])) {

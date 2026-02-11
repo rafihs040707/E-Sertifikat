@@ -30,14 +30,21 @@ if (!$data) die("Data tidak ditemukan");
 // GENERATE NOMOR SERTIFIKAT
 // ======================
 if (empty($data['nomor_sertifikat'])) {
-
-    $q2 = mysqli_query($conn, "SELECT COUNT(*) as total FROM sertifikat WHERE nomor_sertifikat IS NOT NULL");
-    $row = mysqli_fetch_assoc($q2);
-
-    $urut = $row['total'] + 1;
     $tahun = date('Y');
     $bulan = date('m');
+
+    $q2 = mysqli_query($conn, "
+        SELECT MAX(CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(nomor_sertifikat, '/', -1), '-', 1) AS UNSIGNED)) AS last_no
+        FROM sertifikat
+        WHERE nomor_sertifikat IS NOT NULL
+        AND nomor_sertifikat LIKE 'CERT/$tahun/$bulan/%'
+    ");
+
+    $row = mysqli_fetch_assoc($q2);
+
+    $urut = ($row['last_no'] ?? 0) + 1;
     $nomor = str_pad($urut, 4, '0', STR_PAD_LEFT);
+
     $uuid  = substr(bin2hex(random_bytes(4)), 0, 8);
 
     $nomor_sertifikat = "CERT/$tahun/$bulan/$nomor-$uuid";

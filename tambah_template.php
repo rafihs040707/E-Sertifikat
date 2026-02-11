@@ -1,4 +1,8 @@
-<?php include 'header_admin.php'; ?>
+<?php 
+$allowed_roles = ["admin"];
+include "cek_login.php";
+include 'header_admin.php'; 
+?>
 
 <head>
     <title>Tambah Data Template</title>

@@ -1,7 +1,8 @@
 <?php
+$allowed_roles = ["admin"];
+include "cek_login.php";
 include 'header_admin.php';
 include 'config.php';
-session_start()
 ?>
 
 <head>
@@ -28,7 +29,8 @@ session_start()
             }
         }, 4000);
     </script>
-<?php unset($_SESSION['success']); } ?>
+<?php unset($_SESSION['success']);
+} ?>
 
 <?php if (isset($_SESSION['error'])) { ?>
     <div id="errorAlert" class="alert alert-danger fade show text-center" role="alert">
@@ -50,7 +52,8 @@ session_start()
             }
         }, 4000);
     </script>
-<?php unset($_SESSION['error']); } ?>
+<?php unset($_SESSION['error']);
+} ?>
 
 
 <div class="container">

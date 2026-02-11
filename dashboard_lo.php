@@ -1,12 +1,8 @@
 <?php 
+$allowed_roles = ["lo"];
+include "cek_login.php";
 include 'header_lo.php';
 include 'config.php';
-include "cek_login.php";
-
-if ($_SESSION['role'] != "lo") {
-    header("Location: index.php");
-    exit;
-}
 
 $data_sertifikat = mysqli_query($conn, "SELECT * FROM sertifikat");
 $jumlah_sertifikat = mysqli_num_rows($data_sertifikat);

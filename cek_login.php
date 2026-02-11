@@ -1,18 +1,20 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
-// batas waktu 5 menit
-$timeout = 900; // 300 untuk 5 menit
+// batas waktu idle (10 menit = 600 detik)
+$timeout = 1800;
 
-// jika belum login
+// cek apakah sudah login
 if (!isset($_SESSION['role'])) {
     header("Location: index.php");
     exit;
 }
 
-// cek aktivitas terakhir
+// cek timeout session
 if (isset($_SESSION['last_activity'])) {
-    if ((time() - $_SESSION['last_activity']) > $timeout) {
+    if (time() - $_SESSION['last_activity'] > $timeout) {
         session_unset();
         session_destroy();
         header("Location: index.php?pesan=timeout");
@@ -22,4 +24,12 @@ if (isset($_SESSION['last_activity'])) {
 
 // update waktu aktivitas terakhir
 $_SESSION['last_activity'] = time();
+
+// role check
+if (isset($allowed_roles) && is_array($allowed_roles)) {
+    if (!in_array($_SESSION['role'], $allowed_roles)) {
+        header("Location: index.php?pesan=akses_ditolak");
+        exit;
+    }
+}
 ?>

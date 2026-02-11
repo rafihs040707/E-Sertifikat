@@ -1,3 +1,8 @@
+<?php
+$allowed_roles = ["lo"];
+include "cek_login.php";
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 

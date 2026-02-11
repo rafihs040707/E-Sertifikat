@@ -1,4 +1,6 @@
 <?php
+$allowed_roles = ["lo"];
+include "cek_login.php";
 session_start();
 include "config.php";
 

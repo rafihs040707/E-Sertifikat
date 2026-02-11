@@ -1,4 +1,7 @@
-<?php include 'header_lo.php';
+<?php 
+$allowed_roles = ["lo"];
+include "cek_login.php";
+include 'header_lo.php';
 include 'config.php';
 ?>
 

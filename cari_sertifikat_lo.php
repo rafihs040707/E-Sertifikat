@@ -1,4 +1,6 @@
 <?php
+$allowed_roles = ["lo"];
+include "cek_login.php";
 include "config.php";
 
 $cari = isset($_GET['cari']) ? trim($_GET['cari']) : "";
