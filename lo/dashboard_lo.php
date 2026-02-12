@@ -33,9 +33,6 @@ $jumlah_sertifikat = mysqli_num_rows($data_sertifikat);
 </div>
 
 
-
-
-
 <script src="<?= BASE_URL ?>vendor/bs.bundle.min.js"></script>
 </body>
 
