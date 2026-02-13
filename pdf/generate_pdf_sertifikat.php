@@ -173,7 +173,7 @@ body {
 /* PERIODE */
 .periode {
     position: absolute;
-    top: 500px;
+    top: 505px;
     left: 50px;
     width: 100%;
     text-align: center;
@@ -186,16 +186,40 @@ body {
 .issued {
     position: absolute;
     bottom: 27px;
-    left: 60px;
+    left: 50px;
     font-size: 15px;
+    color: black;
+}
+
+/* CEO tengah bawah */
+.nama_ceo {
+    position: absolute;
+    bottom: 55px;
+    left: 50px;
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+    font-weight: normal;
+    color: black;
+}
+
+/* CEO tengah bawah */
+.ceo {
+    position: absolute;
+    bottom: 30px;
+    left: 50px;
+    width: 100%;
+    text-align: center;
+    font-size: 16px;
+    font-weight: normal;
     color: black;
 }
 
 /* NOMOR kanan bawah */
 .nomor {
     position: absolute;
-    bottom: 143px;
-    right: 5px;
+    bottom: 145px;
+    right: 11px;
     font-size: 11px;
     color: black;
 }
@@ -203,8 +227,8 @@ body {
 /* QR kanan bawah */
 .qr {
     position: absolute;
-    bottom: 18px;
-    right: 13px;
+    bottom: 23px;
+    right: 20px;
 }
 </style>
 </head> 
@@ -213,10 +237,12 @@ body {
 <img class='bg' src='{$templatePath}'>
 
 <div class='nama'>{$data['nama']}</div>
-<div class='pelatihan'>{$data['nama_pelatihan']}</div>
+<div class='pelatihan'><b>{$data['nama_pelatihan']}</b></div>
 <div class='periode'>Periode: {$periode}</div>
 
 <div class='issued'>Issued Date: {$issued}</div>
+<div class='nama_ceo'><u>Endra Prasetya Rudiyanto</u></div>
+<div class='ceo'>Chief Executive Officer</div>
 <div class='nomor'>{$data['nomor_sertifikat']}</div>
 
 <div class='qr'>
