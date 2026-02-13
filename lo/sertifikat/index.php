@@ -140,7 +140,7 @@ require_once BASE_PATH . '/lo/header.php';
                         <td class="text-nowrap">
                             <a href="<?= BASE_URL ?>lo/sertifikat/edit.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-warning text-black mt-1">Edit</a>
                             <a href="<?= BASE_URL ?>pdf/generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>&preview=1" class="btn btn-sm btn-info text-black mt-1" target="_blank">Preview</a>
-                            <a href="<?= BASE_URL ?>pdf/generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-primary text-white mt-1">Generate</a>
+                            <a href="<?= BASE_URL ?>pdf/generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-primary text-white mt-1" target="_blank">Generate</a>
                             <?php
                             $filePdf = BASE_PATH . "u/ploads/sertifikat/" . $sertifikat['file_sertifikat'];
                             if (!empty($sertifikat['file_sertifikat']) && file_exists($filePdf)) {
@@ -149,7 +149,7 @@ require_once BASE_PATH . '/lo/header.php';
                                 $link = BASE_URL . "pdf/generate_pdf_sertifikat.php?id=" . $sertifikat['id'];
                             }
                             ?>
-                            <a href="<?= $link; ?>" class="btn btn-sm btn-success text-white mt-1">Download PDF</a>
+                            <a href="<?= $link; ?>" class="btn btn-sm btn-success text-white mt-1" target="_blank">Download PDF</a>
                         </td>
                     </tr>
                 <?php
@@ -246,7 +246,7 @@ require_once BASE_PATH . '/lo/header.php';
                     <div class="d-flex gap-1 mt-2 flex-wrap">
                         <a href="<?= BASE_URL ?>lo/sertifikat/edit.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-warning text-black w-100">Edit</a>
                         <a href="<?= BASE_URL ?>pdf/generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>&preview=1" class="btn btn-sm btn-info text-black w-100" target="_blank">Preview</a>
-                        <a href="<?= BASE_URL ?>pdf/generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-primary text-white w-100">Generate</a>
+                        <a href="<?= BASE_URL ?>pdf/generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-primary text-white w-100" target="_blank">Generate</a>
                         <?php
                         $filePdf = BASE_PATH . "/uploads/sertifikat/" . $sertifikat['file_sertifikat'];
                         if (!empty($sertifikat['file_sertifikat']) && file_exists($filePdf)) {
@@ -255,7 +255,7 @@ require_once BASE_PATH . '/lo/header.php';
                             $link = BASE_URL . "pdf/generate_pdf_sertifikat.php?id=" . $sertifikat['id'];
                         }
                         ?>
-                        <a href="<?= $link; ?>" class="btn btn-sm btn-success text-white w-100">Download PDF</a>
+                        <a href="<?= $link; ?>" class="btn btn-sm btn-success text-white w-100" target="_blank">Download PDF</a>
                     </div>
 
                 </div>
