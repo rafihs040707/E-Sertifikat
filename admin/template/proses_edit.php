@@ -39,11 +39,11 @@ if (isset($_POST['update'])) {
 
     if (mysqli_query($conn, $query)) {
         $_SESSION['success'] = "Data template berhasil diperbarui.";
-        header("Location:" . BASE_URL . "admin/template/data_template.php");
+        header("Location:" . BASE_URL . "admin/template/index.php");
         exit;
     } else {
         $_SESSION['error'] = "Data template gagal diperbarui. Silakan coba lagi.";
-        header("Location:" . BASE_URL . "admin/template/data_template.php");
+        header("Location:" . BASE_URL . "admin/template/index.php");
         exit;
     }
 }

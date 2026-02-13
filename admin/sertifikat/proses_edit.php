@@ -1,8 +1,8 @@
 <?php
-$allowed_roles = ["lo"];
+$allowed_roles = ["admin"];
 require_once __DIR__ . '/../../bootstrap.php';
-require_once BASE_PATH . '/config/config.php';
 require_once BASE_PATH . '/auth/cek_login.php';
+require_once BASE_PATH . '/config/config.php';
 
 if (isset($_POST['submit'])) {
 
@@ -43,11 +43,11 @@ if (isset($_POST['submit'])) {
 
     if ($stmt->execute()) {
         $_SESSION['success'] = "Data berhasil diperbarui!";
-        header("Location:" . BASE_URL . "lo/sertifikat/data_sertifikat_lo.php");
+        header("Location: " . BASE_URL . "/admin/sertifikat/index.php");
         exit;
     } else {
         $_SESSION['error'] = "Data gagal diperbarui. Silakan coba lagi!";
-        header("Location:" . BASE_URL . "lo/sertifikat/data_sertifikat_lo.php");
+        header("Location: " . BASE_URL . "/admin/sertifikat/index.php");
         exit;
     }
 } else {

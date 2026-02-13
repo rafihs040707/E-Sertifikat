@@ -1,9 +1,9 @@
-<?php
-$allowed_roles = ["admin"];
+<?php 
+$allowed_roles = ["lo"];
 require_once __DIR__ . '/../../bootstrap.php';
-require_once BASE_PATH . '/auth/cek_login.php';
-require_once BASE_PATH . '/admin/header_admin.php';
 require_once BASE_PATH . '/config/config.php';
+require_once BASE_PATH . '/auth/cek_login.php';
+require_once BASE_PATH . '/lo/header.php';
 ?>
 
 <head>
@@ -12,7 +12,7 @@ require_once BASE_PATH . '/config/config.php';
 
 <h2 class="ms-5 my-4">Tambah Data Sertifikat</h2>
 
-<form action="<?= BASE_URL ?>/admin/sertifikat/sertifikat_store.php" method="POST" class="mx-4">
+<form action="<?= BASE_URL ?>lo/sertifikat/proses_tambah.php" method="POST" class="mx-4">
 
     <div class="mb-4">
         <label for="nama" class="form-label ms-3">Nama: </label>
@@ -66,7 +66,7 @@ require_once BASE_PATH . '/config/config.php';
     <div class="d-grid gap-2 d-flex justify-content-center mt-3 pb-5">
         <button type="submit" name="submit" class="btn btn-primary ms-2 col-3">Submit</button>
         <button type="reset" class="btn btn-warning ms-2 col-3">Reset Form</button>
-        <a href="<?= BASE_URL ?>admin/sertifikat/data_sertifikat.php" style="background-color: #6C7301;"
+        <a href="<?= BASE_URL ?>lo/sertifikat/index.php" style="background-color: #6C7301;"
             class="btn text-decoration-none text-white">Kembali Ke Halaman
             Sertifikat</a>
     </div>

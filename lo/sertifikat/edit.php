@@ -3,7 +3,7 @@ $allowed_roles = ["lo"];
 require_once __DIR__ . '/../../bootstrap.php';
 require_once BASE_PATH . '/config/config.php';
 require_once BASE_PATH . '/auth/cek_login.php';
-require_once BASE_PATH . '/lo/header_lo.php';
+require_once BASE_PATH . '/lo/header.php';
 
 $id = $_GET['id'];
 $data_sertifikat = mysqli_query($conn, "SELECT * FROM sertifikat WHERE id='$id'");
@@ -16,7 +16,7 @@ $sertifikat = mysqli_fetch_assoc($data_sertifikat);
 
 <h2 class="ms-5 my-4">Edit Data Sertifikat</h2>
 
-<form action="<?= BASE_URL ?>lo/sertifikat/proses_edit_sertifikat_lo.php" method="POST" class="mx-4">
+<form action="<?= BASE_URL ?>lo/sertifikat/proses_edit.php" method="POST" class="mx-4">
 
     <input type="hidden" name="id" value="<?= $sertifikat['id']; ?>">
 
@@ -69,7 +69,7 @@ $sertifikat = mysqli_fetch_assoc($data_sertifikat);
 
     <div class="d-grid gap-2 d-flex justify-content-center mt-3 pb-5">
         <button type="submit" name="submit" class="btn btn-primary ms-2 col-3">Update</button>
-        <a href="<?= BASE_URL ?>lo/sertifikat/data_sertifikat_lo.php" style="background-color: #6C7301;" class="btn text-decoration-none text-white">
+        <a href="<?= BASE_URL ?>lo/sertifikat/index.php" style="background-color: #6C7301;" class="btn text-decoration-none text-white">
             Kembali Ke Halaman Sertifikat
         </a>
     </div>

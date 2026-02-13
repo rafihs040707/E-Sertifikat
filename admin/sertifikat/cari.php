@@ -63,14 +63,14 @@ $nomor = $halaman_awal + 1;
     <div class="container-fluid mt-4">
 
         <!-- FORM SEARCH -->
-        <form method="GET" action="<?= BASE_URL ?>admin/sertifikat/cari_sertifikat.php" class="col-sm-4 mb-3 ms-4 mt-4">
+        <form method="GET" action="<?= BASE_URL ?>admin/sertifikat/cari.php" class="col-sm-4 mb-3 ms-4 mt-4">
             <label for="cari" class="ms-3">Masukkan Kata Kunci:</label>
             <div class="d-inline-flex ms-2 w-100">
                 <input class="form-control form-control-ms" type="text" id="cari" name="cari" placeholder="Cari"
                     value="<?= htmlspecialchars($cari); ?>">
                 <button type="submit" class="btn btn-secondary ms-3">Cari</button>
             </div>
-            <a href="<?= BASE_URL ?>admin/sertifikat/data_sertifikat.php" class="btn btn-secondary text-decoration-none text-white mt-4 ms-3 mb-2">
+            <a href="<?= BASE_URL ?>admin/sertifikat/index.php" class="btn btn-secondary text-decoration-none text-white mt-4 ms-3 mb-2">
                 Kembali Ke Data Sertifikat
             </a>
         </form>
@@ -142,7 +142,7 @@ $nomor = $halaman_awal + 1;
                                 <td><?= $sertifikat['nama_template']; ?></td>
 
                                 <td class="text-nowrap">
-                                    <a href="<?= BASE_URL ?>admin/sertifikat/edit_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-warning text-black mt-1">Edit</a>
+                                    <a href="<?= BASE_URL ?>admin/sertifikat/edit.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-warning text-black mt-1">Edit</a>
                                     <a href="<?= BASE_URL ?>pdf/generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>&preview=1"
                                         class="btn btn-sm btn-info text-black mt-1" target="_blank">Preview</a>
                                     <a href="<?= BASE_URL ?>pdf/generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>"
@@ -156,7 +156,7 @@ $nomor = $halaman_awal + 1;
                                     }
                                     ?>
                                     <a href="<?= $link; ?>" class="btn btn-sm btn-success text-white mt-1">Download PDF</a>
-                                    <a href="<?= BASE_URL ?>admin/sertifikat/hapus_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-danger text-white mt-1"
+                                    <a href="<?= BASE_URL ?>admin/sertifikat/hapus.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-danger text-white mt-1"
                                         onclick="return confirm('Apakah yakin data sertifikat ini akan dihapus?');">Hapus</a>
                                 </td>
                             </tr>
@@ -253,7 +253,7 @@ $nomor = $halaman_awal + 1;
 
                             <!-- Action -->
                             <div class="d-flex gap-1 mt-2 flex-wrap">
-                                <a href="<?= BASE_URL ?>admin/sertifikat/edit_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-warning text-black w-100">Edit</a>
+                                <a href="<?= BASE_URL ?>admin/sertifikat/edit.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-warning text-black w-100">Edit</a>
 
                                 <a href="<?= BASE_URL ?>pdf/generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>&preview=1"
                                     class="btn btn-sm btn-info text-black w-100" target="_blank">Preview</a>
@@ -271,7 +271,7 @@ $nomor = $halaman_awal + 1;
                                 ?>
 
                                 <a href="<?= $link; ?>" class="btn btn-sm btn-success text-white w-100">Download PDF</a>
-                                <a href="<?= BASE_URL ?>admin/sertifikat/hapus_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-danger text-white w-100"
+                                <a href="<?= BASE_URL ?>admin/sertifikat/hapus.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-danger text-white w-100"
                                     onclick="return confirm('Apakah yakin data sertifikat ini akan dihapus?');">Hapus</a>
                             </div>
 

@@ -2,7 +2,7 @@
 $allowed_roles = ["admin"];
 require_once __DIR__ . '/../../bootstrap.php';
 require_once BASE_PATH . '/auth/cek_login.php';
-require_once BASE_PATH . '/admin/header_admin.php';
+require_once BASE_PATH . '/admin/header.php';
 require_once BASE_PATH . '/config/config.php';
 
 $id = $_GET['id'];
@@ -12,7 +12,7 @@ $template = mysqli_fetch_assoc($data_template);
 
 <h2 class="ms-5 my-4">Edit Data Template</h2>
 
-<form action="<?= BASE_URL ?>admin/template/proses_edit_template.php" method="POST" class="mx-4" enctype="multipart/form-data">
+<form action="<?= BASE_URL ?>admin/template/proses_edit.php" method="POST" class="mx-4" enctype="multipart/form-data">
     <input type="hidden" name="id" value="<?= $template['id']; ?>">
     <input type="hidden" name="tampak_depan_lama" value="<?= $template['tampak_depan']; ?>">
 
@@ -35,6 +35,6 @@ $template = mysqli_fetch_assoc($data_template);
 
     <div class="d-flex justify-content-center mt-3">
         <button type="submit" name="update" class="btn btn-primary col-3">Update</button>
-        <a href="<?= BASE_URL ?>admin/template/data_template.php" class="btn btn-secondary ms-2">Kembali</a>
+        <a href="<?= BASE_URL ?>admin/template/index.php" class="btn btn-secondary ms-2">Kembali</a>
     </div>
 </form>

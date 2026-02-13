@@ -46,11 +46,11 @@ if (isset($_POST['submit'])) {
 
     if ($stmt->execute()) {
         $_SESSION['success'] = "Data template berhasil ditambahkan dan tersimpan!";
-        header("Location:" . BASE_URL . "admin/template/data_template.php");
+        header("Location:" . BASE_URL . "admin/template/index.php");
         exit;
     } else {
         $_SESSION['error'] = "Terjadi kesalahan saat menyimpan data. Silakan ulangi kembali!";
-        header("Location:" . BASE_URL . "admin/template/data_template.php");
+        header("Location:" . BASE_URL . "admin/template/index.php");
         exit;
     }
 } else {

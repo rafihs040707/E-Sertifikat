@@ -20,7 +20,7 @@ require_once BASE_PATH . '/auth/cek_login.php';
 
     <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #0D492D;">
         <div class="container-fluid">
-            <a class="navbar-brand" href="<?= BASE_URL ?>lo/dashboard_lo.php"><img src="<?= BASE_URL ?>image/logo.png"
+            <a class="navbar-brand" href="<?= BASE_URL ?>lo/dashboard.php"><img src="<?= BASE_URL ?>image/logo.png"
                     style="width: 40px; height: auto;"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent">
@@ -29,10 +29,10 @@ require_once BASE_PATH . '/auth/cek_login.php';
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link text-white active" aria-current="page" href="<?= BASE_URL ?>lo/dashboard_lo.php">Beranda</a>
+                        <a class="nav-link text-white active" aria-current="page" href="<?= BASE_URL ?>lo/dashboard.php">Beranda</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" aria-current="page" href="<?= BASE_URL ?>lo/sertifikat/data_sertifikat_lo.php">Data Sertifikat</a>
+                        <a class="nav-link text-white" aria-current="page" href="<?= BASE_URL ?>lo/sertifikat/index.php">Data Sertifikat</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">

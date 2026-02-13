@@ -1,9 +1,9 @@
 <?php
-$allowed_roles = ["lo"];
+$allowed_roles = ["admin"];
 require_once __DIR__ . '/../../bootstrap.php';
-require_once BASE_PATH . '/config/config.php';
+require_once BASE_PATH . '/admin/header.php';
 require_once BASE_PATH . '/auth/cek_login.php';
-require_once BASE_PATH . '/lo/header_lo.php';
+require_once BASE_PATH . '/config/config.php';
 ?>
 
 <head>
@@ -30,7 +30,8 @@ require_once BASE_PATH . '/lo/header_lo.php';
             }
         }, 6000);
     </script>
-<?php unset($_SESSION['success']); } ?>
+<?php unset($_SESSION['success']);
+} ?>
 
 <?php if (isset($_SESSION['error'])) { ?>
     <div id="errorAlert" class="alert alert-danger fade show d-flex position-absolute w-100" role="alert">
@@ -52,18 +53,20 @@ require_once BASE_PATH . '/lo/header_lo.php';
             }
         }, 6000);
     </script>
-<?php unset($_SESSION['error']); } ?>
+<?php unset($_SESSION['error']);
+} ?>
+
 
 <div class="container">
     <h2 class="my-2 ms-3">Data Sertifikat</h2>
-    <form action="<?= BASE_URL ?>lo/sertifikat/cari_sertifikat_lo.php" method="GET" class="col-sm-3 mb-3 ms-4 mt-4">
+    <form action="<?= BASE_URL ?>admin/sertifikat/cari.php" method="GET" class="col-sm-3 mb-3 ms-4 mt-4">
         <label for="cari" class="ms-3">Masukkan Kata Kunci:</label>
         <div class="d-inline-flex ms-2">
             <input class="form-control form-control-ms" type="text" id="cari" name="cari" placeholder="Cari" required>
             <button type="submit" class="btn btn-secondary ms-3">Cari</button>
         </div>
     </form>
-    <a href="<?= BASE_URL ?>lo/sertifikat/tambah_sertifikat_lo.php" class="btn btn-primary btn-sm text-decoration-none text-white ms-4 mt-2 mb-4">Tambah Data Sertifikat</a>
+    <a href="<?= BASE_URL ?>admin/sertifikat/tambah.php" class="btn btn-primary btn-sm text-decoration-none text-white ms-4 mt-2 mb-4">Tambah Data Sertifikat</a>
 </div>
 
 <div class="container-fluid">
@@ -132,18 +135,19 @@ require_once BASE_PATH . '/lo/header_lo.php';
                         </td>
                         <td><?php echo $sertifikat['nama_template']; ?></td>
                         <td class="text-nowrap">
-                            <a href="<?= BASE_URL ?>lo/sertifikat/edit_sertifikat_lo.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-warning text-black mt-1">Edit</a>
-                            <a href="<?= BASE_URL ?>pdf/generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>&preview=1" class="btn btn-sm btn-info text-black mt-1" target="_blank">Preview</a>
-                            <a href="<?= BASE_URL ?>pdf/generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-primary text-white mt-1">Generate</a>
+                            <a href="<?= BASE_URL ?>admin/sertifikat/edit.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-warning text-black">Edit</a>
+                            <a href="<?= BASE_URL ?>pdf/generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>&preview=1" class="btn btn-sm btn-info text-black" target="_blank">Preview</a>
+                            <a href="<?= BASE_URL ?>pdf/generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-primary text-white">Generate</a>
                             <?php
-                            $filePdf = BASE_PATH . "u/ploads/sertifikat/" . $sertifikat['file_sertifikat'];
+                            $filePdf =  BASE_URL . "uploads/sertifikat/" . $sertifikat['file_sertifikat'];
                             if (!empty($sertifikat['file_sertifikat']) && file_exists($filePdf)) {
                                 $link = BASE_URL . "pdf/download.php?id=" . $sertifikat['id'];
                             } else {
                                 $link = BASE_URL . "pdf/generate_pdf_sertifikat.php?id=" . $sertifikat['id'];
                             }
                             ?>
-                            <a href="<?= $link; ?>" class="btn btn-sm btn-success text-white mt-1">Download PDF</a>
+                            <a href="<?= $link; ?>" class="btn btn-sm btn-success text-white">Download PDF</a>
+                            <a href="<?= BASE_URL ?>admin/sertifikat/hapus.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-danger text-white" onclick="return confirm('Apakah yakin data sertifikat ini akan dihapus?');">Hapus</a>
                         </td>
                     </tr>
                 <?php
@@ -235,18 +239,19 @@ require_once BASE_PATH . '/lo/header_lo.php';
 
                     <!-- Action -->
                     <div class="d-flex gap-1 mt-2 flex-wrap">
-                        <a href="<?= BASE_URL ?>lo/sertifikat/edit_sertifikat_lo.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-warning text-black w-100">Edit</a>
+                        <a href="<?= BASE_URL ?>admin/sertifikat/edit.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-warning text-black w-100">Edit</a>
                         <a href="<?= BASE_URL ?>pdf/generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>&preview=1" class="btn btn-sm btn-info text-black w-100" target="_blank">Preview</a>
                         <a href="<?= BASE_URL ?>pdf/generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-primary text-white w-100">Generate</a>
                         <?php
-                        $filePdf = BASE_PATH . "/uploads/sertifikat/" . $sertifikat['file_sertifikat'];
+                        $filePdf = "<?= BASE_URL ?>uploads/sertifikat/" . $sertifikat['file_sertifikat'];
                         if (!empty($sertifikat['file_sertifikat']) && file_exists($filePdf)) {
-                            $link = BASE_URL . "pdf/download.php?id=" . $sertifikat['id'];
+                            $link = "<?= BASE_URL ?>pdf/download.php?id=" . $sertifikat['id'];
                         } else {
-                            $link = BASE_URL . "pdf/generate_pdf_sertifikat.php?id=" . $sertifikat['id'];
+                            $link = "<?= BASE_URL ?>pdf/generate_sertifikat.php?id=" . $sertifikat['id'];
                         }
                         ?>
                         <a href="<?= $link; ?>" class="btn btn-sm btn-success text-white w-100">Download PDF</a>
+                        <a href="<?= BASE_URL ?>admin/sertifikat/hapus.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-danger text-white w-100" onclick="return confirm('Apakah yakin data sertifikat ini akan dihapus?');">Hapus</a>
                     </div>
 
                 </div>

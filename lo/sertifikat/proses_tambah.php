@@ -30,12 +30,12 @@ if (isset($_POST['submit'])) {
 
         $_SESSION['success'] = "Data sertifikat berhasil ditambahkan dan tersimpan!";
 
-        header("Location:" . BASE_URL . "lo/sertifikat/data_sertifikat_lo.php?id=$last_id");
+        header("Location:" . BASE_URL . "lo/sertifikat/index.php?id=$last_id");
         exit;
     } else {
         $_SESSION['error'] = "Terjadi kesalahan saat menyimpan data. Silakan ulangi kembali!";
 
-        header("Location:" . BASE_URL . "lo/sertifikat/data_sertifikat_lo.php");
+        header("Location:" . BASE_URL . "lo/sertifikat/index.php");
         exit;
     }
 }

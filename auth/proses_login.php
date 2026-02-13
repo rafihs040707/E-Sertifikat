@@ -26,7 +26,7 @@ if ($cek > 0) {
         $_SESSION['email'] = $email;
         $_SESSION['role'] = "admin";
         // alihkan ke halaman dashboard admin
-        header("location:" . BASE_URL . "admin/dashboard_admin.php");
+        header("location:" . BASE_URL . "admin/dashboard.php");
 
         // cek jika user login sebagai lo
     } else if ($data['role'] == "lo") {
@@ -34,7 +34,7 @@ if ($cek > 0) {
         $_SESSION['email'] = $email;
         $_SESSION['role'] = "lo";
         // alihkan ke halaman dashboard lo
-        header("location:" . BASE_URL . "lo/dashboard_lo.php");
+        header("location:" . BASE_URL . "lo/dashboard.php");
         exit;
 
     }else {

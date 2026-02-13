@@ -44,14 +44,14 @@ $nomor = $halaman_awal + 1;
 
     <div class="container mt-4">
         <!-- FORM SEARCH -->
-        <form method="GET" action="<?= BASE_URL ?>admin/template/cari_template.php" class="col-sm-4 mb-3 ms-4 mt-4">
+        <form method="GET" action="<?= BASE_URL ?>admin/template/cari.php" class="col-sm-4 mb-3 ms-4 mt-4">
             <label for="cari" class="ms-3">Masukkan Kata Kunci:</label>
             <div class="d-inline-flex ms-2 w-100">
                 <input class="form-control form-control-ms" type="text" id="cari" name="cari" placeholder="Cari"
                     value="<?= htmlspecialchars($cari); ?>">
                 <button type="submit" class="btn btn-secondary ms-3">Cari</button>
             </div>
-            <a href="<?= BASE_URL ?>admin/template/data_template.php" class="btn btn-secondary text-decoration-none text-white mt-4 ms-3 mb-2">
+            <a href="<?= BASE_URL ?>admin/template/index.php" class="btn btn-secondary text-decoration-none text-white mt-4 ms-3 mb-2">
                 Kembali Ke Data Template
             </a>
         </form>
@@ -85,9 +85,9 @@ $nomor = $halaman_awal + 1;
                                     <img src="<?= BASE_URL ?>uploads/template/<?= $template['tampak_depan']; ?>" width="80">
                                 </td>
                                 <td>
-                                    <a class="btn btn-sm btn-info text-black" href="<?= BASE_URL ?>admin/template/edit_template.php?id=<?= $template['id']; ?>">Edit</a>
+                                    <a class="btn btn-sm btn-info text-black" href="<?= BASE_URL ?>admin/template/edit.php?id=<?= $template['id']; ?>">Edit</a>
                                     <button class="btn btn-sm btn-secondary text-white" data-bs-toggle="modal" data-bs-target="#modalGambar<?= $template['id']; ?>">Preview</button>
-                                    <a class="btn btn-sm btn-danger text-white" href="<?= BASE_URL ?>admin/template/hapus_template.php?id=<?= $template['id']; ?>" onclick="return confirm('Apakah yakin data template ini akan dihapus?');">Hapus</a>
+                                    <a class="btn btn-sm btn-danger text-white" href="<?= BASE_URL ?>admin/template/hapus.php?id=<?= $template['id']; ?>" onclick="return confirm('Apakah yakin data template ini akan dihapus?');">Hapus</a>
                                 </td>
                             </tr>
                             <div class="modal fade" id="modalGambar<?= $template['id']; ?>" tabindex="-1">

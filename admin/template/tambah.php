@@ -2,7 +2,7 @@
 $allowed_roles = ["admin"];
 require_once __DIR__ . '/../../bootstrap.php';
 require_once BASE_PATH . '/auth/cek_login.php';
-require_once BASE_PATH . '/admin/header_admin.php';
+require_once BASE_PATH . '/admin/header.php';
 ?>
 
 <head>
@@ -11,7 +11,7 @@ require_once BASE_PATH . '/admin/header_admin.php';
 
 <h2 class="ms-5 my-4">Tambah Data Template</h2>
 
-<form action="<?= BASE_URL ?>admin/template/template_store.php" method="POST" class="mx-4" enctype="multipart/form-data">
+<form action="<?= BASE_URL ?>admin/template/proses_tambah.php" method="POST" class="mx-4" enctype="multipart/form-data">
 
     <div class="mb-2">
         <label for="nama_template" class="form-label ms-3">Nama Template: </label>
@@ -33,7 +33,7 @@ require_once BASE_PATH . '/admin/header_admin.php';
     <div class="d-grid gap-2 d-flex justify-content-center mt-3">
         <button type="submit" name="submit" class="btn btn-primary ms-2 col-3">Submit</button>
         <button type="reset" class="btn btn-warning ms-2 col-3">Reset Form</button>
-        <a href="<?= BASE_URL ?>admin/template/data_template.php" style="background-color: #6C7301;"
+        <a href="<?= BASE_URL ?>admin/template/index.php" style="background-color: #6C7301;"
             class="btn text-decoration-none text-white">Kembali Ke Halaman
             Template</a>
     </div>

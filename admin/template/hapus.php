@@ -9,7 +9,7 @@ $id = $_GET['id'] ?? null;
 
 if (!$id) {
     $_SESSION['error'] = "ID template tidak ditemukan.";
-    header("Location:" . BASE_URL . "admin/template/data_template.php");
+    header("Location:" . BASE_URL . "admin/template/index.php");
     exit;
 }
 
@@ -19,7 +19,7 @@ $data = mysqli_fetch_assoc($query);
 
 if (!$data) {
     $_SESSION['error'] = "Template tidak ditemukan.";
-    header("Location:" . BASE_URL . "admin/template/data_template.php");
+    header("Location:" . BASE_URL . "admin/template/index.php");
     exit;
 }
 
@@ -37,12 +37,12 @@ if ($delete) {
     }
 
     $_SESSION['success'] = "Template berhasil dihapus.";
-    header("Location:" . BASE_URL . "admin/template/data_template.php");
+    header("Location:" . BASE_URL . "admin/template/index.php");
     exit;
 
 } else {
     $_SESSION['error'] = "Template gagal dihapus.";
-    header("Location:" . BASE_URL . "admin/template/data_template.php");
+    header("Location:" . BASE_URL . "admin/template/index.php");
     exit;
 }
 ?>

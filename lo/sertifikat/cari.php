@@ -63,14 +63,14 @@ $nomor = $halaman_awal + 1;
     <div class="container-fluid mt-4">
 
         <!-- FORM SEARCH -->
-        <form method="GET" action="<?= BASE_URL ?>lo/sertifikat/cari_sertifikat_lo.php" class="col-sm-4 mb-3 ms-4 mt-4">
+        <form method="GET" action="<?= BASE_URL ?>lo/sertifikat/cari.php" class="col-sm-4 mb-3 ms-4 mt-4">
             <label for="cari" class="ms-3">Masukkan Kata Kunci:</label>
             <div class="d-inline-flex ms-2 w-100">
                 <input class="form-control form-control-ms" type="text" id="cari" name="cari" placeholder="Cari"
                     value="<?= htmlspecialchars($cari); ?>">
                 <button type="submit" class="btn btn-secondary ms-3">Cari</button>
             </div>
-            <a href="<?= BASE_URL ?>lo/sertifikat/data_sertifikat_lo.php" class="btn btn-secondary text-decoration-none text-white mt-4 ms-3 mb-2">
+            <a href="<?= BASE_URL ?>lo/sertifikat/index.php" class="btn btn-secondary text-decoration-none text-white mt-4 ms-3 mb-2">
                 Kembali Ke Data Sertifikat
             </a>
         </form>
@@ -142,7 +142,7 @@ $nomor = $halaman_awal + 1;
                                 <td><?= $sertifikat['nama_template']; ?></td>
 
                                 <td class="text-nowrap">
-                                    <a href="<?= BASE_URL ?>lo/sertifikat/edit_sertifikat_lo.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-warning text-white mt-1">Edit</a>
+                                    <a href="<?= BASE_URL ?>lo/sertifikat/edit.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-warning text-white mt-1">Edit</a>
 
                                     <a href="<?= BASE_URL ?>pdf/generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>&preview=1"
                                         class="btn btn-sm btn-info text-white mt-1" target="_blank">Preview</a>
@@ -198,7 +198,7 @@ $nomor = $halaman_awal + 1;
         <!-- ======================= -->
         <!-- CARD (MOBILE) -->
         <!-- ======================= -->
-        <div class="container mt-3">
+        <div class="container mt-3 d-block d-md-none">
             <?php
             // Query ulang khusus mobile (karena data desktop sudah habis dipakai while)
             $data_mobile = mysqli_query($conn, $query_data);
@@ -255,7 +255,7 @@ $nomor = $halaman_awal + 1;
 
                             <!-- Action -->
                             <div class="d-flex gap-1 mt-2 flex-wrap">
-                                <a href="<?= BASE_URL ?>lo/sertifikat/edit_sertifikat_lo.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-warning text-white w-100">Edit</a>
+                                <a href="<?= BASE_URL ?>lo/sertifikat/edit.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-warning text-white w-100">Edit</a>
 
                                 <a href="<?= BASE_URL ?>pdf/generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>&preview=1"
                                     class="btn btn-sm btn-info text-white w-100" target="_blank">Preview</a>
@@ -279,29 +279,29 @@ $nomor = $halaman_awal + 1;
                     </div>
                 </div>
             <?php } ?>
-        </div>
-        <!-- ======================= -->
-        <!-- PAGINATION -->
-        <!-- ======================= -->
-        <?php if ($jumlah_data > $batas) { ?>
-            <nav>
-                <ul class="pagination justify-content-end">
-                    <li class="page-item <?= ($halaman <= 1) ? 'disabled' : ''; ?>">
-                        <a class="page-link" href="?halaman=<?= $halaman - 1; ?>&cari=<?= urlencode($cari); ?>">Previous</a>
-                    </li>
-
-                    <?php for ($x = 1; $x <= $total_halaman; $x++) { ?>
-                        <li class="page-item <?= ($halaman == $x) ? 'active' : ''; ?>">
-                            <a class="page-link" href="?halaman=<?= $x; ?>&cari=<?= urlencode($cari); ?>"><?= $x; ?></a>
+            <!-- ======================= -->
+            <!-- PAGINATION -->
+            <!-- ======================= -->
+            <?php if ($jumlah_data > $batas) { ?>
+                <nav>
+                    <ul class="pagination justify-content-end">
+                        <li class="page-item <?= ($halaman <= 1) ? 'disabled' : ''; ?>">
+                            <a class="page-link" href="?halaman=<?= $halaman - 1; ?>&cari=<?= urlencode($cari); ?>">Previous</a>
                         </li>
-                    <?php } ?>
 
-                    <li class="page-item <?= ($halaman >= $total_halaman) ? 'disabled' : ''; ?>">
-                        <a class="page-link" href="?halaman=<?= $halaman + 1; ?>&cari=<?= urlencode($cari); ?>">Next</a>
-                    </li>
-                </ul>
-            </nav>
-        <?php } ?>
+                        <?php for ($x = 1; $x <= $total_halaman; $x++) { ?>
+                            <li class="page-item <?= ($halaman == $x) ? 'active' : ''; ?>">
+                                <a class="page-link" href="?halaman=<?= $x; ?>&cari=<?= urlencode($cari); ?>"><?= $x; ?></a>
+                            </li>
+                        <?php } ?>
+
+                        <li class="page-item <?= ($halaman >= $total_halaman) ? 'disabled' : ''; ?>">
+                            <a class="page-link" href="?halaman=<?= $halaman + 1; ?>&cari=<?= urlencode($cari); ?>">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            <?php } ?>
+        </div>
     </div>
 
     <script src="<?= BASE_URL ?>vendor/bs.bundle.min.js"></script>
