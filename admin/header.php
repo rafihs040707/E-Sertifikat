@@ -35,6 +35,9 @@ require_once BASE_PATH . '/auth/cek_login.php';
                     <li class="nav-item">
                         <a class="nav-link text-white" href="<?= BASE_URL ?>admin/template/index.php">Data Template</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="<?= BASE_URL ?>admin/pelatihan/index.php">Data Pelatihan</a>
+                    </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
