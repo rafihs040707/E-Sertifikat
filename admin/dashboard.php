@@ -1,4 +1,4 @@
-<?php 
+<?php
 $allowed_roles = ["admin"];
 require_once __DIR__ . '/../bootstrap.php';
 require_once BASE_PATH . '/admin/header.php';
@@ -21,6 +21,12 @@ $data_pelatihan = mysqli_query($conn, "SELECT * FROM pelatihan");
 $jumlah_pelatihan = mysqli_num_rows($data_pelatihan);
 ?>
 
+<div class="container mt-3">
+    <div class="jumbotron">
+        <h1 class="text-center">Selamat, Anda Berhasil Login.! <br> Sebagai <?php $p = $_SESSION['role'];
+                                                                    echo $p; ?></h1>
+    </div>
+</div>
 
 <div class="container">
     <div class="row">

@@ -14,6 +14,13 @@ $jumlah_sertifikat = mysqli_num_rows($data_sertifikat);
     <title>Dashboard Liaison Officer</title>
 </head>
 
+<div class="container mt-3">
+    <div class="jumbotron">
+        <h1 class="text-center">Selamat, Anda Berhasil Login.! <br> Sebagai <?php $p = $_SESSION['role'];
+                                                                    echo $p; ?></h1>
+    </div>
+</div>
+
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
