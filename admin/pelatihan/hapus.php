@@ -9,7 +9,7 @@ $id = $_GET['id'] ?? null;
 
 if (!$id) {
     $_SESSION['error'] = "ID pelatihan tidak ditemukan.";
-    header("Location: <?= BASE_URL ?>index.php");
+    header("Location:" . BASE_URL . "index.php");
     exit;
 }
 

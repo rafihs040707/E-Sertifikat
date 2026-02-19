@@ -305,7 +305,7 @@ $title = $statusValid ? "Sertifikat Valid dan Terdaftar" : "Sertifikat Tidak Val
 
     </div>
 
-    <script src="./vendor/bs.bundle.min.js"></script>
+    <script src="<?= BASE_URL ?>vendor/bs.bundle.min.js"></script>
 </body>
 
 </html>

@@ -86,7 +86,7 @@ if (isset($_SESSION['login_error'])) {
 
 
 
-    <script src="vendor/bs.bundle.min.js"></script>
+    <script src="<?= BASE_URL ?>vendor/bs.bundle.min.js"></script>
 </body>
 
 </html>
