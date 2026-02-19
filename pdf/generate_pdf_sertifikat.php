@@ -135,7 +135,7 @@ if (!empty($nomorFull)) {
 $parts = explode("-", $data['nomor_sertifikat']);
 $uuid = end($parts);
 
-$qrText = "http://localhost/sertifikat/verify/verify.php?uuid=" . $uuid;
+$qrText = BASE_URL . "verify/verify.php?uuid=" . $uuid;
 
 
 // ======================
