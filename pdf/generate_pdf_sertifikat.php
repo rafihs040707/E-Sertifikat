@@ -146,7 +146,7 @@ if (!is_dir($qrFolder)) {
     mkdir($qrFolder, 0777, true);
 }
 
-$qrFilename = "qr_" . $id . ".png";
+$qrFilename = "qr_" . $uuid . ".png";
 $qrPath = $qrFolder . $qrFilename;
 
 $qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" . urlencode($qrText);
