@@ -4,44 +4,48 @@ session_start();
 require_once __DIR__ . '/../bootstrap.php';
 require_once BASE_PATH . '/config/config.php';
 
-// menangkap data yang dikirim dari form login
-$email = $_POST['email'];
-$password = md5($_POST['password']);
+// ======================
+// AMBIL INPUT
+// ======================
+$email    = trim($_POST['email'] ?? '');
+$password = $_POST['password'] ?? '';
 
+// ======================
+// VALIDASI DASAR
+// ======================
+if ($email === '' || $password === '') {
+    header("location:" . BASE_URL . "index.php?pesan=gagal");
+    exit;
+}
 
-// menyeleksi data user dengan email dan password yang sesuai
-$login = mysqli_query($conn, "select * from users where email='$email' and password='$password'");
-// menghitung jumlah data yang ditemukan
-$cek = mysqli_num_rows($login);
+// ======================
+// AMBIL USER BERDASARKAN EMAIL SAJA
+// ======================
+$stmt = $conn->prepare("SELECT * FROM users WHERE email = ? LIMIT 1");
+$stmt->bind_param("s", $email);
+$stmt->execute();
 
-// cek apakah email dan password di temukan pada database
-if ($cek > 0) {
+$result = $stmt->get_result();
+$data   = $result->fetch_assoc();
 
-    $data = mysqli_fetch_assoc($login);
+// ======================
+// VERIFIKASI PASSWORD
+// ======================
+if ($data && password_verify($password, $data['password'])) {
 
-    // cek jika user login sebagai admin
-    if ($data['role'] == "admin") {
+    // set session
+    $_SESSION['email'] = $data['email'];
+    $_SESSION['role']  = $data['role'];
 
-        // buat session login dan email
-        $_SESSION['email'] = $email;
-        $_SESSION['role'] = "admin";
-        // alihkan ke halaman dashboard admin
+    // redirect berdasarkan role
+    if ($data['role'] === "admin") {
         header("location:" . BASE_URL . "admin/dashboard.php");
-
-        // cek jika user login sebagai lo
-    } else if ($data['role'] == "lo") {
-        // buat session login dan email
-        $_SESSION['email'] = $email;
-        $_SESSION['role'] = "lo";
-        // alihkan ke halaman dashboard lo
+        exit;
+    } elseif ($data['role'] === "lo") {
         header("location:" . BASE_URL . "lo/dashboard.php");
         exit;
-
-    }else {
-        // alihkan ke halaman login kembali
-        header("location:" . BASE_URL . "index.php?pesan=gagal");
-        exit;
     }
+
 } else {
     header("location:" . BASE_URL . "index.php?pesan=gagal");
     exit;
