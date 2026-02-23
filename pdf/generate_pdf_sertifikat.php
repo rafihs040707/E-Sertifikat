@@ -13,6 +13,7 @@ error_reporting(0);
 ini_set('display_errors', 0);
 
 $id = $_GET['id'] ?? null;
+$isPreview = isset($_GET['preview']);
 if (!$id) die("ID tidak ditemukan");
 
 // ======================
@@ -36,7 +37,7 @@ if (!$data) die("Data tidak ditemukan");
 // ======================
 // GENERATE NOMOR SERTIFIKAT
 // ======================
-if (empty($data['nomor_sertifikat'])) {
+if (!$isPreview && empty($data['nomor_sertifikat'])) {
 
     $tahun = date('Y');
     $bulan = date('m');
@@ -141,6 +142,11 @@ $qrText = BASE_URL . "verify/verify.php?uuid=" . $uuid;
 // ======================
 // GENERATE QR CODE + SIMPAN FILE
 // ======================
+$parts = explode("-", $data['nomor_sertifikat']);
+$uuid = end($parts);
+
+$qrText = BASE_URL . "verify/verify.php?uuid=" . $uuid;
+
 $qrFolder = BASE_PATH . "/uploads/qrcode/";
 if (!is_dir($qrFolder)) {
     mkdir($qrFolder, 0777, true);
@@ -148,16 +154,20 @@ if (!is_dir($qrFolder)) {
 
 $qrFilename = "qr_" . $uuid . ".png";
 $qrPath = $qrFolder . $qrFilename;
-
-$qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" . urlencode($qrText);
-$qrContent = @file_get_contents($qrUrl);
-
-if (!$qrContent) {
-    die("Gagal generate QR Code. Pastikan internet aktif atau allow_url_fopen ON.");
-}
-
-file_put_contents($qrPath, $qrContent);
 $qrUrlPath = BASE_URL . "uploads/qrcode/" . $qrFilename;
+
+// 🔥 HANYA GENERATE QR JIKA BUKAN PREVIEW
+if (!$isPreview) {
+
+    $qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" . urlencode($qrText);
+    $qrContent = @file_get_contents($qrUrl);
+
+    if (!$qrContent) {
+        die("Gagal generate QR Code.");
+    }
+
+    file_put_contents($qrPath, $qrContent);
+}
 
 // ======================
 // TEMPLATE PATH
@@ -314,22 +324,37 @@ $dompdf->render();
 // ======================
 // SIMPAN PDF
 // ======================
-$pdfFolder = BASE_PATH . "/uploads/sertifikat/";
-if (!is_dir($pdfFolder)) {
-    mkdir($pdfFolder, 0777, true);
+if (!$isPreview) {
+
+    $pdfFolder = BASE_PATH . "/uploads/sertifikat/";
+    if (!is_dir($pdfFolder)) {
+        mkdir($pdfFolder, 0777, true);
+    }
+
+    $cleanNomor = preg_replace('/[^A-Za-z0-9\-]/', '_', $data['nomor_sertifikat']);
+    $filename = $cleanNomor . ".pdf";
+    $pdfPath = $pdfFolder . $filename;
+
+    if (file_exists($pdfPath)) {
+        unlink($pdfPath);
+    }
+
+    file_put_contents($pdfPath, $dompdf->output());
+
+    // UPDATE DATABASE
+    mysqli_query($conn, "
+        UPDATE sertifikat
+        SET qr_code = '$qrText',
+            qr_image = '$qrFilename',
+            file_sertifikat = '$filename'
+        WHERE id = '$id'
+    ");
+
+} else {
+    // preview → render langsung tanpa simpan
+    $filename = "preview.pdf";
+    $pdfPath = null;
 }
-
-$cleanNomor = preg_replace('/[^A-Za-z0-9\-]/', '_', $data['nomor_sertifikat']);
-$filename = $cleanNomor . ".pdf";
-$pdfPath = $pdfFolder . $filename;
-
-// hapus file lama jika ada (overwrite aman)
-if (file_exists($pdfPath)) {
-    unlink($pdfPath);
-}
-
-// simpan file
-file_put_contents($pdfPath, $dompdf->output());
 
 
 // ======================
@@ -348,22 +373,18 @@ mysqli_query($conn, "
 // ======================
 ob_end_clean();
 
-$preview = isset($_GET['preview']);
+if ($isPreview) {
+    // preview langsung tampil
+    header("Content-Type: application/pdf");
+    echo $dompdf->output();
+    exit;
+}
 
-// pastikan file sudah tersimpan
+// ===== mode generate =====
 if (!file_exists($pdfPath)) {
     die("File PDF tidak ditemukan.");
 }
 
-// URL file PDF yang sudah dibuat
-$fileUrl = BASE_URL . "uploads/sertifikat/" . $filename;
-
-if ($preview) {
-    header("Location: " . $fileUrl);
-    exit;
-}
-
-// kalau mau force download
 header("Content-Type: application/pdf");
 header("Content-Disposition: attachment; filename=\"" . $filename . "\"");
 readfile($pdfPath);

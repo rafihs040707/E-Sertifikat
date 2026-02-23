@@ -30,13 +30,16 @@ require_once BASE_PATH . '/auth/cek_login.php';
                         <a class="nav-link text-white active" aria-current="page" href="<?= BASE_URL ?>admin/dashboard.php">Beranda</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="<?= BASE_URL ?>admin/sertifikat/index.php">Data Sertifikat</a>
+                        <a class="nav-link text-white" href="<?= BASE_URL ?>admin/sertifikat/index.php">Sertifikat</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="<?= BASE_URL ?>admin/template/index.php">Data Template</a>
+                        <a class="nav-link text-white" href="<?= BASE_URL ?>admin/template/index.php">Template</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="<?= BASE_URL ?>admin/pelatihan/index.php">Data Pelatihan</a>
+                        <a class="nav-link text-white" href="<?= BASE_URL ?>admin/pelatihan/index.php">Pelatihan</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="<?= BASE_URL ?>admin/user/index.php">Manajemen User</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">

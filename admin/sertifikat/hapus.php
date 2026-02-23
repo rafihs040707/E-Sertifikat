@@ -2,50 +2,82 @@
 $allowed_roles = ["admin"];
 require_once __DIR__ . '/../../bootstrap.php';
 require_once BASE_PATH . '/auth/cek_login.php';
-session_start();
 require_once BASE_PATH . '/config/config.php';
 
-$id = $_GET['id'] ?? null;
+// ======================
+// VALIDASI ID
+// ======================
+$id = $_GET['id'] ?? '';
 
-if (!$id) {
-    $_SESSION['error'] = "ID sertifikat tidak ditemukan.";
-    header("Location: <?= BASE_URL ?>index.php");
-    exit;
-}
-
-// ambil data dulu (untuk nama file pdf & qr)
-$query = mysqli_query($conn, "SELECT file_sertifikat, qr_image FROM sertifikat WHERE id='$id'");
-$data = mysqli_fetch_assoc($query);
-
-if (!$data) {
-    $_SESSION['error'] = "Data sertifikat tidak ditemukan.";
+if (!ctype_digit($id)) {
+    $_SESSION['error'] = "ID tidak valid.";
     header("Location:" . BASE_URL . "admin/sertifikat/index.php");
     exit;
 }
 
-// path file pdf & qr
-$pdfPath = BASE_PATH . "/uploads/sertifikat/" . $data['file_sertifikat'];
-$qrPath  = BASE_PATH . "/uploads/qrcode/" . $data['qr_image'];
+// ======================
+// START TRANSACTION
+// ======================
+$conn->begin_transaction();
 
-// hapus file pdf jika ada
-if (!empty($data['file_sertifikat']) && file_exists($pdfPath)) {
-    unlink($pdfPath);
-}
+try {
 
-// hapus file qr jika ada
-if (!empty($data['qr_image']) && file_exists($qrPath)) {
-    unlink($qrPath);
-}
+    // ======================
+    // AMBIL DATA FILE
+    // ======================
+    $stmt = $conn->prepare("SELECT file_sertifikat, qr_image FROM sertifikat WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = $result->fetch_assoc();
 
-// hapus data dari database
-$delete = mysqli_query($conn, "DELETE FROM sertifikat WHERE id='$id'");
+    if (!$data) {
+        throw new Exception("Data sertifikat tidak ditemukan.");
+    }
 
-if ($delete) {
+    // ======================
+    // HAPUS FILE PDF
+    // ======================
+    if (!empty($data['file_sertifikat'])) {
+        $pdfPath = BASE_PATH . "/uploads/sertifikat/" . $data['file_sertifikat'];
+        if (file_exists($pdfPath)) {
+            unlink($pdfPath);
+        }
+    }
+
+    // ======================
+    // HAPUS FILE QR
+    // ======================
+    if (!empty($data['qr_image'])) {
+        $qrPath = BASE_PATH . "/uploads/qrcode/" . $data['qr_image'];
+        if (file_exists($qrPath)) {
+            unlink($qrPath);
+        }
+    }
+
+    // ======================
+    // DELETE DATABASE
+    // ======================
+    $stmtDel = $conn->prepare("DELETE FROM sertifikat WHERE id = ?");
+    $stmtDel->bind_param("i", $id);
+    $stmtDel->execute();
+
+    if ($stmtDel->affected_rows <= 0) {
+        throw new Exception("Gagal menghapus data.");
+    }
+
+    // ======================
+    // COMMIT
+    // ======================
+    $conn->commit();
+
     $_SESSION['success'] = "Data sertifikat berhasil dihapus.";
-} else {
-    $_SESSION['error'] = "Data sertifikat gagal dihapus.";
+
+} catch (Exception $e) {
+
+    $conn->rollback();
+    $_SESSION['error'] = $e->getMessage();
 }
 
 header("Location:" . BASE_URL . "admin/sertifikat/index.php");
 exit;
-?>

@@ -31,7 +31,7 @@ require_once BASE_PATH . '/auth/cek_login.php';
                         <a class="nav-link text-white active" aria-current="page" href="<?= BASE_URL ?>lo/dashboard.php">Beranda</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" aria-current="page" href="<?= BASE_URL ?>lo/sertifikat/index.php">Data Sertifikat</a>
+                        <a class="nav-link text-white" aria-current="page" href="<?= BASE_URL ?>lo/sertifikat/index.php">Sertifikat</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
