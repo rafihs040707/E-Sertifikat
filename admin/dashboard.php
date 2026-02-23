@@ -19,6 +19,9 @@ $jumlah_sertifikat = mysqli_num_rows($data_sertifikat);
 
 $data_pelatihan = mysqli_query($conn, "SELECT * FROM pelatihan");
 $jumlah_pelatihan = mysqli_num_rows($data_pelatihan);
+
+$data_user = mysqli_query($conn, "SELECT * FROM users");
+$jumlah_user = mysqli_num_rows($data_user);
 ?>
 
 <div class="container mt-3">
@@ -56,6 +59,15 @@ $jumlah_pelatihan = mysqli_num_rows($data_pelatihan);
                             <img src="<?= BASE_URL ?>image/training.png" class="ukuran my-3">
                             <h3 class="my-2"><?php echo $jumlah_pelatihan ?></h3>
                             <h5 class="my-3">Pelatihan</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 mt-4">
+                    <div class="card">
+                        <div class="card-body text-center text-white" style="background-color: #6366F1;">
+                            <img src="<?= BASE_URL ?>image/user.png" class="ukuran my-3">
+                            <h3 class="my-2"><?php echo $jumlah_user ?></h3>
+                            <h5 class="my-3">User</h5>
                         </div>
                     </div>
                 </div>
