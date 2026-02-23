@@ -24,7 +24,8 @@ if (isset($_SESSION['login_error'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="vendor/bs.min.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>vendor/bs.min.css">
+    <link rel="icon" href="<?= BASE_URL ?>image/logo.png">
     <title>Login</title>
 </head>
 
@@ -65,7 +66,7 @@ if (isset($_SESSION['login_error'])) {
                 <div class="card shadow">
                     <div class="card-body" style="background-color: #848484;">
                         <h4 class="text-center mb-3">Sign in to start your session </h4>
-                        <form action="<? BASE_URL ?>auth/proses_login.php" method="POST">
+                        <form action="<?= BASE_URL ?>auth/proses_login.php" method="POST">
                             <div class="form-floating mb-3">
                                 <input type="email" class="form-control" name="email" id="floatingInput" placeholder="email address">
                                 <label for="floatingInput">Email address</label>
