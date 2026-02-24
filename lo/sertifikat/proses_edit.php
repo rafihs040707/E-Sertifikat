@@ -4,18 +4,50 @@ require_once __DIR__ . '/../../bootstrap.php';
 require_once BASE_PATH . '/auth/cek_login.php';
 require_once BASE_PATH . '/config/config.php';
 
-if (isset($_POST['submit'])) {
+if (!isset($_POST['submit'])) {
+    die("Akses dilarang...");
+}
 
-    $id = $_POST['id'];
-    $nama = $_POST['nama'];
-    $pelatihan = $_POST['pelatihan'];
-    $periode_awal = $_POST['periode_awal'];
-    $periode_akhir = $_POST['periode_akhir'];
-    $issued_date = $_POST['issued_date'];
-    $status = $_POST['status'];
-    $template_id = $_POST['template_id'];
+// ======================
+// AMBIL + SANITIZE
+// ======================
+$id           = (int)($_POST['id'] ?? 0);
+$nama         = trim($_POST['nama'] ?? '');
+$pelatihan    = (int)($_POST['pelatihan'] ?? 0);
+$periode_awal = trim($_POST['periode_awal'] ?? '');
+$periode_akhir= trim($_POST['periode_akhir'] ?? '');
+$issued_date  = trim($_POST['issued_date'] ?? '');
+$status       = (int)($_POST['status'] ?? 0);
+$template_id  = (int)($_POST['template_id'] ?? 0);
 
-    $stmt = $conn->prepare("
+// ======================
+// VALIDASI WAJIB
+// ======================
+if (
+    !$id ||
+    $nama === '' ||
+    !$pelatihan ||
+    $periode_awal === '' ||
+    $periode_akhir === '' ||
+    $issued_date === '' ||
+    !$template_id
+) {
+    $_SESSION['error'] = "Semua field wajib diisi.";
+    header("Location: " . BASE_URL . "admin/sertifikat/index.php");
+    exit;
+}
+
+// validasi tanggal
+if ($periode_akhir < $periode_awal) {
+    $_SESSION['error'] = "Periode akhir tidak boleh lebih kecil dari periode awal.";
+    header("Location: " . BASE_URL . "admin/sertifikat/index.php");
+    exit;
+}
+
+// ======================
+// PREPARE UPDATE
+// ======================
+$stmt = $conn->prepare("
     UPDATE sertifikat 
     SET nama = ?, 
         pelatihan_id = ?, 
@@ -27,31 +59,32 @@ if (isset($_POST['submit'])) {
     WHERE id = ?
 ");
 
-
-    $stmt->bind_param(
-        "sisssiii",
-        $nama,
-        $pelatihan,
-        $periode_awal,
-        $periode_akhir,
-        $issued_date,
-        $status,
-        $template_id,
-        $id
-    );
-
-
-    session_start();
-
-    if ($stmt->execute()) {
-        $_SESSION['success'] = "Data berhasil diperbarui!";
-        header("Location:" . BASE_URL . "lo/sertifikat/index.php");
-        exit;
-    } else {
-        $_SESSION['error'] = "Data gagal diperbarui. Silakan coba lagi!";
-        header("Location:" . BASE_URL . "lo/sertifikat/index.php");
-        exit;
-    }
-} else {
-    die("Akses dilarang...");
+if (!$stmt) {
+    $_SESSION['error'] = "Prepare statement gagal.";
+    header("Location: " . BASE_URL . "lo/sertifikat/index.php");
+    exit;
 }
+
+$stmt->bind_param(
+    "sisssiii",
+    $nama,
+    $pelatihan,
+    $periode_awal,
+    $periode_akhir,
+    $issued_date,
+    $status,
+    $template_id,
+    $id
+);
+
+// ======================
+// EKSEKUSI
+// ======================
+if ($stmt->execute()) {
+    $_SESSION['success'] = "Data berhasil diperbarui.";
+} else {
+    $_SESSION['error'] = "Data gagal diperbarui.";
+}
+
+header("Location: " . BASE_URL . "lo/sertifikat/index.php");
+exit;
