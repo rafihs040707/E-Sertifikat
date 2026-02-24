@@ -1,19 +1,19 @@
 <?php
 $allowed_roles = ["lo"];
 require_once __DIR__ . '/../../bootstrap.php';
-require_once BASE_PATH . '/config/config.php';
 require_once BASE_PATH . '/auth/cek_login.php';
+require_once BASE_PATH . '/config/config.php';
 
 if (isset($_POST['submit'])) {
 
-    $id           = $_POST['id'];
-    $nama         = $_POST['nama'];
-    $pelatihan    = $_POST['pelatihan'];
+    $id = $_POST['id'];
+    $nama = $_POST['nama'];
+    $pelatihan = $_POST['pelatihan'];
     $periode_awal = $_POST['periode_awal'];
     $periode_akhir = $_POST['periode_akhir'];
-    $issued_date  = $_POST['issued_date'];
-    $status       = $_POST['status'];
-    $template_id  = $_POST['template_id'];
+    $issued_date = $_POST['issued_date'];
+    $status = $_POST['status'];
+    $template_id = $_POST['template_id'];
 
     $stmt = $conn->prepare("
     UPDATE sertifikat 
@@ -39,6 +39,7 @@ if (isset($_POST['submit'])) {
         $template_id,
         $id
     );
+
 
     session_start();
 

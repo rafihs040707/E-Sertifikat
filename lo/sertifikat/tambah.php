@@ -1,9 +1,9 @@
-<?php 
+<?php
 $allowed_roles = ["lo"];
 require_once __DIR__ . '/../../bootstrap.php';
-require_once BASE_PATH . '/config/config.php';
 require_once BASE_PATH . '/auth/cek_login.php';
 require_once BASE_PATH . '/lo/header.php';
+require_once BASE_PATH . '/config/config.php';
 ?>
 
 <head>
@@ -12,7 +12,7 @@ require_once BASE_PATH . '/lo/header.php';
 
 <h2 class="ms-5 my-4">Tambah Data Sertifikat</h2>
 
-<form action="<?= BASE_URL ?>lo/sertifikat/proses_tambah.php" method="POST" class="mx-4">
+<form action="<?= BASE_URL ?>/lo/sertifikat/proses_tambah.php" method="POST" class="mx-4">
 
     <div class="mb-4">
         <label for="nama" class="form-label ms-3">Nama: </label>

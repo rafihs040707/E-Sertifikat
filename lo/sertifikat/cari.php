@@ -7,11 +7,12 @@ require_once BASE_PATH . '/auth/cek_login.php';
 $cari = isset($_GET['cari']) ? trim($_GET['cari']) : "";
 
 /* =========================
-   PAGINATION
+    PAGINATION
 ========================= */
 $batas = 5;
-$halaman = isset($_GET['halaman']) ? (int)$_GET['halaman'] : 1;
-if ($halaman < 1) $halaman = 1;
+$halaman = isset($_GET['halaman']) ? (int) $_GET['halaman'] : 1;
+if ($halaman < 1)
+    $halaman = 1;
 
 $halaman_awal = ($halaman - 1) * $batas;
 
@@ -26,7 +27,7 @@ if (!empty($cari)) {
 }
 
 /* =========================
-   COUNT TOTAL DATA
+    COUNT TOTAL DATA
 ========================= */
 $query_count = "SELECT COUNT(*) as total
                 FROM sertifikat s
@@ -41,18 +42,18 @@ $jumlah_data = $row_count['total'] ?? 0;
 $total_halaman = ceil($jumlah_data / $batas);
 
 /* =========================
-   AMBIL DATA + LIMIT
+    AMBIL DATA + LIMIT
 ========================= */
 $query_data = "SELECT 
                     s.*, 
                     t.nama_template,
                     p.nama_pelatihan
-               FROM sertifikat s
-               JOIN template t ON s.template_id = t.id
-               LEFT JOIN pelatihan p ON s.pelatihan_id = p.id
-               $where
-               ORDER BY s.id DESC
-               LIMIT $batas OFFSET $halaman_awal";
+                FROM sertifikat s
+                JOIN template t ON s.template_id = t.id
+                LEFT JOIN pelatihan p ON s.pelatihan_id = p.id
+                $where
+                ORDER BY s.id DESC
+                LIMIT $batas OFFSET $halaman_awal";
 
 $data_sertifikat = mysqli_query($conn, $query_data);
 
@@ -83,15 +84,16 @@ $nomor = $halaman_awal + 1;
                     value="<?= htmlspecialchars($cari); ?>">
                 <button type="submit" class="btn btn-secondary ms-3">Cari</button>
             </div>
-            <a href="<?= BASE_URL ?>lo/sertifikat/index.php" class="btn btn-secondary text-decoration-none text-white mt-4 ms-3 mb-2">
+            <a href="<?= BASE_URL ?>lo/sertifikat/index.php"
+                class="btn btn-secondary text-decoration-none text-white mt-4 ms-3 mb-2">
                 Kembali Ke Data Sertifikat
             </a>
         </form>
 
         <!-- PESAN JIKA DATA TIDAK DITEMUKAN -->
         <?php if ($cari != "" && $jumlah_data == 0) { ?>
-            <div class="alert alert-danger">
-                Data yang dicari tidak ditemukan!
+            <div class="alert alert-info">
+                Tidak ada data yang sesuai dengan pencarian.
             </div>
         <?php } ?>
 
@@ -118,7 +120,7 @@ $nomor = $halaman_awal + 1;
                     <?php if ($jumlah_data > 0) { ?>
                         <?php while ($sertifikat = mysqli_fetch_array($data_sertifikat)) {
 
-                            $awal  = strtotime($sertifikat['periode_awal']);
+                            $awal = strtotime($sertifikat['periode_awal']);
                             $akhir = strtotime($sertifikat['periode_akhir']);
 
                             if (date('F Y', $awal) == date('F Y', $akhir)) {
@@ -128,7 +130,7 @@ $nomor = $halaman_awal + 1;
                             }
 
                             $terbit = date('F d, Y', strtotime($sertifikat['issued_date']));
-                        ?>
+                            ?>
                             <tr>
                                 <th><?= $nomor++; ?>.</th>
                                 <td><?= $sertifikat['nama']; ?></td>
@@ -155,7 +157,8 @@ $nomor = $halaman_awal + 1;
                                 <td><?= $sertifikat['nama_template']; ?></td>
 
                                 <td class="text-nowrap">
-                                    <a href="<?= BASE_URL ?>lo/sertifikat/edit.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-warning text-white mt-1">Edit</a>
+                                    <a href="<?= BASE_URL ?>lo/sertifikat/edit.php?id=<?= $sertifikat['id']; ?>"
+                                        class="btn btn-sm btn-warning text-white mt-1">Edit</a>
 
                                     <a href="<?= BASE_URL ?>pdf/generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>&preview=1"
                                         class="btn btn-sm btn-info text-white mt-1" target="_blank">Preview</a>
@@ -191,7 +194,8 @@ $nomor = $halaman_awal + 1;
                 <nav>
                     <ul class="pagination justify-content-end">
                         <li class="page-item <?= ($halaman <= 1) ? 'disabled' : ''; ?>">
-                            <a class="page-link" href="?halaman=<?= $halaman - 1; ?>&cari=<?= urlencode($cari); ?>">Previous</a>
+                            <a class="page-link"
+                                href="?halaman=<?= $halaman - 1; ?>&cari=<?= urlencode($cari); ?>">Previous</a>
                         </li>
 
                         <?php for ($x = 1; $x <= $total_halaman; $x++) { ?>
@@ -219,7 +223,7 @@ $nomor = $halaman_awal + 1;
 
             while ($sertifikat = mysqli_fetch_array($data_mobile)) {
 
-                $awal  = strtotime($sertifikat['periode_awal']);
+                $awal = strtotime($sertifikat['periode_awal']);
                 $akhir = strtotime($sertifikat['periode_akhir']);
 
                 if (date('F Y', $awal) == date('F Y', $akhir)) {
@@ -229,7 +233,7 @@ $nomor = $halaman_awal + 1;
                 }
 
                 $terbit = date('F d, Y', strtotime($sertifikat['issued_date']));
-            ?>
+                ?>
                 <div class="d-block d-md-none">
                     <div class="card mb-2 border-primary shadow-sm">
                         <div class="card-body p-2">
@@ -268,7 +272,8 @@ $nomor = $halaman_awal + 1;
 
                             <!-- Action -->
                             <div class="d-flex gap-1 mt-2 flex-wrap">
-                                <a href="<?= BASE_URL ?>lo/sertifikat/edit.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-warning text-white w-100">Edit</a>
+                                <a href="<?= BASE_URL ?>lo/sertifikat/edit.php?id=<?= $sertifikat['id']; ?>"
+                                    class="btn btn-sm btn-warning text-white w-100">Edit</a>
 
                                 <a href="<?= BASE_URL ?>pdf/generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>&preview=1"
                                     class="btn btn-sm btn-info text-white w-100" target="_blank">Preview</a>
@@ -299,7 +304,8 @@ $nomor = $halaman_awal + 1;
                 <nav>
                     <ul class="pagination justify-content-end">
                         <li class="page-item <?= ($halaman <= 1) ? 'disabled' : ''; ?>">
-                            <a class="page-link" href="?halaman=<?= $halaman - 1; ?>&cari=<?= urlencode($cari); ?>">Previous</a>
+                            <a class="page-link"
+                                href="?halaman=<?= $halaman - 1; ?>&cari=<?= urlencode($cari); ?>">Previous</a>
                         </li>
 
                         <?php for ($x = 1; $x <= $total_halaman; $x++) { ?>

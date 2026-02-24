@@ -1,9 +1,9 @@
 <?php
 $allowed_roles = ["lo"];
 require_once __DIR__ . '/../../bootstrap.php';
-require_once BASE_PATH . '/config/config.php';
 require_once BASE_PATH . '/auth/cek_login.php';
 require_once BASE_PATH . '/lo/header.php';
+require_once BASE_PATH . '/config/config.php';
 
 $id = $_GET['id'];
 $data_sertifikat = mysqli_query($conn, "SELECT * FROM sertifikat WHERE id='$id'");
@@ -40,17 +40,20 @@ $sertifikat = mysqli_fetch_assoc($data_sertifikat);
 
     <div class="mb-4">
         <label class="form-label ms-3">Periode Awal:</label>
-        <input type="date" name="periode_awal" value="<?= $sertifikat['periode_awal']; ?>" class="form-control" required onfocus="this.showPicker()">
+        <input type="date" name="periode_awal" value="<?= $sertifikat['periode_awal']; ?>" class="form-control" required
+            onfocus="this.showPicker()">
     </div>
 
     <div class="mb-4">
         <label class="form-label ms-3">Periode Akhir:</label>
-        <input type="date" name="periode_akhir" value="<?= $sertifikat['periode_akhir']; ?>" class="form-control" required onfocus="this.showPicker()">
+        <input type="date" name="periode_akhir" value="<?= $sertifikat['periode_akhir']; ?>" class="form-control"
+            required onfocus="this.showPicker()">
     </div>
 
     <div class="mb-4">
         <label class="form-label ms-3">Issued Date:</label>
-        <input type="date" name="issued_date" value="<?= $sertifikat['issued_date']; ?>" class="form-control" required onfocus="this.showPicker()">
+        <input type="date" name="issued_date" value="<?= $sertifikat['issued_date']; ?>" class="form-control" required
+            onfocus="this.showPicker()">
     </div>
 
     <div class="mb-4">
@@ -77,7 +80,8 @@ $sertifikat = mysqli_fetch_assoc($data_sertifikat);
 
     <div class="d-grid gap-2 d-flex justify-content-center mt-3 pb-5">
         <button type="submit" name="submit" class="btn btn-primary ms-2 col-3">Update</button>
-        <a href="<?= BASE_URL ?>lo/sertifikat/index.php" style="background-color: #6C7301;" class="btn text-decoration-none text-white">
+        <a href="<?= BASE_URL ?>lo/sertifikat/index.php" style="background-color: #6C7301;"
+            class="btn text-decoration-none text-white">
             Kembali Ke Halaman Sertifikat
         </a>
     </div>
