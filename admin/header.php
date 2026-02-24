@@ -33,10 +33,10 @@ require_once BASE_PATH . '/auth/cek_login.php';
                         <a class="nav-link text-white" href="<?= BASE_URL ?>admin/sertifikat/index.php">Sertifikat</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="<?= BASE_URL ?>admin/template/index.php">Template</a>
+                        <a class="nav-link text-white" href="<?= BASE_URL ?>admin/pelatihan/index.php">Pelatihan</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="<?= BASE_URL ?>admin/pelatihan/index.php">Pelatihan</a>
+                        <a class="nav-link text-white" href="<?= BASE_URL ?>admin/template/index.php">Template</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="<?= BASE_URL ?>admin/user/index.php">Manajemen User</a>

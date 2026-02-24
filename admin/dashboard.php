@@ -27,7 +27,7 @@ $jumlah_user = mysqli_num_rows($data_user);
 <div class="container mt-3">
     <div class="jumbotron">
         <h1 class="text-center">Selamat, Anda Berhasil Login.! <br> Sebagai <?php $p = $_SESSION['role'];
-                                                                    echo $p; ?></h1>
+        echo $p; ?></h1>
     </div>
 </div>
 
@@ -46,19 +46,19 @@ $jumlah_user = mysqli_num_rows($data_user);
                 </div>
                 <div class="col-lg-3 mt-4">
                     <div class="card">
-                        <div class="card-body text-center" style="background-color: #30D1FF;">
-                            <img src="<?= BASE_URL ?>image/icon_template.png" class="ukuran my-3">
-                            <h3 class="my-2"><?php echo $jumlah_template ?></h3>
-                            <h5 class="my-3">Template</h5>
+                        <div class="card-body text-center text-white" style="background-color: #848484;">
+                            <img src="<?= BASE_URL ?>image/training.png" class="ukuran my-3">
+                            <h3 class="my-2"><?php echo $jumlah_pelatihan ?></h3>
+                            <h5 class="my-3">Pelatihan</h5>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-3 mt-4">
                     <div class="card">
-                        <div class="card-body text-center text-white" style="background-color: #848484;">
-                            <img src="<?= BASE_URL ?>image/training.png" class="ukuran my-3">
-                            <h3 class="my-2"><?php echo $jumlah_pelatihan ?></h3>
-                            <h5 class="my-3">Pelatihan</h5>
+                        <div class="card-body text-center" style="background-color: #30D1FF;">
+                            <img src="<?= BASE_URL ?>image/icon_template.png" class="ukuran my-3">
+                            <h3 class="my-2"><?php echo $jumlah_template ?></h3>
+                            <h5 class="my-3">Template</h5>
                         </div>
                     </div>
                 </div>
