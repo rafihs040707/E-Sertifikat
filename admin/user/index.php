@@ -112,7 +112,7 @@ require_once BASE_PATH . '/config/config.php';
                         </td>
                         <td>
                             <a href="<?= BASE_URL ?>admin/user/edit.php?id=<?= $user['id']; ?>" class="btn btn-sm btn-info text-black mt-2">Edit</a>
-                            <a href="<?= BASE_URL ?>admin/user/hapus.php?id=<?= $user['id']; ?>" class="btn btn-sm btn-danger text-black mt-2">Hapus</a>
+                            <a href="<?= BASE_URL ?>admin/user/hapus.php?id=<?= $user['id']; ?>" class="btn btn-sm btn-danger text-black mt-2" onclick="return confirm('Apakah yakin data template ini akan dihapus?');">Hapus</a>
                         </td>
                     </tr>
                 <?php
