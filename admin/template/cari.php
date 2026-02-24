@@ -58,8 +58,8 @@ $nomor = $halaman_awal + 1;
 
         <!-- PESAN JIKA DATA TIDAK DITEMUKAN -->
         <?php if ($cari != "" && $jumlah_data == 0) { ?>
-            <div class="alert alert-danger">
-                Data yang dicari tidak ditemukan!
+            <div class="alert alert-info">
+                Tidak ada data yang sesuai dengan pencarian.
             </div>
         <?php } ?>
 
