@@ -33,7 +33,7 @@ if (isset($_POST['submit'])) {
     }
 
     // ======================
-    // VALIDASI TAMBAHAN (opsional tapi bagus)
+    // VALIDASI TANGGAL
     // ======================
     if ($periode_akhir < $periode_awal) {
         $_SESSION['error'] = "Periode akhir tidak boleh lebih kecil dari periode awal!";
