@@ -19,7 +19,7 @@ if ($email === '' || $password === '') {
 }
 
 // ======================
-// AMBIL USER BERDASARKAN EMAIL SAJA
+// AMBIL USER BERDASARKAN EMAIL
 // ======================
 $stmt = $conn->prepare("SELECT * FROM users WHERE email = ? LIMIT 1");
 $stmt->bind_param("s", $email);
@@ -29,24 +29,36 @@ $result = $stmt->get_result();
 $data   = $result->fetch_assoc();
 
 // ======================
-// VERIFIKASI PASSWORD
+// VERIFIKASI LOGIN
 // ======================
 if ($data && password_verify($password, $data['password'])) {
 
-    // set session
+    // CEK STATUS USER
+    if ((int)$data['status'] !== 1) {
+        // user nonaktif → tolak login
+        header("Location:" . BASE_URL . "index.php?status=off");
+        exit;
+    }
+
+    // ======================
+    // LOGIN SUKSES
+    // ======================
+    session_regenerate_id(true); // ⭐ anti session fixation
+
     $_SESSION['email'] = $data['email'];
     $_SESSION['role']  = $data['role'];
+    $_SESSION['last_activity'] = time();
 
     // redirect berdasarkan role
     if ($data['role'] === "admin") {
-        header("location:" . BASE_URL . "admin/dashboard.php");
+        header("Location:" . BASE_URL . "admin/dashboard.php");
         exit;
     } elseif ($data['role'] === "lo") {
-        header("location:" . BASE_URL . "lo/dashboard.php");
+        header("Location:" . BASE_URL . "lo/dashboard.php");
         exit;
     }
 
 } else {
-    header("location:" . BASE_URL . "index.php?pesan=gagal");
+    header("Location:" . BASE_URL . "index.php?pesan=gagal");
     exit;
 }
