@@ -39,3 +39,8 @@ $pelatihan = mysqli_fetch_assoc($data_pelatihan);
         <a href="<?= BASE_URL ?>admin/pelatihan/index.php" class="btn btn-secondary ms-2">Kembali</a>
     </div>
 </form>
+
+<script src="<?= BASE_URL ?>vendor/bs.bundle.min.js"></script>
+</body>
+
+</html>

@@ -38,3 +38,8 @@ $template = mysqli_fetch_assoc($data_template);
         <a href="<?= BASE_URL ?>admin/template/index.php" class="btn btn-secondary ms-2">Kembali</a>
     </div>
 </form>
+
+<script src="<?= BASE_URL ?>vendor/bs.bundle.min.js"></script>
+</body>
+
+</html>
