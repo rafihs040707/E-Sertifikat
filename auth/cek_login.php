@@ -32,4 +32,4 @@ if (isset($allowed_roles) && is_array($allowed_roles)) {
         exit;
     }
 }
-?>
+
