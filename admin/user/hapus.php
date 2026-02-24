@@ -22,6 +22,6 @@ if ($delete) {
     $_SESSION['error'] = "Data user gagal dihapus.";
 }
 
-header("Location:" . BASE_URL . "admin/pelatihan/index.php");
+header("Location:" . BASE_URL . "admin/user/index.php");
 exit;
 
