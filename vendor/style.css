@@ -2,3 +2,112 @@
     width: 55px;
     height: 55px;
 }
+
+/* ===== RESET PENTING ===== */
+*,
+*::before,
+*::after{
+    box-sizing:border-box;
+}
+
+html,body{
+    margin:0;
+    padding:0;
+    overflow-x:hidden; /* 🔥 anti scroll horizontal */
+}
+
+/* ===== WRAPPER ===== */
+.layout-wrapper{
+    display:flex;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar{
+    position:fixed;
+    top:0;
+    left:0;
+    width:280px;
+    height:100vh;
+    background:#0D492D;
+    transition:.25s ease;
+    z-index:1030;
+    overflow:hidden;
+}
+
+.sidebar.collapsed{
+    width:80px;
+}
+
+/* sembunyikan text saat collapse */
+.sidebar.collapsed .menu-text,
+.sidebar.collapsed .brand-text{
+    display:none;
+}
+
+.sidebar.collapsed .nav-link{
+    justify-content:center;
+}
+
+/* ===== MAIN CONTENT ===== */
+.main-content{
+    margin-left:280px;
+    padding:20px;
+    width:calc(100% - 280px); /* 🔥 FIX UTAMA */
+    min-height:100vh;
+    transition:.25s ease;
+}
+
+/* saat sidebar collapse */
+.main-content.expanded{
+    margin-left:80px;
+    width:calc(100% - 80px);
+}
+
+/* ===== MOBILE ===== */
+@media (max-width:768px){
+
+    .sidebar{
+        left:-280px;
+    }
+
+    .sidebar.show{
+        left:0;
+    }
+
+    .main-content{
+        margin-left:0 !important;
+        width:100% !important;
+    }
+}
+
+/* ===== CLOSE ICON (NOT BUTTON) ===== */
+.sidebar-close{
+    font-size:20px;
+    color:#cbd5e1; /* abu lembut */
+    cursor:pointer;
+    padding:6px;
+    border-radius:6px;
+    line-height:1;
+    display:inline-flex;
+    align-items:right;
+    justify-content:right;
+    transition:.15s ease;
+}
+
+/* hover halus seperti GitHub */
+.sidebar-close:hover{
+    color:#ffffff;
+    background:rgba(255,255,255,.08);
+}
+
+/* klik feel */
+.sidebar-close:active{
+    transform:scale(.92);
+}
+
+.sidebar-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:8px;
+}
