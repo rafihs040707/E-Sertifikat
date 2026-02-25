@@ -341,7 +341,7 @@ if (!$isPreview) {
 
     file_put_contents($pdfPath, $dompdf->output());
 
-    // UPDATE DATABASE
+    // ✅ UPDATE DATABASE — HANYA SAAT GENERATE
     mysqli_query($conn, "
         UPDATE sertifikat
         SET qr_code = '$qrText',
@@ -351,41 +351,47 @@ if (!$isPreview) {
     ");
 
 } else {
-    // preview → render langsung tanpa simpan
-    $filename = "preview.pdf";
+    // ======================
+    // PREVIEW MODE (AMAN)
+    // ======================
+
+    if (!empty($data['nomor_sertifikat'])) {
+        $cleanNomor = preg_replace('/[^A-Za-z0-9\-]/', '_', $data['nomor_sertifikat']);
+        $filename = $cleanNomor . ".pdf";
+    } else {
+        $filename = "sertifikat_preview_" . $id . ".pdf";
+    }
+
     $pdfPath = null;
 }
-
-
-// ======================
-// UPDATE DATABASE
-// ======================
-mysqli_query($conn, "
-    UPDATE sertifikat
-    SET qr_code = '$qrText',
-        qr_image = '$qrFilename',
-        file_sertifikat = '$filename'
-    WHERE id = '$id'
-");
 
 // ======================
 // OUTPUT PDF
 // ======================
+
 ob_end_clean();
 
 if ($isPreview) {
-    // preview langsung tampil
+
+    if (!empty($data['file_sertifikat']) && 
+        file_exists(BASE_PATH . "/uploads/sertifikat/" . $data['file_sertifikat'])) {
+
+        header("Location: " . BASE_URL . "uploads/sertifikat/" . $data['file_sertifikat']);
+        exit;
+    }
+
+    $pdfOutput = $dompdf->output();
+
     header("Content-Type: application/pdf");
-    echo $dompdf->output();
+    header("Content-Disposition: inline; filename=\"$filename\"");
+    echo $pdfOutput;
     exit;
 }
 
-// ===== mode generate =====
-if (!file_exists($pdfPath)) {
-    die("File PDF tidak ditemukan.");
-}
 
-header("Content-Type: application/pdf");
-header("Content-Disposition: attachment; filename=\"" . $filename . "\"");
-readfile($pdfPath);
+// ======================
+// MODE GENERATE (WAJIB ADA)
+// ======================
+
+header("Location: " . BASE_URL . "uploads/sertifikat/" . $filename);
 exit;
