@@ -49,7 +49,13 @@ $user = mysqli_fetch_assoc($data_user);
     </div>
 </form>
 
+</div>
+</div>
+</div>
+
 <script src="<?= BASE_URL ?>vendor/bs.bundle.min.js"></script>
+<script src="<?= BASE_URL ?>vendor/sidebar.js"></script>
+
 </body>
 
 </html>
