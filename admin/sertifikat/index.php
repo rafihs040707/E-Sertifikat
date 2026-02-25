@@ -82,8 +82,8 @@ require_once BASE_PATH . '/config/config.php';
                     <th>Periode</th>
                     <th>Issued Date</th>
                     <th>Status</th>
-                    <th>nomor_sertifikat</th>
-                    <th>Template Yang Digunakan</th>
+                    <th>nomor sertifikat</th>
+                    <th>Template Used</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
