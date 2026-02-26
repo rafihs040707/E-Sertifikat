@@ -267,7 +267,7 @@ require_once BASE_PATH . '/config/config.php';
                             PDF</a>
                         <?php if (can('sertifikat.delete')) { ?>
                             <a href="<?= BASE_URL ?>admin/sertifikat/hapus.php?id=<?= $sertifikat['id']; ?>"
-                                class="btn btn-sm btn-danger text-white"
+                                class="btn btn-sm btn-danger text-white w-100"
                                 onclick="return confirm('Apakah yakin data sertifikat ini akan dihapus?');">Hapus</a>
                         <?php } ?>
                     </div>
