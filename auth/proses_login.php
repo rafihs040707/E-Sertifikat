@@ -50,7 +50,7 @@ if ($data && password_verify($password, $data['password'])) {
     $_SESSION['last_activity'] = time();
 
     // redirect berdasarkan role
-    if ($data['role'] === "admin") {
+    if ($data['role'] === "admin" || $data['role'] === "superadmin") {
         header("Location:" . BASE_URL . "admin/dashboard.php");
         exit;
     } elseif ($data['role'] === "lo") {
