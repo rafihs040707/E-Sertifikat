@@ -31,7 +31,7 @@ require_once BASE_PATH . '/config/config.php';
             }
         }, 6000);
     </script>
-<?php unset($_SESSION['success']);
+    <?php unset($_SESSION['success']);
 } ?>
 
 <?php if (isset($_SESSION['error'])) { ?>
@@ -54,7 +54,7 @@ require_once BASE_PATH . '/config/config.php';
             }
         }, 6000);
     </script>
-<?php unset($_SESSION['error']);
+    <?php unset($_SESSION['error']);
 } ?>
 
 
@@ -67,7 +67,8 @@ require_once BASE_PATH . '/config/config.php';
             <button type="submit" class="btn btn-secondary ms-3">Cari</button>
         </div>
     </form>
-    <a href="<?= BASE_URL ?>admin/sertifikat/tambah.php" class="btn btn-primary btn-sm text-decoration-none text-white ms-4 mt-2 mb-4">Tambah Data Sertifikat</a>
+    <a href="<?= BASE_URL ?>admin/sertifikat/tambah.php"
+        class="btn btn-primary btn-sm text-decoration-none text-white ms-4 mt-2 mb-4">Tambah Data Sertifikat</a>
 </div>
 
 <div class="container-fluid">
@@ -91,7 +92,7 @@ require_once BASE_PATH . '/config/config.php';
             <tbody>
                 <?php
                 $batas = 5;
-                $halaman = isset($_GET['halaman']) ? (int)$_GET['halaman'] : 1;
+                $halaman = isset($_GET['halaman']) ? (int) $_GET['halaman'] : 1;
                 $halaman_awal = ($halaman > 1) ? ($halaman * $batas) - $batas : 0;
 
                 $previous = $halaman - 1;
@@ -103,7 +104,7 @@ require_once BASE_PATH . '/config/config.php';
                 $data_sertifikat = mysqli_query($conn, "SELECT s.*, t.nama_template, p.nama_pelatihan FROM sertifikat s JOIN template t ON s.template_id = t.id LEFT JOIN pelatihan p ON s.pelatihan_id = p.id LIMIT $batas OFFSET $halaman_awal");
                 $nomor = $halaman_awal + 1;
                 while ($sertifikat = mysqli_fetch_array($data_sertifikat)) {
-                    $awal  = strtotime($sertifikat['periode_awal']);
+                    $awal = strtotime($sertifikat['periode_awal']);
                     $akhir = strtotime($sertifikat['periode_akhir']);
                     $tanggal_terbit = strtotime($sertifikat['issued_date']);
 
@@ -113,7 +114,7 @@ require_once BASE_PATH . '/config/config.php';
                         $periode = date('F d', $awal) . " - " . date('F d, Y', $akhir);
                     }
                     $terbit = date('F d, Y', strtotime($sertifikat['issued_date']));
-                ?>
+                    ?>
                     <tr>
                         <th><?php echo $nomor++; ?>.</th>
                         <td><?php echo $sertifikat['nama']; ?></td>
@@ -136,25 +137,31 @@ require_once BASE_PATH . '/config/config.php';
                         </td>
                         <td><?php echo $sertifikat['nama_template']; ?></td>
                         <td class="text-nowrap">
-                            <a href="<?= BASE_URL ?>admin/sertifikat/edit.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-warning text-black">Edit</a>
-                            <a href="<?= BASE_URL ?>pdf/generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>&preview=1" class="btn btn-sm btn-info text-black" target="_blank">Preview</a>
-                            <a href="<?= BASE_URL ?>pdf/generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-primary text-white" target="_blank">Generate</a>
+                            <a href="<?= BASE_URL ?>admin/sertifikat/edit.php?id=<?= $sertifikat['id']; ?>"
+                                class="btn btn-sm btn-warning text-black">Edit</a>
+                            <a href="<?= BASE_URL ?>pdf/generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>&preview=1"
+                                class="btn btn-sm btn-info text-black" target="_blank">Preview</a>
+                            <a href="<?= BASE_URL ?>pdf/generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>"
+                                class="btn btn-sm btn-primary text-white" target="_blank">Generate</a>
                             <?php
-                            $filePdf =  BASE_URL . "uploads/sertifikat/" . $sertifikat['file_sertifikat'];
+                            $filePdf = BASE_URL . "uploads/sertifikat/" . $sertifikat['file_sertifikat'];
                             if (!empty($sertifikat['file_sertifikat']) && file_exists($filePdf)) {
                                 $link = BASE_URL . "pdf/download.php?id=" . $sertifikat['id'];
                             } else {
                                 $link = BASE_URL . "pdf/generate_pdf_sertifikat.php?id=" . $sertifikat['id'];
                             }
                             ?>
-                            <a href="<?= $link; ?>" class="btn btn-sm btn-success text-white" target="_blank">Download PDF</a>
+                            <a href="<?= $link; ?>" class="btn btn-sm btn-success text-white" target="_blank">Download
+                                PDF</a>
 
                             <?php if (can('sertifikat.delete')) { ?>
-                            <a href="<?= BASE_URL ?>admin/sertifikat/hapus.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-danger text-white" onclick="return confirm('Apakah yakin data sertifikat ini akan dihapus?');">Hapus</a>
+                                <a href="<?= BASE_URL ?>admin/sertifikat/hapus.php?id=<?= $sertifikat['id']; ?>"
+                                    class="btn btn-sm btn-danger text-white"
+                                    onclick="return confirm('Apakah yakin data sertifikat ini akan dihapus?');">Hapus</a>
                             <?php } ?>
                         </td>
                     </tr>
-                <?php
+                    <?php
                 }
                 ?>
             </tbody>
@@ -163,20 +170,20 @@ require_once BASE_PATH . '/config/config.php';
             <ul class="pagination justify-content-end">
                 <li class="page-item">
                     <a class="page-link" <?php if ($halaman > 1) {
-                                                echo "href='?halaman=$previous'";
-                                            } ?>>Previous</a>
+                        echo "href='?halaman=$previous'";
+                    } ?>>Previous</a>
                 </li>
                 <?php
                 for ($x = 1; $x <= $total_halaman; $x++) {
-                ?>
+                    ?>
                     <li class="page-item"><a class="page-link" href="?halaman=<?php echo $x ?>"><?php echo $x; ?></a></li>
-                <?php
+                    <?php
                 }
                 ?>
                 <li class="page-item">
                     <a class="page-link" <?php if ($halaman < $total_halaman) {
-                                                echo "href='?halaman=$next'";
-                                            } ?>>Next</a>
+                        echo "href='?halaman=$next'";
+                    } ?>>Next</a>
                 </li>
             </ul>
         </nav>
@@ -186,7 +193,7 @@ require_once BASE_PATH . '/config/config.php';
 <div class="container-fluid d-block d-md-none">
     <?php
     $batas = 5;
-    $halaman = isset($_GET['halaman']) ? (int)$_GET['halaman'] : 1;
+    $halaman = isset($_GET['halaman']) ? (int) $_GET['halaman'] : 1;
     $halaman_awal = ($halaman > 1) ? ($halaman * $batas) - $batas : 0;
 
     $data_sertifikat = mysqli_query($conn, "SELECT s.*, t.nama_template, p.nama_pelatihan FROM sertifikat s JOIN template t ON s.template_id = t.id LEFT JOIN pelatihan p ON s.pelatihan_id = p.id LIMIT $batas OFFSET $halaman_awal");
@@ -194,7 +201,7 @@ require_once BASE_PATH . '/config/config.php';
 
     while ($sertifikat = mysqli_fetch_array($data_sertifikat)) {
 
-        $awal  = strtotime($sertifikat['periode_awal']);
+        $awal = strtotime($sertifikat['periode_awal']);
         $akhir = strtotime($sertifikat['periode_akhir']);
 
         if (date('F Y', $awal) == date('F Y', $akhir)) {
@@ -204,7 +211,7 @@ require_once BASE_PATH . '/config/config.php';
         }
 
         $terbit = date('F-d-Y', strtotime($sertifikat['issued_date']));
-    ?>
+        ?>
         <div class="d-block d-md-none">
             <div class="card mb-2 border-primary shadow-sm">
                 <div class="card-body p-2">
@@ -242,9 +249,12 @@ require_once BASE_PATH . '/config/config.php';
 
                     <!-- Action -->
                     <div class="d-flex gap-1 mt-2 flex-wrap">
-                        <a href="<?= BASE_URL ?>admin/sertifikat/edit.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-warning text-black w-100">Edit</a>
-                        <a href="<?= BASE_URL ?>pdf/generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>&preview=1" class="btn btn-sm btn-info text-black w-100" target="_blank">Preview</a>
-                        <a href="<?= BASE_URL ?>pdf/generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-primary text-white w-100" target="_blank">Generate</a>
+                        <a href="<?= BASE_URL ?>admin/sertifikat/edit.php?id=<?= $sertifikat['id']; ?>"
+                            class="btn btn-sm btn-warning text-black w-100">Edit</a>
+                        <a href="<?= BASE_URL ?>pdf/generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>&preview=1"
+                            class="btn btn-sm btn-info text-black w-100" target="_blank">Preview</a>
+                        <a href="<?= BASE_URL ?>pdf/generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>"
+                            class="btn btn-sm btn-primary text-white w-100" target="_blank">Generate</a>
                         <?php
                         $filePdf = "<?= BASE_URL ?>uploads/sertifikat/" . $sertifikat['file_sertifikat'];
                         if (!empty($sertifikat['file_sertifikat']) && file_exists($filePdf)) {
@@ -253,8 +263,13 @@ require_once BASE_PATH . '/config/config.php';
                             $link = "<?= BASE_URL ?>pdf/generate_sertifikat.php?id=" . $sertifikat['id'];
                         }
                         ?>
-                        <a href="<?= $link; ?>" class="btn btn-sm btn-success text-white w-100" target="_blank">Download PDF</a>
-                        <a href="<?= BASE_URL ?>admin/sertifikat/hapus.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-danger text-white w-100" onclick="return confirm('Apakah yakin data sertifikat ini akan dihapus?');">Hapus</a>
+                        <a href="<?= $link; ?>" class="btn btn-sm btn-success text-white w-100" target="_blank">Download
+                            PDF</a>
+                        <?php if (can('sertifikat.delete')) { ?>
+                            <a href="<?= BASE_URL ?>admin/sertifikat/hapus.php?id=<?= $sertifikat['id']; ?>"
+                                class="btn btn-sm btn-danger text-white"
+                                onclick="return confirm('Apakah yakin data sertifikat ini akan dihapus?');">Hapus</a>
+                        <?php } ?>
                     </div>
 
                 </div>
@@ -265,20 +280,20 @@ require_once BASE_PATH . '/config/config.php';
         <ul class="pagination justify-content-end">
             <li class="page-item">
                 <a class="page-link" <?php if ($halaman > 1) {
-                                            echo "href='?halaman=$previous'";
-                                        } ?>>Previous</a>
+                    echo "href='?halaman=$previous'";
+                } ?>>Previous</a>
             </li>
             <?php
             for ($x = 1; $x <= $total_halaman; $x++) {
-            ?>
+                ?>
                 <li class="page-item"><a class="page-link" href="?halaman=<?php echo $x ?>"><?php echo $x; ?></a></li>
-            <?php
+                <?php
             }
             ?>
             <li class="page-item">
                 <a class="page-link" <?php if ($halaman < $total_halaman) {
-                                            echo "href='?halaman=$next'";
-                                        } ?>>Next</a>
+                    echo "href='?halaman=$next'";
+                } ?>>Next</a>
             </li>
         </ul>
     </nav>
