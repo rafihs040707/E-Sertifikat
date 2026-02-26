@@ -2,6 +2,7 @@
 $allowed_roles = ["admin"];
 require_once __DIR__ . '/../../bootstrap.php';
 require_once BASE_PATH . '/auth/cek_login.php';
+require_once BASE_PATH . '/auth/permission.php';
 require_once BASE_PATH . '/admin/header.php';
 require_once BASE_PATH . '/config/config.php';
 ?>
@@ -64,8 +65,10 @@ require_once BASE_PATH . '/config/config.php';
             <button type="submit" class="btn btn-secondary ms-3">Cari</button>
         </div>
     </form>
+    <?php if (can('template.create')) { ?>
     <a href="<?= BASE_URL ?>admin/template/tambah.php"
         class="btn btn-primary btn-sm text-decoration-none text-white ms-4 mt-2 mb-4">Tambah Data Template</a>
+    <?php } ?>
 </div>
 
 <div class="container">
@@ -103,9 +106,13 @@ require_once BASE_PATH . '/config/config.php';
                         <td><?php echo $template['penyelenggara']; ?></td>
                         <td><img src="<?= BASE_URL ?>uploads/template/<?php echo $template['tampak_depan']; ?>" width="80"></td>
                         <td>
+                            <?php if (can('template.edit')) { ?>
                             <a href="<?= BASE_URL ?>admin/template/edit.php?id=<?= $template['id']; ?>" class="btn btn-sm btn-info text-black mt-2">Edit</a>
+                            <?php } ?>
                             <button class="btn btn-sm btn-secondary text-white mt-2" data-bs-toggle="modal" data-bs-target="#modalGambar<?= $template['id']; ?>">Preview</button>
+                            <?php if (can('template.delete')) { ?>
                             <a href="<?= BASE_URL ?>admin/template/hapus.php?id=<?= $template['id']; ?>" class="btn btn-sm btn-danger text-white mt-2" onclick="return confirm('Apakah yakin data template ini akan dihapus?');">Hapus</a>
+                            <?php } ?>
                         </td>
                     </tr>
 

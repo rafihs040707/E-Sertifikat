@@ -23,7 +23,7 @@ require_once BASE_PATH . '/auth/cek_login.php';
                 <!-- ============ SIDEBAR ============ -->
                 <div id="sidebar" class="sidebar d-flex flex-column p-3 text-white">
                     <div class="sidebar-header">
-                        <a href="<?= BASE_URL ?>" class="d-flex align-items-center text-white text-decoration-none">
+                        <a href="<?= BASE_URL ?>admin/dashboard.php" class="d-flex align-items-center text-white text-decoration-none">
                             <img src="<?= BASE_URL ?>image/logo.png" width="40">
                             <span class="fs-4 ms-2 brand-text">Rekhatama</span>
                         </a>
@@ -36,7 +36,7 @@ require_once BASE_PATH . '/auth/cek_login.php';
 
                         <!-- BERANDA -->
                         <li class="nav-item">
-                            <a href="<?= BASE_URL ?>index.php"
+                            <a href="<?= BASE_URL ?>admin/dashboard.php"
                                 class="nav-link text-white d-flex align-items-center <?= $current == 'index.php' ? 'active' : '' ?>"
                                 data-bs-toggle="tooltip" data-bs-placement="right" title="Beranda">
                                 <img src="<?= BASE_URL ?>image/home.png" width="20px" class="me-2">

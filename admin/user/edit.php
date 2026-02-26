@@ -1,5 +1,5 @@
 <?php
-$allowed_roles = ["admin"];
+$allowed_roles = ["admin"]; // superadmin otomatis lolos
 require_once __DIR__ . '/../../bootstrap.php';
 require_once BASE_PATH . '/auth/cek_login.php';
 require_once BASE_PATH . '/admin/header.php';
@@ -8,6 +8,10 @@ require_once BASE_PATH . '/config/config.php';
 $id = $_GET['id'];
 $data_user = mysqli_query($conn, "SELECT * FROM users WHERE id='$id'");
 $user = mysqli_fetch_assoc($data_user);
+// Admin tidak boleh edit superadmin
+if ($_SESSION['role'] === 'admin' && $user['role'] === 'superadmin') {
+    die('Admin tidak boleh mengedit superadmin');
+}
 ?>
 
 <h2 class="ms-5 my-4">Edit Data User</h2>
@@ -25,14 +29,16 @@ $user = mysqli_fetch_assoc($data_user);
         <input type="email" name="email" value="<?= $user['email']; ?>" class="form-control" required>
     </div>
 
-    <div class="mb-4">
-        <label class="form-label ms-3">Role:</label>
-        <select class="form-select form-select-sm" name="role" required>
-            <option disabled>Pilih Status</option>
-            <option value="admin" <?= ($user['role'] == 'admin') ? 'selected' : ''; ?>>Admin</option>
-            <option value="lo" <?= ($user['role'] == 'lo') ? 'selected' : ''; ?>>LO</option>
-        </select>
-    </div>
+    <?php if ($_SESSION['role'] === 'superadmin') { ?>
+<div class="mb-4">
+    <label class="form-label ms-3">Role:</label>
+    <select class="form-select form-select-sm" name="role" required>
+        <option value="admin" <?= ($user['role'] == 'admin') ? 'selected' : ''; ?>>Admin</option>
+        <option value="lo" <?= ($user['role'] == 'lo') ? 'selected' : ''; ?>>LO</option>
+        <option value="superadmin" <?= ($user['role'] == 'superadmin') ? 'selected' : ''; ?>>Superadmin</option>
+    </select>
+</div>
+<?php } ?>
 
     <div class="mb-4">
         <label class="form-label ms-3">Status:</label>

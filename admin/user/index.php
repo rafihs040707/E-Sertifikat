@@ -1,7 +1,8 @@
 <?php
-$allowed_roles = ["admin"];
+$allowed_roles = ["admin"]; // superadmin otomatis lolos
 require_once __DIR__ . '/../../bootstrap.php';
 require_once BASE_PATH . '/auth/cek_login.php';
+require_once BASE_PATH . '/auth/permission.php';
 require_once BASE_PATH . '/admin/header.php';
 require_once BASE_PATH . '/config/config.php';
 ?>
@@ -30,7 +31,8 @@ require_once BASE_PATH . '/config/config.php';
             }
         }, 6000);
     </script>
-<?php unset($_SESSION['success']); } ?>
+    <?php unset($_SESSION['success']);
+} ?>
 
 <?php if (isset($_SESSION['error'])) { ?>
     <div id="errorAlert" class="alert alert-danger fade show d-flex position-absolute w-100" role="alert">
@@ -52,15 +54,15 @@ require_once BASE_PATH . '/config/config.php';
             }
         }, 6000);
     </script>
-<?php unset($_SESSION['error']); } ?>
+    <?php unset($_SESSION['error']);
+} ?>
 
 <div class="container">
     <h2 class="my-2 ms-3">Data User</h2>
     <form action="<?= BASE_URL ?>admin/user/cari.php" method="GET" class="col-sm-3 mb-3 ms-4 mt-4">
         <label for="cari" class="ms-3">Masukkan Kata Kunci:</label>
         <div class="d-inline-flex ms-2">
-            <input class="form-control form-control-ms" type="text" id="cari" name="cari" placeholder="Cari"
-                required>
+            <input class="form-control form-control-ms" type="text" id="cari" name="cari" placeholder="Cari" required>
             <button type="submit" class="btn btn-secondary ms-3">Cari</button>
         </div>
     </form>
@@ -84,20 +86,33 @@ require_once BASE_PATH . '/config/config.php';
             <tbody>
                 <?php
                 $batas = 5;
-                $halaman = isset($_GET['halaman']) ? (int)$_GET['halaman'] : 1;
+                $halaman = isset($_GET['halaman']) ? (int) $_GET['halaman'] : 1;
                 $halaman_awal = ($halaman > 1) ? ($halaman * $batas) - $batas : 0;
 
                 $previous = $halaman - 1;
                 $next = $halaman + 1;
 
-                $data = mysqli_query($conn, "select * from users");
+                // Hitung total data
+                if ($_SESSION['role'] === 'admin') {
+                    $data = mysqli_query($conn, "SELECT * FROM users WHERE role != 'superadmin'");
+                } else {
+                    $data = mysqli_query($conn, "SELECT * FROM users");
+                }
+
                 $jumlah_data = mysqli_num_rows($data);
                 $total_halaman = ceil($jumlah_data / $batas);
 
-                $data_user = mysqli_query($conn, "select * from users limit $batas OFFSET $halaman_awal");
+                // Ambil data per halaman
+                if ($_SESSION['role'] === 'admin') {
+                    $data_user = mysqli_query($conn,"SELECT * FROM users WHERE role != 'superadmin' LIMIT $batas OFFSET $halaman_awal");
+                } else {
+                    $data_user = mysqli_query(
+                        $conn,
+                        "SELECT * FROM users LIMIT $batas OFFSET $halaman_awal");
+                }
                 $nomor = $halaman_awal + 1;
                 while ($user = mysqli_fetch_array($data_user)) {
-                ?>
+                    ?>
                     <tr>
                         <th><?php echo $nomor++; ?></th>
                         <td><?php echo $user['nama']; ?></td>
@@ -111,11 +126,17 @@ require_once BASE_PATH . '/config/config.php';
                             <?php } ?>
                         </td>
                         <td>
-                            <a href="<?= BASE_URL ?>admin/user/edit.php?id=<?= $user['id']; ?>" class="btn btn-sm btn-info text-black mt-2">Edit</a>
-                            <a href="<?= BASE_URL ?>admin/user/hapus.php?id=<?= $user['id']; ?>" class="btn btn-sm btn-danger text-black mt-2" onclick="return confirm('Apakah yakin data template ini akan dihapus?');">Hapus</a>
+                            <a href="<?= BASE_URL ?>admin/user/edit.php?id=<?= $user['id']; ?>"
+                                class="btn btn-sm btn-info text-black mt-2">Edit</a>
+
+                            <?php if (can('user.delete')) { ?>
+                                <a href="<?= BASE_URL ?>admin/user/hapus.php?id=<?= $user['id']; ?>"
+                                    class="btn btn-sm btn-danger text-black mt-2"
+                                    onclick="return confirm('Apakah yakin data template ini akan dihapus?');">Hapus</a>
+                            <?php } ?>
                         </td>
                     </tr>
-                <?php
+                    <?php
                 }
                 ?>
             </tbody>
@@ -124,20 +145,20 @@ require_once BASE_PATH . '/config/config.php';
             <ul class="pagination justify-content-end">
                 <li class="page-item">
                     <a class="page-link" <?php if ($halaman > 1) {
-                                                echo "href='?halaman=$previous'";
-                                            } ?>>Previous</a>
+                        echo "href='?halaman=$previous'";
+                    } ?>>Previous</a>
                 </li>
                 <?php
                 for ($x = 1; $x <= $total_halaman; $x++) {
-                ?>
+                    ?>
                     <li class="page-item"><a class="page-link" href="?halaman=<?php echo $x ?>"><?php echo $x; ?></a></li>
-                <?php
+                    <?php
                 }
                 ?>
                 <li class="page-item">
                     <a class="page-link" <?php if ($halaman < $total_halaman) {
-                                                echo "href='?halaman=$next'";
-                                            } ?>>Next</a>
+                        echo "href='?halaman=$next'";
+                    } ?>>Next</a>
                 </li>
             </ul>
         </nav>

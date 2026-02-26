@@ -3,6 +3,7 @@ $allowed_roles = ["admin"];
 require_once __DIR__ . '/../../bootstrap.php';
 require_once BASE_PATH . '/admin/header.php';
 require_once BASE_PATH . '/auth/cek_login.php';
+require_once BASE_PATH . '/auth/permission.php';
 require_once BASE_PATH . '/config/config.php';
 ?>
 
@@ -147,7 +148,10 @@ require_once BASE_PATH . '/config/config.php';
                             }
                             ?>
                             <a href="<?= $link; ?>" class="btn btn-sm btn-success text-white" target="_blank">Download PDF</a>
+
+                            <?php if (can('sertifikat.delete')) { ?>
                             <a href="<?= BASE_URL ?>admin/sertifikat/hapus.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-danger text-white" onclick="return confirm('Apakah yakin data sertifikat ini akan dihapus?');">Hapus</a>
+                            <?php } ?>
                         </td>
                     </tr>
                 <?php
