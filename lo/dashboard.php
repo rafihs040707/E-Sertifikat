@@ -11,7 +11,7 @@ $jumlah_sertifikat = mysqli_num_rows($data_sertifikat);
 ?>
 
 <head>
-    <title>Dashboard Liaison Officer</title>
+    <title>Dashboard</title>
 </head>
 
 <div class="container">

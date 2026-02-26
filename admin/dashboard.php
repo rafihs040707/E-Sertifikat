@@ -8,7 +8,7 @@ require_once BASE_PATH . '/admin/header.php';
 ?>
 
 <head>
-    <title>Dashboard <?= ucfirst($_SESSION['role']); ?></title>
+    <title>Dashboard</title>
 </head>
 
 <?php
