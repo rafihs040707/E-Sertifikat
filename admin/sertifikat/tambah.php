@@ -25,7 +25,7 @@ require_once BASE_PATH . '/config/config.php';
         <select class="form-select form-select-sm" name="pelatihan" required>
             <option disabled selected>Pilih Pelatihan</option>
             <?php
-            $q = mysqli_query($conn, "SELECT id, nama_pelatihan FROM pelatihan WHERE status = '1' ORDER BY nama_pelatihan ASC");
+            $q = mysqli_query($conn, "SELECT id, nama_pelatihan FROM pelatihan ORDER BY nama_pelatihan ASC");
             while ($p = mysqli_fetch_assoc($q)) {
                 echo "<option value='" . $p['id'] . "'>" . $p['nama_pelatihan'] . "</option>";
             }
@@ -46,15 +46,6 @@ require_once BASE_PATH . '/config/config.php';
     <div class="mb-4">
         <label for="issued_date" class="form-label ms-3">Issued Date: </label>
         <input type="date" name="issued_date" class="form-control" required onfocus="this.showPicker()">
-    </div>
-
-    <div class="mb-4">
-        <label for="status" class="form-label ms-3">Status: </label>
-        <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="status" required>
-            <option selected disabled>Pilih Status</option>
-            <option value="1">Valid</option>
-            <option value="0">Tidak Valid</option>
-        </select>
     </div>
 
     <div class="mb-4">

@@ -2,7 +2,6 @@
 $allowed_roles = ["admin"];
 require_once __DIR__ . '/../../bootstrap.php';
 require_once BASE_PATH . '/auth/cek_login.php';
-require_once BASE_PATH . '/auth/permission.php';
 require_once BASE_PATH . '/admin/header.php';
 require_once BASE_PATH . '/config/config.php';
 ?>
@@ -31,7 +30,8 @@ require_once BASE_PATH . '/config/config.php';
             }
         }, 6000);
     </script>
-<?php unset($_SESSION['success']); } ?>
+    <?php unset($_SESSION['success']);
+} ?>
 
 <?php if (isset($_SESSION['error'])) { ?>
     <div id="errorAlert" class="alert alert-danger fade show d-flex position-absolute w-100" role="alert">
@@ -53,22 +53,20 @@ require_once BASE_PATH . '/config/config.php';
             }
         }, 6000);
     </script>
-<?php unset($_SESSION['error']); } ?>
+    <?php unset($_SESSION['error']);
+} ?>
 
 <div class="container">
     <h2 class="my-2 ms-3">Data Template</h2>
     <form action="<?= BASE_URL ?>admin/template/cari.php" method="GET" class="col-sm-3 mb-3 ms-4 mt-4">
         <label for="cari" class="ms-3">Masukkan Kata Kunci:</label>
         <div class="d-inline-flex ms-2">
-            <input class="form-control form-control-ms" type="text" id="cari" name="cari" placeholder="Cari"
-                required>
+            <input class="form-control form-control-ms" type="text" id="cari" name="cari" placeholder="Cari" required>
             <button type="submit" class="btn btn-secondary ms-3">Cari</button>
         </div>
     </form>
-    <?php if (can('template.create')) { ?>
     <a href="<?= BASE_URL ?>admin/template/tambah.php"
         class="btn btn-primary btn-sm text-decoration-none text-white ms-4 mt-2 mb-4">Tambah Data Template</a>
-    <?php } ?>
 </div>
 
 <div class="container">
@@ -86,7 +84,7 @@ require_once BASE_PATH . '/config/config.php';
             <tbody>
                 <?php
                 $batas = 5;
-                $halaman = isset($_GET['halaman']) ? (int)$_GET['halaman'] : 1;
+                $halaman = isset($_GET['halaman']) ? (int) $_GET['halaman'] : 1;
                 $halaman_awal = ($halaman > 1) ? ($halaman * $batas) - $batas : 0;
 
                 $previous = $halaman - 1;
@@ -99,20 +97,21 @@ require_once BASE_PATH . '/config/config.php';
                 $data_template = mysqli_query($conn, "select * from template limit $batas OFFSET $halaman_awal");
                 $nomor = $halaman_awal + 1;
                 while ($template = mysqli_fetch_array($data_template)) {
-                ?>
+                    ?>
                     <tr>
                         <th><?php echo $nomor++; ?></th>
                         <td><?php echo $template['nama_template']; ?></td>
                         <td><?php echo $template['penyelenggara']; ?></td>
-                        <td><img src="<?= BASE_URL ?>uploads/template/<?php echo $template['tampak_depan']; ?>" width="80"></td>
+                        <td><img src="<?= BASE_URL ?>uploads/template/<?php echo $template['tampak_depan']; ?>" width="80">
+                        </td>
                         <td>
-                            <?php if (can('template.edit')) { ?>
-                            <a href="<?= BASE_URL ?>admin/template/edit.php?id=<?= $template['id']; ?>" class="btn btn-sm btn-info text-black mt-2">Edit</a>
-                            <?php } ?>
-                            <button class="btn btn-sm btn-secondary text-white mt-2" data-bs-toggle="modal" data-bs-target="#modalGambar<?= $template['id']; ?>">Preview</button>
-                            <?php if (can('template.delete')) { ?>
-                            <a href="<?= BASE_URL ?>admin/template/hapus.php?id=<?= $template['id']; ?>" class="btn btn-sm btn-danger text-white mt-2" onclick="return confirm('Apakah yakin data template ini akan dihapus?');">Hapus</a>
-                            <?php } ?>
+                            <a href="<?= BASE_URL ?>admin/template/edit.php?id=<?= $template['id']; ?>"
+                                class="btn btn-sm btn-info text-black mt-2">Edit</a>
+                            <button class="btn btn-sm btn-secondary text-white mt-2" data-bs-toggle="modal"
+                                data-bs-target="#modalGambar<?= $template['id']; ?>">Preview</button>
+                            <a href="<?= BASE_URL ?>admin/template/hapus.php?id=<?= $template['id']; ?>"
+                                class="btn btn-sm btn-danger text-white mt-2"
+                                onclick="return confirm('Apakah yakin data template ini akan dihapus?');">Hapus</a>
                         </td>
                     </tr>
 
@@ -132,8 +131,7 @@ require_once BASE_PATH . '/config/config.php';
                                         <div class="col-md-6 text-center">
                                             <p><strong>Tampak Depan</strong></p>
                                             <img src="<?= BASE_URL ?>uploads/template/<?= $template['tampak_depan']; ?>"
-                                                class="img-fluid rounded border"
-                                                alt="Tampak Depan">
+                                                class="img-fluid rounded border" alt="Tampak Depan">
                                         </div>
                                     </div>
                                 </div>
@@ -144,8 +142,8 @@ require_once BASE_PATH . '/config/config.php';
                             </div>
                         </div>
                     </div>
-                    
-                <?php
+
+                    <?php
                 }
                 ?>
             </tbody>
@@ -154,20 +152,20 @@ require_once BASE_PATH . '/config/config.php';
             <ul class="pagination justify-content-end">
                 <li class="page-item">
                     <a class="page-link" <?php if ($halaman > 1) {
-                                                echo "href='?halaman=$previous'";
-                                            } ?>>Previous</a>
+                        echo "href='?halaman=$previous'";
+                    } ?>>Previous</a>
                 </li>
                 <?php
                 for ($x = 1; $x <= $total_halaman; $x++) {
-                ?>
+                    ?>
                     <li class="page-item"><a class="page-link" href="?halaman=<?php echo $x ?>"><?php echo $x; ?></a></li>
-                <?php
+                    <?php
                 }
                 ?>
                 <li class="page-item">
                     <a class="page-link" <?php if ($halaman < $total_halaman) {
-                                                echo "href='?halaman=$next'";
-                                            } ?>>Next</a>
+                        echo "href='?halaman=$next'";
+                    } ?>>Next</a>
                 </li>
             </ul>
         </nav>

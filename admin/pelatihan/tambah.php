@@ -25,15 +25,6 @@ require_once BASE_PATH . '/admin/header.php';
             maxlength="255"><br>
     </div>
 
-    <div class="mb-4">
-        <label for="status" class="form-label ms-3">Status: </label>
-        <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="status" required>
-            <option selected disabled>Pilih Status</option>
-            <option value="1">Aktif</option>
-            <option value="0">Nonaktif</option>
-        </select>
-    </div>
-
     <div class="d-grid gap-2 d-flex justify-content-center mt-3">
         <button type="submit" name="submit" class="btn btn-primary ms-2 col-3">Submit</button>
         <button type="reset" class="btn btn-warning ms-2 col-3">Reset Form</button>

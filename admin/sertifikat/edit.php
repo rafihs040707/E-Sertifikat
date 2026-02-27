@@ -30,7 +30,7 @@ $sertifikat = mysqli_fetch_assoc($data_sertifikat);
         <select class="form-select form-select-sm" name="pelatihan" required>
             <option disabled>Pilih Pelatihan</option>
             <?php
-            $q = mysqli_query($conn, "SELECT id, nama_pelatihan FROM pelatihan WHERE status = '1' ORDER BY nama_pelatihan ASC");
+            $q = mysqli_query($conn, "SELECT id, nama_pelatihan FROM pelatihan ORDER BY nama_pelatihan ASC");
             while ($p = mysqli_fetch_assoc($q)) {
                 echo "<option value='" . $p['id'] . "'>" . $p['nama_pelatihan'] . "</option>";
             }
@@ -51,15 +51,6 @@ $sertifikat = mysqli_fetch_assoc($data_sertifikat);
     <div class="mb-4">
         <label class="form-label ms-3">Issued Date:</label>
         <input type="date" name="issued_date" value="<?= $sertifikat['issued_date']; ?>" class="form-control" required onfocus="this.showPicker()">
-    </div>
-
-    <div class="mb-4">
-        <label class="form-label ms-3">Status:</label>
-        <select class="form-select form-select-sm" name="status" required>
-            <option disabled>Pilih Status</option>
-            <option value="1" <?= ($sertifikat['status'] == 1) ? 'selected' : ''; ?>>Valid</option>
-            <option value="0" <?= ($sertifikat['status'] == 0) ? 'selected' : ''; ?>>Tidak Valid</option>
-        </select>
     </div>
 
     <div class="mb-4">

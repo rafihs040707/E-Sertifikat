@@ -31,27 +31,11 @@ require_once BASE_PATH . '/admin/header.php';
     </div>
 
     <div class="mb-4">
-        <label class="form-label ms-3">Role:</label>
-        <select class="form-select" name="role" required>
-            <option value="" disabled selected>Pilih Role</option>
-
-            <?php if ($_SESSION['role'] === 'superadmin'): ?>
-                <option value="admin">Admin</option>
-                <option value="lo">LO</option>
-                <option value="superadmin">Superadmin</option>
-            <?php elseif ($_SESSION['role'] === 'admin'): ?>
-                <option value="lo">LO</option>
-            <?php endif; ?>
-
-        </select>
-    </div>
-
-    <div class="mb-4">
-        <label for="status" class="form-label ms-3">Status: </label>
-        <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="status" required>
-            <option selected disabled>Pilih Status</option>
-            <option value="1">Aktif</option>
-            <option value="0">Nonaktif</option>
+        <label for="role" class="form-label ms-3">Role: </label>
+        <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="role" required>
+            <option selected disabled>Pilih Role</option>
+            <option value="admin">Admin</option>
+            <option value="lo">LO</option>
         </select>
     </div>
 

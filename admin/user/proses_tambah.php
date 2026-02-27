@@ -1,21 +1,24 @@
 <?php
-$allowed_roles = ["admin"]; // superadmin otomatis lolos
+$allowed_roles = ["admin"];
 require_once __DIR__ . '/../../bootstrap.php';
 require_once BASE_PATH . '/auth/cek_login.php';
 require_once BASE_PATH . '/config/config.php';
 
 if (isset($_POST['submit'])) {
 
-    $nama     = trim($_POST['nama'] ?? '');
-    $email    = trim($_POST['email'] ?? '');
+    // ================================
+    // AMBIL DATA DARI FORM + TRIM
+    // ================================
+
+    $nama = trim($_POST['nama'] ?? '');
+    $email = trim($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';
-    $role     = trim($_POST['role'] ?? '');
-    $status   = trim($_POST['status'] ?? '');
+    $role = trim($_POST['role'] ?? '');
 
     // ======================
     // VALIDASI WAJIB
     // ======================
-    if ($nama === '' || $email === '' || $password === '' || $role === '' || $status === '') {
+    if ($nama === '' || $email === '' || $password === '' || $role === '') {
         $_SESSION['error'] = "Semua field wajib diisi!";
         header("Location:" . BASE_URL . "admin/user/index.php");
         exit;
@@ -28,24 +31,6 @@ if (isset($_POST['submit'])) {
         $_SESSION['error'] = "Format email tidak valid!";
         header("Location:" . BASE_URL . "admin/user/index.php");
         exit;
-    }
-
-    // ======================
-    // VALIDASI ROLE BERDASARKAN LOGIN
-    // ======================
-    $login_role = $_SESSION['role'];
-
-    if ($login_role === 'admin') {
-        if ($role !== 'lo') {
-            die("Akses ditolak. Admin hanya boleh membuat LO.");
-        }
-    }
-
-    if ($login_role === 'superadmin') {
-        $allowed_create = ['admin', 'lo', 'superadmin'];
-        if (!in_array($role, $allowed_create)) {
-            die("Role tidak valid.");
-        }
     }
 
     // ======================
@@ -71,11 +56,11 @@ if (isset($_POST['submit'])) {
     // INSERT
     // ======================
     $stmt = $conn->prepare("
-        INSERT INTO users (nama, email, password, role, status)
-        VALUES (?, ?, ?, ?, ?)
+        INSERT INTO users (nama, email, password, role)
+        VALUES (?, ?, ?, ?)
     ");
 
-    $stmt->bind_param("ssssi", $nama, $email, $password_hash, $role, $status);
+    $stmt->bind_param("ssss", $nama, $email, $password_hash, $role);
 
     if ($stmt->execute()) {
         $_SESSION['success'] = "User berhasil ditambahkan!";

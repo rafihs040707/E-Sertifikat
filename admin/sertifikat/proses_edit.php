@@ -57,8 +57,7 @@ $stmt = $conn->prepare("
         pelatihan_id = ?, 
         periode_awal = ?, 
         periode_akhir = ?, 
-        issued_date = ?, 
-        status = ?, 
+        issued_date = ?,
         template_id = ?
     WHERE id = ?
 ");
@@ -70,13 +69,12 @@ if (!$stmt) {
 }
 
 $stmt->bind_param(
-    "sisssiii",
+    "sisssii",
     $nama,
     $pelatihan,
     $periode_awal,
     $periode_akhir,
     $issued_date,
-    $status,
     $template_id,
     $id
 );

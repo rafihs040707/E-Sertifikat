@@ -27,14 +27,9 @@ $_SESSION['last_activity'] = time();
 
 // role check
 if (isset($allowed_roles) && is_array($allowed_roles)) {
-
-    // Jika superadmin → selalu boleh
-    if ($_SESSION['role'] !== 'superadmin') {
-
-        if (!in_array($_SESSION['role'], $allowed_roles)) {
-            header("Location:" . BASE_URL . "index.php?pesan=akses_ditolak");
-            exit;
-        }
+    if (!in_array($_SESSION['role'], $allowed_roles)) {
+        header("Location:" . BASE_URL . "index.php?pesan=akses_ditolak");
+        exit;
     }
 }
 

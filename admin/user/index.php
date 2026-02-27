@@ -1,8 +1,7 @@
 <?php
-$allowed_roles = ["admin"]; // superadmin otomatis lolos
+$allowed_roles = ["admin"];
 require_once __DIR__ . '/../../bootstrap.php';
 require_once BASE_PATH . '/auth/cek_login.php';
-require_once BASE_PATH . '/auth/permission.php';
 require_once BASE_PATH . '/admin/header.php';
 require_once BASE_PATH . '/config/config.php';
 ?>
@@ -79,7 +78,6 @@ require_once BASE_PATH . '/config/config.php';
                     <th>Nama</th>
                     <th>Email</th>
                     <th>Role</th>
-                    <th>status</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -92,24 +90,12 @@ require_once BASE_PATH . '/config/config.php';
                 $previous = $halaman - 1;
                 $next = $halaman + 1;
 
-                // Hitung total data
-                if ($_SESSION['role'] === 'admin') {
-                    $data = mysqli_query($conn, "SELECT * FROM users WHERE role != 'superadmin'");
-                } else {
-                    $data = mysqli_query($conn, "SELECT * FROM users");
-                }
+                $data = mysqli_query($conn, "select * from users");
 
                 $jumlah_data = mysqli_num_rows($data);
                 $total_halaman = ceil($jumlah_data / $batas);
 
-                // Ambil data per halaman
-                if ($_SESSION['role'] === 'admin') {
-                    $data_user = mysqli_query($conn,"SELECT * FROM users WHERE role != 'superadmin' LIMIT $batas OFFSET $halaman_awal");
-                } else {
-                    $data_user = mysqli_query(
-                        $conn,
-                        "SELECT * FROM users LIMIT $batas OFFSET $halaman_awal");
-                }
+                $data_user = mysqli_query($conn, "select * from users limit $batas OFFSET $halaman_awal");
                 $nomor = $halaman_awal + 1;
                 while ($user = mysqli_fetch_array($data_user)) {
                     ?>
@@ -119,21 +105,11 @@ require_once BASE_PATH . '/config/config.php';
                         <td><?php echo $user['email']; ?></td>
                         <td><?php echo $user['role']; ?></td>
                         <td>
-                            <?php if ($user['status'] == 0) { ?>
-                                <span class="badge bg-danger">Nonaktif</span>
-                            <?php } else { ?>
-                                <span class="badge bg-success">Aktif</span>
-                            <?php } ?>
-                        </td>
-                        <td>
                             <a href="<?= BASE_URL ?>admin/user/edit.php?id=<?= $user['id']; ?>"
                                 class="btn btn-sm btn-info text-black mt-2">Edit</a>
-
-                            <?php if (can('user.delete')) { ?>
-                                <a href="<?= BASE_URL ?>admin/user/hapus.php?id=<?= $user['id']; ?>"
-                                    class="btn btn-sm btn-danger text-black mt-2"
-                                    onclick="return confirm('Apakah yakin data template ini akan dihapus?');">Hapus</a>
-                            <?php } ?>
+                            <a href="<?= BASE_URL ?>admin/user/hapus.php?id=<?= $user['id']; ?>"
+                                class="btn btn-sm btn-danger text-black mt-2"
+                                onclick="return confirm('Apakah yakin data template ini akan dihapus?');">Hapus</a>
                         </td>
                     </tr>
                     <?php

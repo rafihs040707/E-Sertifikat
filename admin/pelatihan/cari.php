@@ -70,7 +70,6 @@ $nomor = $halaman_awal + 1;
                         <th>No</th>
                         <th>Nama Pelatihan</th>
                         <th>deskripsi</th>
-                        <th>Status</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -81,13 +80,6 @@ $nomor = $halaman_awal + 1;
                                 <td><?= $nomor++; ?></td>
                                 <td><?= $pelatihan['nama_pelatihan']; ?></td>
                                 <td><?= $pelatihan['deskripsi']; ?></td>
-                                <td>
-                                    <?php if ($pelatihan['status'] == 0) { ?>
-                                        <span class="badge bg-danger">Tidak Valid</span>
-                                    <?php } else { ?>
-                                        <span class="badge bg-success">Valid</span>
-                                    <?php } ?>
-                                </td>
                                 <td>
                                     <a class="btn btn-sm btn-info text-black" href="<?= BASE_URL ?>admin/pelatihan/edit.php?id=<?= $pelatihan['id']; ?>">Edit</a>
                                 </td>

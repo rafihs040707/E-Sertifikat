@@ -141,13 +141,6 @@ $nomor = $halaman_awal + 1;
                                 <td><?= $user['email']; ?></td>
                                 <td><?= $user['role']; ?></td>
                                 <td>
-                                    <?php if ($user['status'] == 0) { ?>
-                                        <span class="badge bg-danger">Aktif</span>
-                                    <?php } else { ?>
-                                        <span class="badge bg-success">Nonaktif</span>
-                                    <?php } ?>
-                                </td>
-                                <td>
                                     <a class="btn btn-sm btn-info text-black" href="<?= BASE_URL ?>admin/user/edit.php?id=<?= $user['id']; ?>">Edit</a>
                                     <a class="btn btn-sm btn-danger text-black" href="<?= BASE_URL ?>admin/user/hapus.php?id=<?= $user['id']; ?>">Hapus</a>
                                 </td>

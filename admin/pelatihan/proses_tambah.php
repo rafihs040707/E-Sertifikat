@@ -8,16 +8,15 @@ if (isset($_POST['submit'])) {
 
     $nama_pelatihan        = $_POST['nama_pelatihan'];
     $deskripsi    = $_POST['deskripsi'];
-    $status       = $_POST['status'];
 
     // simpan ke database (tanpa format periode)
     $stmt = $conn->prepare("
         INSERT INTO pelatihan 
-        (nama_pelatihan, deskripsi, status)
-        VALUES (?, ?, ?)
+        (nama_pelatihan, deskripsi)
+        VALUES (?, ?)
     ");
 
-    $stmt->bind_param("ssi", $nama_pelatihan, $deskripsi, $status);
+    $stmt->bind_param("ss", $nama_pelatihan, $deskripsi);
 
 
     if ($stmt->execute()) {

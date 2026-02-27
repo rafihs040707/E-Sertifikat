@@ -14,7 +14,8 @@ ini_set('display_errors', 0);
 
 $id = $_GET['id'] ?? null;
 $isPreview = isset($_GET['preview']);
-if (!$id) die("ID tidak ditemukan");
+if (!$id)
+    die("ID tidak ditemukan");
 
 // ======================
 // AMBIL DATA SERTIFIKAT + TEMPLATE
@@ -32,7 +33,8 @@ $q = mysqli_query($conn, "
 
 
 $data = mysqli_fetch_assoc($q);
-if (!$data) die("Data tidak ditemukan");
+if (!$data)
+    die("Data tidak ditemukan");
 
 // ======================
 // GENERATE NOMOR SERTIFIKAT
@@ -42,34 +44,87 @@ if (!$isPreview && empty($data['nomor_sertifikat'])) {
     $tahun = date('Y');
     $bulan = date('m');
 
+    // 🔹 kategori dari tabel pelatihan (misal: 01, 02, dst)
+    $kategori = str_pad($data['pelatihan_id'] ?? '00', 2, '0', STR_PAD_LEFT);
+
+    // ===============================
+    // 🔹 ambil 2 huruf terakhir nama belakang
+    // ===============================
+    $namaLengkap = trim($data['nama'] ?? '');
+
+    if ($namaLengkap === '') {
+        $inisialBelakang = 'NA';
+    } else {
+        // pecah nama
+        $parts = preg_split('/\s+/u', $namaLengkap);
+
+        // ambil kata terakhir (kalau cuma 1 kata tetap aman)
+        $namaBelakang = end($parts);
+
+        // bersihkan huruf saja
+        $namaBelakang = strtoupper(preg_replace('/[^A-Z]/i', '', $namaBelakang));
+
+        if ($namaBelakang === '') {
+            $inisialBelakang = 'NA';
+        } else {
+            // ambil 2 huruf dari belakang
+            $inisialBelakang = substr($namaBelakang, -2);
+
+            // kalau kurang dari 2 huruf → pad kiri
+            $inisialBelakang = str_pad($inisialBelakang, 2, 'X', STR_PAD_LEFT);
+        }
+    }
+
     mysqli_begin_transaction($conn);
 
     try {
 
-        // LOCK baris agar admin lain menunggu
+        // ======================================
+        // 🔒 LOCK untuk nomor urut per bulan
+        // ======================================
+        $prefix = "$tahun$kategori$bulan";
+
         $q2 = mysqli_query($conn, "
             SELECT MAX(
-                CAST(
-                    SUBSTRING_INDEX(
-                        SUBSTRING_INDEX(nomor_sertifikat, '/', -1),
-                        '-', 1
-                    ) AS UNSIGNED
-                )
+                CAST(SUBSTRING(nomor_sertifikat, 9, 4) AS UNSIGNED)
             ) AS last_no
             FROM sertifikat
-            WHERE nomor_sertifikat IS NOT NULL
-            AND nomor_sertifikat LIKE 'CERT/$tahun/$bulan/%'
+            WHERE nomor_sertifikat LIKE '$prefix%'
             FOR UPDATE
         ");
 
         $row = mysqli_fetch_assoc($q2);
 
         $urut = ($row['last_no'] ?? 0) + 1;
-        $nomor = str_pad($urut, 4, '0', STR_PAD_LEFT);
+        $nomorUrut = str_pad($urut, 4, '0', STR_PAD_LEFT);
 
-        $uuid  = bin2hex(random_bytes(8));
+        // ======================================
+        // 🔐 unique6 pola: 2 kecil, 2 besar, 2 kecil
+        // ======================================
+        function randomLetters($length, $chars)
+        {
+            $result = '';
+            $max = strlen($chars) - 1;
+            $bytes = random_bytes($length);
 
-        $nomor_sertifikat = "CERT/$tahun/$bulan/$nomor-$uuid";
+            for ($i = 0; $i < $length; $i++) {
+                $result .= $chars[ord($bytes[$i]) % ($max + 1)];
+            }
+            return $result;
+        }
+
+        $lower = 'abcdefghijklmnopqrstuvwxyz';
+        $upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+        $unique6 =
+            randomLetters(2, $lower) .
+            randomLetters(2, $upper) .
+            randomLetters(2, $lower);
+
+        // ======================================
+        // 🧾 final format
+        // ======================================
+        $nomor_sertifikat = "{$tahun}{$kategori}{$bulan}{$nomorUrut}/{$unique6}{$inisialBelakang}";
 
         $update = mysqli_query($conn, "
             UPDATE sertifikat 
@@ -84,6 +139,7 @@ if (!$isPreview && empty($data['nomor_sertifikat'])) {
         mysqli_commit($conn);
 
         $data['nomor_sertifikat'] = $nomor_sertifikat;
+
     } catch (Exception $e) {
 
         mysqli_rollback($conn);
@@ -95,7 +151,7 @@ if (!$isPreview && empty($data['nomor_sertifikat'])) {
 // ======================
 // FORMAT TANGGAL
 // ======================
-$awal  = strtotime($data['periode_awal']);
+$awal = strtotime($data['periode_awal']);
 $akhir = strtotime($data['periode_akhir']);
 
 if (date('F Y', $awal) == date('F Y', $akhir)) {
@@ -115,44 +171,28 @@ if (!empty($data['penyelenggara'])) {
 // ======================
 // POTONG NOMOR UNTUK TAMPILAN (SETELAH GENERATE FIX)
 // ======================
-$nomorFull = $data['nomor_sertifikat'];
+$nomorFull = $data['nomor_sertifikat'] ?? '';
 
-if (!empty($nomorFull)) {
-    $partsNomor = explode('-', $nomorFull);
-
-    if (isset($partsNomor[1])) {
-        $nomor_tampil = $partsNomor[0] . '-' . substr($partsNomor[1], 0, 8);
-    } else {
-        $nomor_tampil = $nomorFull;
-    }
+if ($nomorFull !== '') {
+    $pos = strpos($nomorFull, '/');
+    $nomor_tampil = ($pos !== false) ? substr($nomorFull, 0, $pos) : $nomorFull;
 } else {
     $nomor_tampil = '';
 }
 
-
-// ======================
-// QR TEXT (LINK VERIFIKASI)
-// ======================
-$parts = explode("-", $data['nomor_sertifikat']);
-$uuid = end($parts);
-
-$qrText = BASE_URL . "verify/verify.php?uuid=" . $uuid;
-
-
 // ======================
 // GENERATE QR CODE + SIMPAN FILE
 // ======================
-$parts = explode("-", $data['nomor_sertifikat']);
-$uuid = end($parts);
-
-$qrText = BASE_URL . "verify/verify.php?uuid=" . $uuid;
+$kode_unik = $data['nomor_sertifikat'] ?? '';
+$qrText = BASE_URL . "verify/verify.php?kode=" . $kode_unik;
 
 $qrFolder = BASE_PATH . "/uploads/qrcode/";
 if (!is_dir($qrFolder)) {
     mkdir($qrFolder, 0777, true);
 }
 
-$qrFilename = "qr_" . $uuid . ".png";
+$safeKode = preg_replace('/[^A-Za-z0-9]/', '_', $kode_unik);
+$qrFilename = "qr_" . $safeKode . ".png";
 $qrPath = $qrFolder . $qrFilename;
 $qrUrlPath = BASE_URL . "uploads/qrcode/" . $qrFilename;
 
@@ -274,16 +314,16 @@ body {
 .nomor {
     position: absolute;
     bottom: 145px;
-    right: 11px;
-    font-size: 11px;
+    right: 35px;
+    font-size: 15px;
     color: black;
 }
 
 /* QR kanan bawah */
 .qr {
     position: absolute;
-    bottom: 23px;
-    right: 20px;
+    bottom: 26px;
+    right: 22px;
 }
 </style>
 </head> 
@@ -331,7 +371,7 @@ if (!$isPreview) {
         mkdir($pdfFolder, 0777, true);
     }
 
-    $cleanNomor = preg_replace('/[^A-Za-z0-9\-]/', '_', $data['nomor_sertifikat']);
+    $cleanNomor = $nomor_tampil;
     $filename = $cleanNomor . ".pdf";
     $pdfPath = $pdfFolder . $filename;
 
@@ -341,7 +381,7 @@ if (!$isPreview) {
 
     file_put_contents($pdfPath, $dompdf->output());
 
-    // ✅ UPDATE DATABASE — HANYA SAAT GENERATE
+    // update DB hanya saat generate
     mysqli_query($conn, "
         UPDATE sertifikat
         SET qr_code = '$qrText',
@@ -349,7 +389,6 @@ if (!$isPreview) {
             file_sertifikat = '$filename'
         WHERE id = '$id'
     ");
-
 } else {
     // ======================
     // PREVIEW MODE (AMAN)
@@ -366,32 +405,21 @@ if (!$isPreview) {
 }
 
 // ======================
-// OUTPUT PDF
+// OUTPUT
 // ======================
-
 ob_end_clean();
 
 if ($isPreview) {
 
-    if (!empty($data['file_sertifikat']) && 
-        file_exists(BASE_PATH . "/uploads/sertifikat/" . $data['file_sertifikat'])) {
-
-        header("Location: " . BASE_URL . "uploads/sertifikat/" . $data['file_sertifikat']);
-        exit;
-    }
-
+    // 🟢 PREVIEW MODE — hanya tampil
     $pdfOutput = $dompdf->output();
 
     header("Content-Type: application/pdf");
-    header("Content-Disposition: inline; filename=\"$filename\"");
+    header("Content-Disposition: inline; filename=\"preview_$id.pdf\"");
     echo $pdfOutput;
     exit;
 }
 
-
-// ======================
-// MODE GENERATE (WAJIB ADA)
-// ======================
-
-header("Location: " . BASE_URL . "uploads/sertifikat/" . $filename);
+// 🔵 GENERATE MODE — tidak tampil, langsung balik ke index
+header("Location: " . BASE_URL . "admin/sertifikat/index.php");
 exit;

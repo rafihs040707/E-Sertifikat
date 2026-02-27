@@ -3,11 +3,6 @@ $allowed_roles = ["admin"];
 require_once __DIR__ . '/../../bootstrap.php';
 require_once BASE_PATH . '/auth/cek_login.php';
 require_once BASE_PATH . '/config/config.php';
-require_once BASE_PATH . '/auth/permission.php';
-
-if (!can('sertifikat.delete')) {
-    die("Akses ditolak");
-}
 
 // ======================
 // VALIDASI ID

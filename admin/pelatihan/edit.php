@@ -25,15 +25,6 @@ $pelatihan = mysqli_fetch_assoc($data_pelatihan);
         <input type="text" name="deskripsi" value="<?= $pelatihan['deskripsi']; ?>" class="form-control" required>
     </div>
 
-    <div class="mb-4">
-        <label class="form-label ms-3">Status:</label>
-        <select class="form-select form-select-sm" name="status" required>
-            <option disabled>Pilih Status</option>
-            <option value="1" <?= ($pelatihan['status'] == 1) ? 'selected' : ''; ?>>Aktif</option>
-            <option value="0" <?= ($pelatihan['status'] == 0) ? 'selected' : ''; ?>>Nonaktif</option>
-        </select>
-    </div>
-
     <div class="d-flex justify-content-center mt-3">
         <button type="submit" name="update" class="btn btn-primary col-3">Update</button>
         <a href="<?= BASE_URL ?>admin/pelatihan/index.php" class="btn btn-secondary ms-2">Kembali</a>
