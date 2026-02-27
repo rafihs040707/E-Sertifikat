@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../bootstrap.php';
 require_once BASE_PATH . '/config/config.php';
 
-$uuid = $_GET['uuid'] ?? null;
+$nomor = $_GET['kode'] ?? null;
 
 // ======================
 // DEFAULT INVALID
@@ -14,40 +14,42 @@ $pelatihan = "Tidak Ditemukan";
 $periode = "Tidak Ditemukan";
 $issued = "Tidak Ditemukan";
 $nomor_sertifikat = "Tidak Ditemukan";
-$penyelenggara = "Tidak Ditemukan";
+$penyelenggara = "";
 
 $qrImg = "";
 $pdfFile = "";
 
 // ======================
-// CEK UUID
+// CEK NOMOR SERTIFIKAT
 // ======================
-if ($uuid) {
+if ($nomor) {
 
-    $uuid_safe = mysqli_real_escape_string($conn, $uuid);
+    $nomor = trim($nomor);
 
-    // Ambil data hanya jika status = 1 (VALID)
-    $query = mysqli_query($conn, "
-    SELECT 
-        s.*, 
-        t.nama_template, 
-        t.penyelenggara,
-        p.nama_pelatihan
-    FROM sertifikat s
-    JOIN template t ON s.template_id = t.id
-    LEFT JOIN pelatihan p ON s.pelatihan_id = p.id
-    WHERE s.nomor_sertifikat LIKE '%-$uuid_safe'
-    AND s.status = 1
-    LIMIT 1
-");
+    $stmt = mysqli_prepare($conn, "
+        SELECT 
+            s.*, 
+            t.nama_template, 
+            t.penyelenggara,
+            p.nama_pelatihan
+        FROM sertifikat s
+        JOIN template t ON s.template_id = t.id
+        LEFT JOIN pelatihan p ON s.pelatihan_id = p.id
+        WHERE LOWER(TRIM(s.nomor_sertifikat)) = LOWER(TRIM(?))
+        LIMIT 1
+    ");
 
+    mysqli_stmt_bind_param($stmt, "s", $nomor);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $data = mysqli_fetch_assoc($result);
 
-    $data = mysqli_fetch_assoc($query);
 
     // ======================
     // JIKA DATA VALID DITEMUKAN
     // ======================
     if ($data) {
+
 
         $statusValid = true;
 
@@ -61,7 +63,7 @@ if ($uuid) {
         }
 
         // format periode
-        $awal  = strtotime($data['periode_awal']);
+        $awal = strtotime($data['periode_awal']);
         $akhir = strtotime($data['periode_akhir']);
 
         if (date('F Y', $awal) == date('F Y', $akhir)) {
@@ -76,22 +78,22 @@ if ($uuid) {
         // QR Image
         // ======================
         $qrPath = "";
-        $qrUrl  = "";
+        $qrUrl = "";
 
         if (!empty($data['qr_image'])) {
             $qrPath = BASE_PATH . "/uploads/qrcode/" . $data['qr_image']; // untuk file_exists
-            $qrUrl  = BASE_URL  . "uploads/qrcode/" . $data['qr_image'];  // untuk <img>
+            $qrUrl = BASE_URL . "uploads/qrcode/" . $data['qr_image'];  // untuk <img>
         }
 
         // ======================
         // PDF Sertifikat
         // ======================
         $pdfPath = "";
-        $pdfUrl  = "";
+        $pdfUrl = "";
 
         if (!empty($data['file_sertifikat'])) {
             $pdfPath = BASE_PATH . "/uploads/sertifikat/" . $data['file_sertifikat']; // untuk file_exists
-            $pdfUrl  = BASE_URL  . "uploads/sertifikat/" . $data['file_sertifikat'];  // untuk href
+            $pdfUrl = BASE_URL . "uploads/sertifikat/" . $data['file_sertifikat'];  // untuk href
         }
     }
 }
@@ -100,8 +102,8 @@ if ($uuid) {
 // STYLE VALID / INVALID
 // ======================
 $color = $statusValid ? "#329F4A" : "#E63946";
-$icon  = $statusValid ? BASE_URL . "image/centang.png" : BASE_URL . "image/silang.png";
-$title = $statusValid ? "Sertifikat Valid dan Terdaftar" : "Sertifikat Tidak Valid atau tidak Terdaftar";
+$icon = $statusValid ? BASE_URL . "image/centang.png" : BASE_URL . "image/silang.png";
+$title = $statusValid ? "Sertifikat Terdaftar" : "Sertifikat tidak Terdaftar";
 ?>
 
 <!DOCTYPE html>
@@ -168,9 +170,9 @@ $title = $statusValid ? "Sertifikat Valid dan Terdaftar" : "Sertifikat Tidak Val
                                 </tr>
 
                                 <?php
-                                $nomor = $data['nomor_sertifikat'] ?? '';
-                                $nomor_tampil = $nomor !== ''
-                                    ? explode("-", $nomor)[0]
+                                $nomor_tmp = $data['nomor_sertifikat'] ?? '';
+                                $nomor_tampil = $nomor_tmp !== ''
+                                    ? explode("/", $nomor_tmp)[0]
                                     : '';
                                 ?>
                                 <tr>
@@ -183,18 +185,6 @@ $title = $statusValid ? "Sertifikat Valid dan Terdaftar" : "Sertifikat Tidak Val
                                     <td>Penyelenggara</td>
                                     <td>:</td>
                                     <td><?= htmlspecialchars($penyelenggara); ?></td>
-                                </tr>
-
-                                <tr>
-                                    <td>Status</td>
-                                    <td>:</td>
-                                    <td>
-                                        <?php if ($statusValid) { ?>
-                                            <span class="badge bg-success px-3 py-2">Valid</span>
-                                        <?php } else { ?>
-                                            <span class="badge bg-danger px-3 py-2">Tidak Valid</span>
-                                        <?php } ?>
-                                    </td>
                                 </tr>
                             </table>
                         </td>
@@ -247,25 +237,13 @@ $title = $statusValid ? "Sertifikat Valid dan Terdaftar" : "Sertifikat Tidak Val
                     <tr>
                         <td>Nomor Sertifikat</td>
                         <td>:</td>
-                        <td><?= htmlspecialchars($nomor_sertifikat); ?></td>
+                        <td><?= htmlspecialchars($nomor_tampil); ?></td>
                     </tr>
 
                     <tr>
                         <td>Penyelenggara</td>
                         <td>:</td>
                         <td><?= htmlspecialchars($penyelenggara); ?></td>
-                    </tr>
-
-                    <tr>
-                        <td>Status</td>
-                        <td>:</td>
-                        <td>
-                            <?php if ($statusValid) { ?>
-                                <span class="badge bg-success px-3 py-2">Valid</span>
-                            <?php } else { ?>
-                                <span class="badge bg-danger px-3 py-2">Tidak Valid</span>
-                            <?php } ?>
-                        </td>
                     </tr>
 
                     <tr>
