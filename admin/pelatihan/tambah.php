@@ -16,7 +16,13 @@ require_once BASE_PATH . '/admin/header.php';
     <div class="mb-2">
         <label for="nama_pelatihan" class="form-label ms-3">Nama Pelatihan: </label>
         <input type="text" name="nama_pelatihan" placeholder="Example: Front-End" class="form-control"
-            maxlength="255" required><br>
+            maxlength="100" required><br>
+    </div>
+
+    <div class="mb-2">
+        <label for="instruktur" class="form-label ms-3">Instruktur: </label>
+        <input type="text" name="instruktur" placeholder="Example: Belajar membuat tampilan menarik" class="form-control"
+            maxlength="100" required><br>
     </div>
 
     <div class="mb-2">

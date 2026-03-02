@@ -8,11 +8,13 @@ if (isset($_POST['update'])) {
 
     $id           = $_POST['id'];
     $nama_pelatihan         = $_POST['nama_pelatihan'];
+    $instruktur    = $_POST['instruktur'];
     $deskripsi    = $_POST['deskripsi'];
 
     $stmt = $conn->prepare("
         UPDATE pelatihan 
         SET nama_pelatihan = ?, 
+            instruktur = ?,
             deskripsi = ?
         WHERE id = ?
     ");
@@ -20,6 +22,7 @@ if (isset($_POST['update'])) {
     $stmt->bind_param(
         "ssii",
         $nama_pelatihan,
+        $instruktur,
         $deskripsi,
         $id
     );

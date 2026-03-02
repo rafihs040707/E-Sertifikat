@@ -2,7 +2,6 @@
 $allowed_roles = ["admin"];
 require_once __DIR__ . '/../../bootstrap.php';
 require_once BASE_PATH . '/auth/cek_login.php';
-session_start();
 require_once BASE_PATH . '/config/config.php';
 
 $id = $_GET['id'] ?? null;

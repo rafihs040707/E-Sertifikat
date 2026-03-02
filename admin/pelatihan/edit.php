@@ -21,8 +21,13 @@ $pelatihan = mysqli_fetch_assoc($data_pelatihan);
     </div>
 
     <div class="mb-2">
+        <label class="form-label ms-3">Instruktur:</label>
+        <input type="text" name="instruktur" value="<?= $pelatihan['instruktur']; ?>" class="form-control" required>
+    </div>
+
+    <div class="mb-2">
         <label class="form-label ms-3">Deskripsi:</label>
-        <input type="text" name="deskripsi" value="<?= $pelatihan['deskripsi']; ?>" class="form-control" required>
+        <input type="text" name="deskripsi" value="<?= $pelatihan['deskripsi']; ?>" class="form-control">
     </div>
 
     <div class="d-flex justify-content-center mt-3">

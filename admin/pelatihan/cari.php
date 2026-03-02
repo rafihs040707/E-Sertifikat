@@ -69,7 +69,8 @@ $nomor = $halaman_awal + 1;
                     <tr>
                         <th>No</th>
                         <th>Nama Pelatihan</th>
-                        <th>deskripsi</th>
+                        <th>Instruktur</th>
+                        <th>Deskripsi</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -79,6 +80,7 @@ $nomor = $halaman_awal + 1;
                             <tr>
                                 <td><?= $nomor++; ?></td>
                                 <td><?= $pelatihan['nama_pelatihan']; ?></td>
+                                <td><?= $pelatihan['instruktur']; ?></td>
                                 <td><?= $pelatihan['deskripsi']; ?></td>
                                 <td>
                                     <a class="btn btn-sm btn-info text-black" href="<?= BASE_URL ?>admin/pelatihan/edit.php?id=<?= $pelatihan['id']; ?>">Edit</a>

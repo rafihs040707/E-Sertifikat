@@ -75,6 +75,7 @@ require_once BASE_PATH . '/config/config.php';
                 <tr>
                     <th>No</th>
                     <th>Nama Pelatihan</th>
+                    <th>Instruktur</th>
                     <th>Deskripsi</th>
                     <th>Aksi</th>
                 </tr>
@@ -99,6 +100,7 @@ require_once BASE_PATH . '/config/config.php';
                     <tr>
                         <th><?php echo $nomor++; ?></th>
                         <td><?php echo $pelatihan['nama_pelatihan']; ?></td>
+                        <td><?php echo $pelatihan['instruktur']; ?></td>
                         <td><?php echo $pelatihan['deskripsi']; ?></td>
                         <td>
                             <a href="<?= BASE_URL ?>admin/pelatihan/edit.php?id=<?= $pelatihan['id']; ?>" class="btn btn-sm btn-info text-black mt-2">Edit</a>
