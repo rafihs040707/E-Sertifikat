@@ -11,6 +11,7 @@ if (isset($_POST['update'])) {
     $penyelenggara = $_POST['penyelenggara'];
 
     $tampak_depan_lama    = $_POST['tampak_depan_lama'];
+    $tampak_belakang_lama    = $_POST['tampak_belakang_lama'];
 
     // folder upload
     $folder = BASE_PATH . "/uploads/template/";
@@ -28,14 +29,26 @@ if (isset($_POST['update'])) {
         $tampak_depan = $tampak_depan_lama;
     }
 
+    // === PROSES GAMBAR BELAKANG ===
+    if ($_FILES['tampak_belakang']['name'] != "") {
+        $tampak_depan = time() . "_" . $_FILES['tampak_belakang']['name'];
+        move_uploaded_file($_FILES['tampak_belakang']['tmp_name'], $folder . $tampak_depan);
+
+        // hapus file lama
+        if ($tampak_belakang_lama != "" && file_exists($folder . $tampak_belakang_lama)) {
+            unlink($folder . $tampak_belakang_lama);
+        }
+    } else {
+        $tampak_belakang = $tampak_belakang_lama;
+    }
+
     // === UPDATE DATABASE ===
     $query = "UPDATE template SET 
                 nama_template='$nama_template',
                 penyelenggara='$penyelenggara',
-                tampak_depan='$tampak_depan'
+                tampak_depan='$tampak_depan',
+                tampak_belakang='$tampak_belakang'
                 WHERE id='$id'";
-
-    session_start();
 
     if (mysqli_query($conn, $query)) {
         $_SESSION['success'] = "Data template berhasil diperbarui.";

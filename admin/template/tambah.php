@@ -16,18 +16,23 @@ require_once BASE_PATH . '/admin/header.php';
     <div class="mb-2">
         <label for="nama_template" class="form-label ms-3">Nama Template: </label>
         <input type="text" name="nama_template" placeholder="Example: Untuk Cyber Security" class="form-control"
-            maxlength="64" required><br>
+            maxlength="100" required><br>
     </div>
 
     <div class="mb-2">
         <label for="penyelenggara" class="form-label ms-3">Penyelenggara: </label>
         <input type="text" name="penyelenggara" placeholder="Example: PT ABC" class="form-control"
-            maxlength="64" required><br>
+            maxlength="100" required><br>
     </div>
 
     <div class="mb-2">
         <label for="tampak_depan" class="form-label ms-3">Tampak Depan: </label>
         <input type="file" name="tampak_depan" class="form-control" required accept="image/*"><br>
+    </div>
+
+    <div class="mb-2">
+        <label for="tampak_belakang" class="form-label ms-3">Tampak Belakang: </label>
+        <input type="file" name="tampak_belakang" class="form-control" accept="image/*"><br>
     </div>
 
     <div class="d-grid gap-2 d-flex justify-content-center mt-3">

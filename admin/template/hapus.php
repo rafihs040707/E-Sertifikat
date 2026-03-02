@@ -2,7 +2,6 @@
 $allowed_roles = ["admin"];
 require_once __DIR__ . '/../../bootstrap.php';
 require_once BASE_PATH . '/auth/cek_login.php';
-session_start();
 require_once BASE_PATH . '/config/config.php';
 
 $id = $_GET['id'] ?? null;
@@ -14,7 +13,7 @@ if (!$id) {
 }
 
 // ambil data template dulu untuk dapat nama file gambarnya
-$query = mysqli_query($conn, "SELECT tampak_depan FROM template WHERE id='$id'");
+$query = mysqli_query($conn, "SELECT tampak_depan, tampak_belakang FROM template WHERE id='$id'");
 $data = mysqli_fetch_assoc($query);
 
 if (!$data) {
@@ -25,6 +24,7 @@ if (!$data) {
 
 // path file gambar
 $filePath = BASE_PATH . "/uploads/template/" . $data['tampak_depan'];
+$filePath = BASE_PATH . "/uploads/template/" . $data['tampak_belakang'];
 
 // hapus data dari database
 $delete = mysqli_query($conn, "DELETE FROM template WHERE id='$id'");
@@ -33,6 +33,10 @@ if ($delete) {
 
     // hapus file jika ada
     if (!empty($data['tampak_depan']) && file_exists($filePath)) {
+        unlink($filePath);
+    }
+    // hapus file jika ada
+    if (!empty($data['tampak_belakang']) && file_exists($filePath)) {
         unlink($filePath);
     }
 
@@ -45,4 +49,4 @@ if ($delete) {
     header("Location:" . BASE_URL . "admin/template/index.php");
     exit;
 }
-?>
+

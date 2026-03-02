@@ -77,7 +77,9 @@ require_once BASE_PATH . '/config/config.php';
                     <th>No</th>
                     <th>Nama Template</th>
                     <th>Penyelenggara</th>
+                    <th>Instruktur</th>
                     <th>Tampak Depan</th>
+                    <th>Tampak Belakang</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -103,6 +105,12 @@ require_once BASE_PATH . '/config/config.php';
                         <td><?php echo $template['nama_template']; ?></td>
                         <td><?php echo $template['penyelenggara']; ?></td>
                         <td><img src="<?= BASE_URL ?>uploads/template/<?php echo $template['tampak_depan']; ?>" width="80">
+                        </td>
+                        <td><?php if (empty($template['tampak_belakang'])) { ?>
+                                <span class="badge bg-secondary">Tidak ada Tampak Belakang</span>
+                            <?php } else { ?>
+                                <img src="uploads/template/<?php echo $template['tampak_belakang']; ?>" width="80">
+                            <?php } ?>
                         </td>
                         <td>
                             <a href="<?= BASE_URL ?>admin/template/edit.php?id=<?= $template['id']; ?>"
@@ -132,6 +140,15 @@ require_once BASE_PATH . '/config/config.php';
                                             <p><strong>Tampak Depan</strong></p>
                                             <img src="<?= BASE_URL ?>uploads/template/<?= $template['tampak_depan']; ?>"
                                                 class="img-fluid rounded border" alt="Tampak Depan">
+                                        </div>
+                                        <div class="col-md-6 text-center">
+                                            <p><strong>Tampak Belakang</strong></p>
+                                            <?php if (empty($template['tampak_belakang'])) { ?>
+                                                <span class="badge bg-secondary">Tidak ada Tampak Belakang</span>
+                                            <?php } else { ?>
+                                                <img src="uploads/template/<?php echo $template['tampak_belakang']; ?>"
+                                                    width="80">
+                                            <?php } ?>
                                         </div>
                                     </div>
                                 </div>

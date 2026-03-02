@@ -8,7 +8,7 @@ $cari = isset($_GET['cari']) ? $_GET['cari'] : "";
 
 // pagination
 $batas = 5;
-$halaman = isset($_GET['halaman']) ? (int)$_GET['halaman'] : 1;
+$halaman = isset($_GET['halaman']) ? (int) $_GET['halaman'] : 1;
 $halaman_awal = ($halaman > 1) ? ($halaman * $batas) - $batas : 0;
 
 // query utama
@@ -51,7 +51,8 @@ $nomor = $halaman_awal + 1;
                     value="<?= htmlspecialchars($cari); ?>">
                 <button type="submit" class="btn btn-secondary ms-3">Cari</button>
             </div>
-            <a href="<?= BASE_URL ?>admin/template/index.php" class="btn btn-secondary text-decoration-none text-white mt-4 ms-3 mb-2">
+            <a href="<?= BASE_URL ?>admin/template/index.php"
+                class="btn btn-secondary text-decoration-none text-white mt-4 ms-3 mb-2">
                 Kembali Ke Data Template
             </a>
         </form>
@@ -71,6 +72,7 @@ $nomor = $halaman_awal + 1;
                         <th>Nama Template</th>
                         <th>Penyelenggara</th>
                         <th>Tampak Depan</th>
+                        <th>Tampak Belakang</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -85,9 +87,20 @@ $nomor = $halaman_awal + 1;
                                     <img src="<?= BASE_URL ?>uploads/template/<?= $template['tampak_depan']; ?>" width="80">
                                 </td>
                                 <td>
-                                    <a class="btn btn-sm btn-info text-black" href="<?= BASE_URL ?>admin/template/edit.php?id=<?= $template['id']; ?>">Edit</a>
-                                    <button class="btn btn-sm btn-secondary text-white" data-bs-toggle="modal" data-bs-target="#modalGambar<?= $template['id']; ?>">Preview</button>
-                                    <a class="btn btn-sm btn-danger text-white" href="<?= BASE_URL ?>admin/template/hapus.php?id=<?= $template['id']; ?>" onclick="return confirm('Apakah yakin data template ini akan dihapus?');">Hapus</a>
+                                    <?php if (empty($template['tampak_belakang'])) { ?>
+                                        <span class="badge bg-secondary">Tidak ada Tampak Belakang</span>
+                                    <?php } else { ?>
+                                        <img src="uploads/template/<?php echo $template['tampak_belakang']; ?>" width="80">
+                                    <?php } ?>
+                                </td>
+                                <td>
+                                    <a class="btn btn-sm btn-info text-black"
+                                        href="<?= BASE_URL ?>admin/template/edit.php?id=<?= $template['id']; ?>">Edit</a>
+                                    <button class="btn btn-sm btn-secondary text-white" data-bs-toggle="modal"
+                                        data-bs-target="#modalGambar<?= $template['id']; ?>">Preview</button>
+                                    <a class="btn btn-sm btn-danger text-white"
+                                        href="<?= BASE_URL ?>admin/template/hapus.php?id=<?= $template['id']; ?>"
+                                        onclick="return confirm('Apakah yakin data template ini akan dihapus?');">Hapus</a>
                                 </td>
                             </tr>
                             <div class="modal fade" id="modalGambar<?= $template['id']; ?>" tabindex="-1">
@@ -99,15 +112,22 @@ $nomor = $halaman_awal + 1;
                                         </div>
 
                                         <div class="modal-body">
-                                            <p class="fs-5"><strong>Nama Template:</strong> <?= $template['nama_template']; ?></p>
-                                            <p class="fs-5"><strong>Penyelenggara:</strong> <?= $template['penyelenggara']; ?></p>
+                                            <p class="fs-5"><strong>Nama Template:</strong> <?= $template['nama_template']; ?>
+                                            </p>
+                                            <p class="fs-5"><strong>Penyelenggara:</strong> <?= $template['penyelenggara']; ?>
+                                            </p>
+                                            <p class="fs-5"><strong>Instruktur:</strong> <?= $template['instruktur']; ?></p>
 
                                             <div class="row">
                                                 <div class="col-md-6 text-center">
                                                     <p><strong>Tampak Depan</strong></p>
                                                     <img src="<?= BASE_URL ?>uploads/template/<?= $template['tampak_depan']; ?>"
-                                                        class="img-fluid rounded border"
-                                                        alt="Tampak Depan">
+                                                        class="img-fluid rounded border" alt="Tampak Depan">
+                                                </div>
+                                                <div class="col-md-6 text-center">
+                                                    <p><strong>Tampak Belakang</strong></p>
+                                                    <img src="<?= BASE_URL ?>uploads/template/<?= $template['tampak_belakang']; ?>"
+                                                        class="img-fluid rounded border" alt="Tampak Belakang">
                                                 </div>
                                             </div>
                                         </div>
