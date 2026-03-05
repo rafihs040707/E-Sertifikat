@@ -33,18 +33,12 @@ $data   = $result->fetch_assoc();
 // ======================
 if ($data && password_verify($password, $data['password'])) {
 
-    // CEK STATUS USER
-    if ((int)$data['status'] !== 1) {
-        // user nonaktif → tolak login
-        header("Location:" . BASE_URL . "index.php?status=off");
-        exit;
-    }
-
     // ======================
     // LOGIN SUKSES
     // ======================
     session_regenerate_id(true); // ⭐ anti session fixation
 
+    $_SESSION['user_id'] = $data['id'];
     $_SESSION['email'] = $data['email'];
     $_SESSION['role']  = $data['role'];
     $_SESSION['last_activity'] = time();
@@ -55,6 +49,9 @@ if ($data && password_verify($password, $data['password'])) {
         exit;
     } elseif ($data['role'] === "lo") {
         header("Location:" . BASE_URL . "lo/dashboard.php");
+        exit;
+    } elseif ($data['role'] === "direktur") {
+        header("Location:" . BASE_URL . "direktur/dashboard.php");
         exit;
     }
 
