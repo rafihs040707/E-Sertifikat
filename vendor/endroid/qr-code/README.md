@@ -2,9 +2,6 @@
 
 *By [endroid](https://endroid.nl/)*
 
-All my work is coffeerighted :coffee: :wink:  
-If you like my work please support me by visiting the [sponsor page](https://github.com/sponsors/endroid) or you can [buy me a coffee](https://www.buymeacoffee.com/endroid) :coffee:
-
 [![Latest Stable Version](http://img.shields.io/packagist/v/endroid/qr-code.svg)](https://packagist.org/packages/endroid/qr-code)
 [![Build Status](https://github.com/endroid/qr-code/workflows/CI/badge.svg)](https://github.com/endroid/qr-code/actions)
 [![Total Downloads](http://img.shields.io/packagist/dt/endroid/qr-code.svg)](https://packagist.org/packages/endroid/qr-code)
@@ -15,7 +12,7 @@ This library helps you generate QR codes in a jiffy. Makes use of [bacon/bacon-q
 to generate the matrix and [khanamiryan/qrcode-detector-decoder](https://github.com/khanamiryan/php-qrcode-detector-decoder)
 for validating generated QR codes. Further extended with Twig extensions, generation routes, a factory and a
 Symfony bundle for easy installation and configuration. Different writers are provided to generate the QR code
-as PNG, WebP, SVG, EPS or in binary format.
+as PNG, SVG, EPS or in binary format.
 
 ## Sponsored by
 
@@ -51,7 +48,7 @@ $builder = new Builder(
     size: 300,
     margin: 10,
     roundBlockSizeMode: RoundBlockSizeMode::Margin,
-    logoPath: __DIR__.'/assets/bender.png',
+    logoPath: __DIR__.'/assets/symfony.png',
     logoResizeToWidth: 50,
     logoPunchoutBackground: true,
     labelText: 'This is the label',
@@ -91,7 +88,7 @@ $qrCode = new QrCode(
 
 // Create generic logo
 $logo = new Logo(
-    path: __DIR__.'/assets/bender.png',
+    path: __DIR__.'/assets/symfony.png',
     resizeToWidth: 50,
     punchoutBackground: true
 );
@@ -138,7 +135,6 @@ found as a constant prefixed with WRITER_OPTION_ in the writer class.
   * `link`: a URL or an identifier returned by `AddLink()`.
 * `PngWriter`
   * `compression_level`: compression level (0-9, default: -1 = zlib default)
-  * `number_of_colors`: number of colors (1-256, null for true color and transparency)
 * `SvgWriter`
   * `block_id`: id of the block element for external reference (default: block)
   * `exclude_xml_declaration`: exclude XML declaration (default: false)
@@ -153,12 +149,9 @@ You can provide any writer options like this.
 ```php
 use Endroid\QrCode\Writer\SvgWriter;
 
-$builder = new Builder(
-    writer: new SvgWriter(),
-    writerOptions: [
-        SvgWriter::WRITER_OPTION_EXCLUDE_XML_DECLARATION => true
-    ]
-);
+$builder->writerOptions([
+    SvgWriter::WRITER_OPTION_EXCLUDE_XML_DECLARATION => true
+]);
 ```
 
 ### Encoding

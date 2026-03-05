@@ -88,9 +88,6 @@ final readonly class Builder implements BuilderInterface
         $writerOptions = $writerOptions ?? $this->writerOptions;
         $validateResult = $validateResult ?? $this->validateResult;
 
-        $createLabel = $this->labelText || $labelText;
-        $createLogo = $this->logoPath || $logoPath;
-
         $qrCode = new QrCode(
             data: $data ?? $this->data,
             encoding: $encoding ?? $this->encoding,
@@ -102,14 +99,14 @@ final readonly class Builder implements BuilderInterface
             backgroundColor: $backgroundColor ?? $this->backgroundColor
         );
 
-        $logo = $createLogo ? new Logo(
+        $logo = $this->logoPath ? new Logo(
             path: $logoPath ?? $this->logoPath,
             resizeToWidth: $logoResizeToWidth ?? $this->logoResizeToWidth,
             resizeToHeight: $logoResizeToHeight ?? $this->logoResizeToHeight,
             punchoutBackground: $logoPunchoutBackground ?? $this->logoPunchoutBackground
         ) : null;
 
-        $label = $createLabel ? new Label(
+        $label = $this->labelText ? new Label(
             text: $labelText ?? $this->labelText,
             font: $labelFont ?? $this->labelFont,
             alignment: $labelAlignment ?? $this->labelAlignment,

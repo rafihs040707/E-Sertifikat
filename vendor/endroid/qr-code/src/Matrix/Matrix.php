@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Endroid\QrCode\Matrix;
 
-use Endroid\QrCode\Exception\BlockSizeTooSmallException;
 use Endroid\QrCode\RoundBlockSizeMode;
 
 final readonly class Matrix implements MatrixInterface
@@ -15,7 +14,7 @@ final readonly class Matrix implements MatrixInterface
     private int $marginLeft;
     private int $marginRight;
 
-    /** @param array<array<int<0, 1>>> $blockValues */
+    /** @param array<array<int>> $blockValues */
     public function __construct(
         private array $blockValues,
         int $size,
@@ -44,7 +43,7 @@ final readonly class Matrix implements MatrixInterface
         }
 
         if ($blockSize < 1) {
-            throw new BlockSizeTooSmallException('Too much data: increase image dimensions or lower error correction level');
+            throw new \Exception('Too much data: increase image dimensions or lower error correction level');
         }
 
         $this->blockSize = $blockSize;
