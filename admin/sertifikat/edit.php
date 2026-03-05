@@ -22,7 +22,7 @@ $sertifikat = mysqli_fetch_assoc($data_sertifikat);
 
     <div class="mb-4">
         <label class="form-label ms-3">Nama:</label>
-        <input type="text" name="nama" value="<?= $sertifikat['nama']; ?>" class="form-control" maxlength="64" required>
+        <input type="text" name="nama" value="<?= $sertifikat['nama']; ?>" class="form-control" maxlength="100" required>
     </div>
 
     <div class="mb-4">
@@ -46,11 +46,6 @@ $sertifikat = mysqli_fetch_assoc($data_sertifikat);
     <div class="mb-4">
         <label class="form-label ms-3">Periode Akhir:</label>
         <input type="date" name="periode_akhir" value="<?= $sertifikat['periode_akhir']; ?>" class="form-control" required onfocus="this.showPicker()">
-    </div>
-
-    <div class="mb-4">
-        <label class="form-label ms-3">Issued Date:</label>
-        <input type="date" name="issued_date" value="<?= $sertifikat['issued_date']; ?>" class="form-control" required onfocus="this.showPicker()">
     </div>
 
     <div class="mb-4">

@@ -16,7 +16,7 @@ require_once BASE_PATH . '/config/config.php';
 
     <div class="mb-4">
         <label for="nama" class="form-label ms-3">Nama: </label>
-        <input type="text" name="nama" placeholder="Example: Arkan Beckham" class="form-control" maxlength="64"
+        <input type="text" name="nama" placeholder="Example: Arkan Beckham" class="form-control" maxlength="100"
             required>
     </div>
 
@@ -41,11 +41,6 @@ require_once BASE_PATH . '/config/config.php';
     <div class="mb-4">
         <label for="periode_akhir" class="form-label ms-3">Periode Akhir: </label>
         <input type="date" name="periode_akhir" class="form-control" required onfocus="this.showPicker()">
-    </div>
-
-    <div class="mb-4">
-        <label for="issued_date" class="form-label ms-3">Issued Date: </label>
-        <input type="date" name="issued_date" class="form-control" required onfocus="this.showPicker()">
     </div>
 
     <div class="mb-4">

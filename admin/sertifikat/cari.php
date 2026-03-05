@@ -77,7 +77,7 @@ $nomor = $halaman_awal + 1;
 <body>
 
     <div class="container-fluid mt-4">
-<h2 class="my-2 ms-3">Data Sertifikat</h2>
+        <h2 class="my-2 ms-3">Data Sertifikat</h2>
         <!-- FORM SEARCH -->
         <form method="GET" action="<?= BASE_URL ?>admin/sertifikat/cari.php" class="col-sm-4 mb-3 ms-4 mt-4">
             <label for="cari" class="ms-3">Masukkan Kata Kunci:</label>
@@ -130,7 +130,9 @@ $nomor = $halaman_awal + 1;
                                 $periode = date('F d', $awal) . " - " . date('F d, Y', $akhir);
                             }
 
-                            $terbit = date('F d, Y', strtotime($sertifikat['issued_date']));
+                            $terbit = !empty($sertifikat['issued_date'])
+                                ? date('F d, Y', strtotime($sertifikat['issued_date']))
+                                : '-';
                             ?>
                             <tr>
                                 <th><?= $nomor++; ?>.</th>
@@ -204,7 +206,7 @@ $nomor = $halaman_awal + 1;
         <?php } ?>
 
 
-        
+
         <!-- ======================= -->
         <!-- CARD (MOBILE) -->
         <!-- ======================= -->
@@ -225,7 +227,9 @@ $nomor = $halaman_awal + 1;
                     $periode = date('F d', $awal) . " - " . date('F d, Y', $akhir);
                 }
 
-                $terbit = date('d-m-Y', strtotime($sertifikat['issued_date']));
+                $terbit = !empty($sertifikat['issued_date'])
+                    ? date('F d, Y', strtotime($sertifikat['issued_date']))
+                    : '-';
                 ?>
                 <div class="d-block d-md-none">
                     <div class="card mb-2 border-primary shadow-sm">
