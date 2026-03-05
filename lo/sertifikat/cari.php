@@ -109,7 +109,6 @@ $nomor = $halaman_awal + 1;
                         <th>Pelatihan</th>
                         <th>Periode</th>
                         <th>Issued Date</th>
-                        <th>Status</th>
                         <th>No Sertifikat</th>
                         <th>Template Yang Digunakan</th>
                         <th>Aksi</th>
@@ -137,14 +136,6 @@ $nomor = $halaman_awal + 1;
                                 <td><?= $sertifikat['nama_pelatihan']; ?></td>
                                 <td><?= $periode ?></td>
                                 <td><?= $terbit ?></td>
-
-                                <td>
-                                    <?php if ($sertifikat['status'] == 0) { ?>
-                                        <span class="badge bg-danger">Tidak Valid</span>
-                                    <?php } else { ?>
-                                        <span class="badge bg-success">Valid</span>
-                                    <?php } ?>
-                                </td>
 
                                 <td>
                                     <?php if (empty($sertifikat['nomor_sertifikat'])) { ?>
@@ -243,11 +234,6 @@ $nomor = $halaman_awal + 1;
                                 <div class="fw-bold">
                                     <?= $nomor_mobile++; ?>. <?= $sertifikat['nama']; ?>
                                 </div>
-                                <?php if ($sertifikat['status'] == 0) { ?>
-                                    <span class="badge bg-danger">Tidak Valid</span>
-                                <?php } else { ?>
-                                    <span class="badge bg-success">Valid</span>
-                                <?php } ?>
                             </div>
 
                             <div class="text-muted small">

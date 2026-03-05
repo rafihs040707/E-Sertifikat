@@ -16,8 +16,6 @@ $nama         = trim($_POST['nama'] ?? '');
 $pelatihan    = (int)($_POST['pelatihan'] ?? 0);
 $periode_awal = trim($_POST['periode_awal'] ?? '');
 $periode_akhir= trim($_POST['periode_akhir'] ?? '');
-$issued_date  = trim($_POST['issued_date'] ?? '');
-$status       = (int)($_POST['status'] ?? 0);
 $template_id  = (int)($_POST['template_id'] ?? 0);
 
 // ======================
@@ -29,7 +27,6 @@ if (
     !$pelatihan ||
     $periode_awal === '' ||
     $periode_akhir === '' ||
-    $issued_date === '' ||
     !$template_id
 ) {
     $_SESSION['error'] = "Semua field wajib diisi.";
@@ -53,8 +50,6 @@ $stmt = $conn->prepare("
         pelatihan_id = ?, 
         periode_awal = ?, 
         periode_akhir = ?, 
-        issued_date = ?, 
-        status = ?, 
         template_id = ?
     WHERE id = ?
 ");
@@ -66,13 +61,11 @@ if (!$stmt) {
 }
 
 $stmt->bind_param(
-    "sisssiii",
+    "sissii",
     $nama,
     $pelatihan,
     $periode_awal,
     $periode_akhir,
-    $issued_date,
-    $status,
     $template_id,
     $id
 );

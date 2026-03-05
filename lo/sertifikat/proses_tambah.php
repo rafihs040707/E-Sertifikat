@@ -11,8 +11,6 @@ if (isset($_POST['submit'])) {
     $pelatihan_id = trim($_POST['pelatihan'] ?? '');
     $periode_awal = trim($_POST['periode_awal'] ?? '');
     $periode_akhir = trim($_POST['periode_akhir'] ?? '');
-    $issued_date = trim($_POST['issued_date'] ?? '');
-    $status = trim($_POST['status'] ?? '');
     $template_id = trim($_POST['template_id'] ?? '');
 
     // ======================
@@ -23,8 +21,6 @@ if (isset($_POST['submit'])) {
         $pelatihan_id === '' ||
         $periode_awal === '' ||
         $periode_akhir === '' ||
-        $issued_date === '' ||
-        $status === '' ||
         $template_id === ''
     ) {
         $_SESSION['error'] = "Semua field wajib diisi!";
@@ -46,18 +42,16 @@ if (isset($_POST['submit'])) {
     // ======================
     $stmt = $conn->prepare("
         INSERT INTO sertifikat 
-        (nama, pelatihan_id, periode_awal, periode_akhir, issued_date, status, template_id)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
+        (nama, pelatihan_id, periode_awal, periode_akhir, template_id)
+        VALUES (?, ?, ?, ?, ?)
     ");
 
     $stmt->bind_param(
-        "sisssii",
+        "sissi",
         $nama,
         $pelatihan_id,
         $periode_awal,
         $periode_akhir,
-        $issued_date,
-        $status,
         $template_id
     );
 
