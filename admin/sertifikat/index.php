@@ -112,7 +112,7 @@ require_once BASE_PATH . '/config/config.php';
                     }
                     $terbit = !empty($sertifikat['issued_date'])
                         ? date('F d, Y', strtotime($sertifikat['issued_date']))
-                        : '-';
+                        : '<span class="badge bg-warning text-dark">Menunggu Validasi Direktur</span>';
                     ?>
                     <tr>
                         <th><?php echo $nomor++; ?>.</th>
@@ -133,10 +133,8 @@ require_once BASE_PATH . '/config/config.php';
                             <a href="<?= BASE_URL ?>admin/sertifikat/edit.php?id=<?= $sertifikat['id']; ?>"
                                 class="btn btn-sm btn-warning text-black">Edit</a>
 
-                            <?php if (!empty($sertifikat['file_sertifikat'])): ?>
-                                <a href="<?= BASE_URL ?>pdf/preview.php?id=<?= $sertifikat['id']; ?>"
-                                    class="btn btn-sm btn-info text-black" target="_blank">Preview</a>
-                            <?php endif; ?>
+                            <a href="<?= BASE_URL ?>pdf/preview.php?id=<?= $sertifikat['id']; ?>"
+                                class="btn btn-sm btn-info text-black" target="_blank">Preview</a>
 
                             <?php if ($sertifikat['status'] === 'approved'): ?>
                                 <a href="<?= BASE_URL ?>pdf/generate.php?id=<?= $sertifikat['id']; ?>"
@@ -208,7 +206,7 @@ require_once BASE_PATH . '/config/config.php';
 
         $terbit = !empty($sertifikat['issued_date'])
             ? date('F d, Y', strtotime($sertifikat['issued_date']))
-            : '-';
+            : '<span class="badge bg-warning text-dark">Menunggu Validasi Direktur</span>';
         ?>
         <div class="d-block d-md-none">
             <div class="card mb-2 border-primary shadow-sm">
@@ -245,10 +243,8 @@ require_once BASE_PATH . '/config/config.php';
                         <a href="<?= BASE_URL ?>admin/sertifikat/edit.php?id=<?= $sertifikat['id']; ?>"
                             class="btn btn-sm btn-warning text-black w-100">Edit</a>
 
-                        <?php if (!empty($sertifikat['file_sertifikat'])): ?>
-                            <a href="<?= BASE_URL ?>pdf/preview.php?id=<?= $sertifikat['id']; ?>"
-                                class="btn btn-sm btn-info text-black w-100" target="_blank">Preview</a>
-                        <?php endif; ?>
+                        <a href="<?= BASE_URL ?>pdf/preview.php?id=<?= $sertifikat['id']; ?>"
+                            class="btn btn-sm btn-info text-black w-100" target="_blank">Preview</a>
 
                         <?php if ($sertifikat['status'] === 'approved'): ?>
                             <a href="<?= BASE_URL ?>pdf/generate.php?id=<?= $sertifikat['id']; ?>"
