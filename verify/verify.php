@@ -103,7 +103,7 @@ if ($nomor) {
 // ======================
 $color = $statusValid ? "#329F4A" : "#E63946";
 $icon = $statusValid ? BASE_URL . "image/centang.png" : BASE_URL . "image/silang.png";
-$title = $statusValid ? "Sertifikat Terdaftar" : "Sertifikat tidak Terdaftar";
+$title = $statusValid ? "Sertifikat Valid dan Terdaftar" : "Sertifikat tidak Terdaftar";
 ?>
 
 <!DOCTYPE html>
