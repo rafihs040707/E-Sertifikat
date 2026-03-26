@@ -50,6 +50,8 @@ $q = mysqli_query($conn, "
 SELECT 
     s.*, 
     t.tampak_depan,
+    t.tampak_belakang,
+    t.file_layout,
     p.nama_pelatihan
 FROM sertifikat s
 JOIN template t ON s.template_id = t.id
@@ -58,6 +60,9 @@ WHERE s.id = '$id'
 ");
 
 $data = mysqli_fetch_assoc($q);
+
+$bg_depan = $data['tampak_depan'];
+$bg_belakang = $data['tampak_belakang'];
 
 if (!$data) {
     die("Data tidak ditemukan");
@@ -96,7 +101,7 @@ if (!$isPreview && empty($data['nomor_sertifikat'])) {
 
     try {
 
-        $prefix = "$tahun$kategori$bulan";
+        $prefix = "$tahun$bulan$kategori";
 
         $q2 = mysqli_query($conn, "
         SELECT MAX(
@@ -120,7 +125,7 @@ if (!$isPreview && empty($data['nomor_sertifikat'])) {
             randomLetters(2, $upper) .
             randomLetters(2, $lower);
 
-        $nomor_sertifikat = "{$tahun}{$kategori}{$bulan}{$nomorUrut}/{$unique6}{$inisialBelakang}";
+        $nomor_sertifikat = "{$tahun}{$bulan}{$kategori}{$nomorUrut}/{$unique6}{$inisialBelakang}";
 
         mysqli_query($conn, "
         UPDATE sertifikat 
@@ -162,7 +167,8 @@ if (!is_dir($qrFolder)) {
     mkdir($qrFolder, 0777, true);
 }
 
-$safeKode = preg_replace('/[^A-Za-z0-9]/', '_', $kode_unik);
+$kodeUtama = explode('/', $kode_unik)[0];
+$safeKode  = preg_replace('/[^A-Za-z0-9]/', '', $kodeUtama);
 $qrFilename = "qr_" . $safeKode . ".png";
 $qrPath = $qrFolder . $qrFilename;
 $qrUrlPath = BASE_URL . "uploads/qrcode/" . $qrFilename;
@@ -194,136 +200,24 @@ if ($approved) {
     $ttdDirektur = "<img src='{$ttdPath}' width='200'>";
 }
 
-$templatePath = BASE_URL . "uploads/template/" . $data['tampak_depan'];
 
-$html = "
-<!DOCTYPE html>
-<html>
-<head>
-<style>
 
-@page { margin:0; }
 
-body{
-margin:0;
-padding:0;
-font-family:'Times New Roman',serif;
+
+// Mengambil tampilan html dari folder pdf/layout/
+$templateFile = BASE_PATH . "/pdf/layout/" . $data['file_layout'];
+if (!$data['file_layout'] || !file_exists($templateFile)) {
+    die("Template tidak ditemukan");
 }
+/* menangkap HTML dari layout */
+ob_start();
+include $templateFile;
+$html = ob_get_clean();
 
-.bg{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-z-index:-1;
-}
 
-.nama{
-position:absolute;
-top:300px;
-left:53px;
-width:100%;
-text-align:center;
-font-size:45px;
-font-weight:bold;
-color:#cfa34a;
-}
-
-.pelatihan{
-position:absolute;
-top:445px;
-left:60px;
-width:100%;
-text-align:center;
-font-size:26px;
-font-weight:bold;
-color:#cfa34a;
-}
-
-.periode{
-position:absolute;
-top:505px;
-left:50px;
-width:100%;
-text-align:center;
-font-size:20px;
-color:black;
-}
-
-.issued{
-position:absolute;
-bottom:27px;
-left:50px;
-font-size:15px;
-}
-
-.nama_ceo{
-position:absolute;
-bottom:55px;
-left:50px;
-width:100%;
-text-align:center;
-font-size:18px;
-}
-
-.ceo{
-position:absolute;
-bottom:30px;
-left:50px;
-width:100%;
-text-align:center;
-font-size:16px;
-}
-
-.ttd_direktur{
-position:absolute;
-bottom:40px;
-left:510px;
-width:100%;
-}
-
-.nomor{
-position:absolute;
-bottom:145px;
-right:35px;
-font-size:15px;
-}
-
-.qr{
-position:absolute;
-bottom:26px;
-right:22px;
-}
-
-</style>
-</head>
-
-<body>
-
-<img class='bg' src='{$templatePath}'>
-
-<div class='nama'>{$data['nama']}</div>
-<div class='pelatihan'><b>{$data['nama_pelatihan']}</b></div>
-<div class='periode'>Periode: {$periode}</div>
-
-<div class='issued'>Issued Date: {$issued}</div>
-<div class='nama_ceo'><u>Endra Prasetya Rudiyanto</u></div>
-<div class='ceo'>Chief Executive Officer</div>
-<div class='ttd_direktur'>{$ttdDirektur}</div>
-
-<div class='nomor'>{$nomor_tampil}</div>
-
-<div class='qr'>
-<img src='{$qrUrlPath}' width='120'>
-</div>
-
-</body>
-</html>
-";
 
 $options = new Options();
-$options->set('isRemoteEnabled', true);
+$options->set('isRemoteEnabled  ', true);
 $options->set('isHtml5ParserEnabled', true);
 
 $dompdf = new Dompdf($options);
