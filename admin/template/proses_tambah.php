@@ -8,6 +8,7 @@ if (isset($_POST['submit'])) {
 
     $nama_template = mysqli_real_escape_string($conn, $_POST['nama_template']);
     $penyelenggara = mysqli_real_escape_string($conn, $_POST['penyelenggara']);
+    $file_layout = mysqli_real_escape_string($conn, $_POST['file_layout']);
     $targetDir = BASE_PATH . "/uploads/template/";
 
     if (!is_dir($targetDir)) {
@@ -40,10 +41,8 @@ if (isset($_POST['submit'])) {
     $tampak_depan = uploadFile('tampak_depan', $targetDir);
     $tampak_belakang = uploadFile('tampak_belakang', $targetDir);
 
-    $stmt = $conn->prepare("INSERT INTO template (nama_template, penyelenggara, tampak_depan, tampak_belakang) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("ssss", $nama_template, $penyelenggara, $tampak_depan, $tampak_belakang);
-    
-
+    $stmt = $conn->prepare("INSERT INTO template (nama_template, penyelenggara, tampak_depan, tampak_belakang, file_layout) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssss", $nama_template, $penyelenggara, $tampak_depan, $tampak_belakang, $file_layout);
 
     if ($stmt->execute()) {
         $_SESSION['success'] = "Data template berhasil ditambahkan dan tersimpan!";

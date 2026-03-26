@@ -75,6 +75,7 @@ $nomor = $halaman_awal + 1;
                         <th>Penyelenggara</th>
                         <th>Tampak Depan</th>
                         <th>Tampak Belakang</th>
+                        <th>Layout</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -95,6 +96,7 @@ $nomor = $halaman_awal + 1;
                                         <img src="uploads/template/<?php echo $template['tampak_belakang']; ?>" width="80">
                                     <?php } ?>
                                 </td>
+                                <td><?= str_replace('.php', '', $template['file_layout']) ?></td>
                                 <td>
                                     <a class="btn btn-sm btn-info text-black"
                                         href="<?= BASE_URL ?>admin/template/edit.php?id=<?= $template['id']; ?>">Edit</a>

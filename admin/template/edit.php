@@ -8,6 +8,7 @@ require_once BASE_PATH . '/config/config.php';
 $id = $_GET['id'];
 $data_template = mysqli_query($conn, "SELECT * FROM template WHERE id='$id'");
 $template = mysqli_fetch_assoc($data_template);
+$layouts = glob(BASE_PATH . "/pdf/layout/*.php");
 ?>
 
 <h2 class="ms-5 my-4">Edit Data Template</h2>
@@ -19,12 +20,14 @@ $template = mysqli_fetch_assoc($data_template);
 
     <div class="mb-2">
         <label class="form-label ms-3">Nama Template:</label>
-        <input type="text" name="nama_template" value="<?= $template['nama_template']; ?>" class="form-control" required>
+        <input type="text" name="nama_template" value="<?= $template['nama_template']; ?>" class="form-control"
+            required>
     </div>
 
     <div class="mb-2">
         <label class="form-label ms-3">Penyelenggara:</label>
-        <input type="text" name="penyelenggara" value="<?= $template['penyelenggara']; ?>" class="form-control" required>
+        <input type="text" name="penyelenggara" value="<?= $template['penyelenggara']; ?>" class="form-control"
+            required>
     </div>
 
     <div class="mb-2">
@@ -36,9 +39,26 @@ $template = mysqli_fetch_assoc($data_template);
 
     <div class="mb-2">
         <p class="ms-2">Gambar tampak belakang lama:</p>
+
         <img src="<?= BASE_URL ?>uploads/template/<?= $template['tampak_belakang']; ?>" width="100px" class="ms-5"><br>
+
         <label class="form-label ms-3">Tampak Belakang:</label>
         <input type="file" name="tampak_belakang" class="form-control" accept="image/*">
+    </div>
+
+    <div class="mb-2">
+        <label for="file_layout" class="form-label ms-3">Layout: </label>
+        <select name="file_layout" required class="form-control">
+            <option value="" disabled <?= empty($template['file_layout']) ? 'selected' : '' ?>>
+                Pilih Layout
+            </option>
+            <?php foreach ($layouts as $layout): ?>
+                <?php $file = basename($layout); ?>
+                <option value="<?= $file ?>" <?= ($template['file_layout'] == $file) ? 'selected' : '' ?>>
+                    <?= str_replace('.php', '', $file) ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
     </div>
 
     <div class="d-flex justify-content-center mt-3">

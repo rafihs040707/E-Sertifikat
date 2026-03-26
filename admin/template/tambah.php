@@ -1,4 +1,4 @@
-<?php 
+<?php
 $allowed_roles = ["admin"];
 require_once __DIR__ . '/../../bootstrap.php';
 require_once BASE_PATH . '/auth/cek_login.php';
@@ -21,8 +21,8 @@ require_once BASE_PATH . '/admin/header.php';
 
     <div class="mb-2">
         <label for="penyelenggara" class="form-label ms-3">Penyelenggara: </label>
-        <input type="text" name="penyelenggara" placeholder="Example: PT ABC" class="form-control"
-            maxlength="100" required><br>
+        <input type="text" name="penyelenggara" placeholder="Example: PT ABC" class="form-control" maxlength="100"
+            required><br>
     </div>
 
     <div class="mb-2">
@@ -33,6 +33,22 @@ require_once BASE_PATH . '/admin/header.php';
     <div class="mb-2">
         <label for="tampak_belakang" class="form-label ms-3">Tampak Belakang: </label>
         <input type="file" name="tampak_belakang" class="form-control" accept="image/*"><br>
+    </div>
+
+    <div class="mb-2">
+        <label for="file_layout" class="form-label ms-3">Layout: </label>
+        <select name="file_layout" required class="form-control">
+            <option value="" selected disabled>Pilih Layout</option>
+            <?php
+            $files = glob(BASE_PATH . "/pdf/layout/*.php");
+            foreach ($files as $file) {
+                $filename = basename($file); // contoh: depan_belakang.php
+                $value = $filename; // atau bisa tanpa .php kalau mau
+                $label = ucwords(str_replace([".php", "_"], ["", " "], $filename));
+                echo "<option value='$value'>$label</option>";
+            }
+            ?>
+        </select>
     </div>
 
     <div class="d-grid gap-2 d-flex justify-content-center mt-3">

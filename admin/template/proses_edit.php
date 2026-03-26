@@ -9,6 +9,7 @@ if (isset($_POST['update'])) {
     $id   = $_POST['id'];
     $nama_template = $_POST['nama_template'];
     $penyelenggara = $_POST['penyelenggara'];
+    $file_layout = $_POST['file_layout'];
 
     $tampak_depan_lama    = $_POST['tampak_depan_lama'];
     $tampak_belakang_lama    = $_POST['tampak_belakang_lama'];
@@ -47,7 +48,8 @@ if (isset($_POST['update'])) {
                 nama_template='$nama_template',
                 penyelenggara='$penyelenggara',
                 tampak_depan='$tampak_depan',
-                tampak_belakang='$tampak_belakang'
+                tampak_belakang='$tampak_belakang',
+                file_layout='$file_layout'
                 WHERE id='$id'";
 
     if (mysqli_query($conn, $query)) {

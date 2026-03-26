@@ -79,6 +79,7 @@ require_once BASE_PATH . '/config/config.php';
                     <th>Penyelenggara</th>
                     <th>Tampak Depan</th>
                     <th>Tampak Belakang</th>
+                    <th>Layout</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -103,14 +104,16 @@ require_once BASE_PATH . '/config/config.php';
                         <th><?php echo $nomor++; ?></th>
                         <td><?php echo $template['nama_template']; ?></td>
                         <td><?php echo $template['penyelenggara']; ?></td>
-                        <td><img src="<?= BASE_URL ?>uploads/template/<?php echo $template['tampak_depan']; ?>" width="80">
+                        <td><img src="<?= BASE_URL ?>uploads/template/<?php echo $template['tampak_depan']; ?>" width="80px">
                         </td>
-                        <td><?php if (empty($template['tampak_belakang'])) { ?>
-                                <span class="badge bg-secondary">Tidak ada Tampak Belakang</span>
+                        <td><?php if (!empty($template['tampak_belakang'])) { ?>
+                                <img src="<?= BASE_URL ?>uploads/template/<?= $template['tampak_belakang']; ?>"
+                                    width="80px">
                             <?php } else { ?>
-                                <img src="uploads/template/<?php echo $template['tampak_belakang']; ?>" width="80">
+                                <span class="badge bg-secondary">Tidak ada Tampak Belakang</span>
                             <?php } ?>
                         </td>
+                        <td><?= str_replace('.php', '', $template['file_layout']) ?></td>
                         <td>
                             <a href="<?= BASE_URL ?>admin/template/edit.php?id=<?= $template['id']; ?>"
                                 class="btn btn-sm btn-info text-black mt-2">Edit</a>
@@ -142,11 +145,11 @@ require_once BASE_PATH . '/config/config.php';
                                         </div>
                                         <div class="col-md-6 text-center">
                                             <p><strong>Tampak Belakang</strong></p>
-                                            <?php if (empty($template['tampak_belakang'])) { ?>
-                                                <span class="badge bg-secondary">Tidak ada Tampak Belakang</span>
+                                            <?php if (!empty($template['tampak_belakang'])) { ?>
+                                                <img src="<?= BASE_URL ?>uploads/template/<?= $template['tampak_belakang']; ?>"
+                                                    class="img-fluid rounded border" alt="Tampak Belakang">
                                             <?php } else { ?>
-                                                <img src="uploads/template/<?php echo $template['tampak_belakang']; ?>"
-                                                    width="80">
+                                                <span class="badge bg-secondary">Tidak ada Tampak Belakang</span>
                                             <?php } ?>
                                         </div>
                                     </div>
