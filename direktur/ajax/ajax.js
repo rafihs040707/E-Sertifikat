@@ -10,11 +10,12 @@ function loadData(page = 1) {
 }
 
 // 🔹 trigger saat dropdown berubah
-document.getElementById("filterStatus").addEventListener("change", () => {
-    loadData(1);
-});
-document.getElementById("filterBulan").addEventListener("change", () => {
-    loadData(1);
+document.addEventListener("change", function(e){
+
+    if(e.target.id === "filterStatus" || e.target.id === "filterBulan"){
+        loadData();
+    }
+
 });
 
 // 🔹 handle pagination ajax
