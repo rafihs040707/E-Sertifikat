@@ -16,13 +16,13 @@ require_once BASE_PATH . '/admin/header.php';
     <div class="mb-2">
         <label for="nama_template" class="form-label ms-3">Nama Template: </label>
         <input type="text" name="nama_template" placeholder="Example: Untuk Cyber Security" class="form-control"
-            maxlength="100" required><br>
+            maxlength="100" required autocomplete="off"><br>
     </div>
 
     <div class="mb-2">
         <label for="penyelenggara" class="form-label ms-3">Penyelenggara: </label>
         <input type="text" name="penyelenggara" placeholder="Example: PT ABC" class="form-control" maxlength="100"
-            required><br>
+            required autocomplete="off"><br>
     </div>
 
     <div class="mb-2">

@@ -16,12 +16,12 @@ require_once BASE_PATH . '/admin/header.php';
     <div class="mb-2">
         <label for="nama" class="form-label ms-3">Nama: </label>
         <input type="text" name="nama" placeholder="Example: Front-End" class="form-control" maxlength="100"
-            required><br>
+            required autocomplete="off"><br>
     </div>
 
     <div class="mb-2">
         <label for="email" class="form-label ms-3">Email: </label>
-        <input type="email" name="email" placeholder="Example@gmail.com" class="form-control" maxlength="64"><br>
+        <input type="email" name="email" placeholder="Example@gmail.com" class="form-control" maxlength="64" autocomplete="off"><br>
     </div>
 
     <div class="mb-2">
