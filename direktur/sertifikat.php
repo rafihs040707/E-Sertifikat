@@ -234,7 +234,7 @@ while ($row = mysqli_fetch_assoc($query)) {
                                         <a href="validasi.php?id=<?= $sertifikat['id'] ?>"
                                             class="btn btn-success btn-sm">Validasi</a>
                                     <?php else: ?>
-                                        <span class="badge bg-success">Sudah di-Validasi</span>
+                                        <span class="badge bg-success">Sudah divalidasi</span>
                                     <?php endif; ?>
                                 </td>
                             </tr>
