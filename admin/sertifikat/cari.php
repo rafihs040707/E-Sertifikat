@@ -132,7 +132,7 @@ $nomor = $halaman_awal + 1;
 
                             $terbit = !empty($sertifikat['issued_date'])
                                 ? date('F d, Y', strtotime($sertifikat['issued_date']))
-                                : '-';
+                                : '<span class="badge bg-warning text-dark">Menunggu Validasi Direktur</span>';
                             ?>
                             <tr>
                                 <th><?= $nomor++; ?>.</th>
@@ -151,26 +151,42 @@ $nomor = $halaman_awal + 1;
 
                                 <td><?= $sertifikat['nama_template']; ?></td>
 
-                                <td class="text-nowrap">
+                                <td style="white-space: nowrap; min-width: 250px;">
+                            <div class="d-flex flex-nowrap gap-1">
+                                <!-- Edit -->
+                                <div>
                                     <a href="<?= BASE_URL ?>admin/sertifikat/edit.php?id=<?= $sertifikat['id']; ?>"
-                                        class="btn btn-sm btn-warning text-black mt-1">Edit</a>
-                                    <a href="<?= BASE_URL ?>pdf/generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>&preview=1"
-                                        class="btn btn-sm btn-info text-black mt-1" target="_blank">Preview</a>
-                                    <a href="<?= BASE_URL ?>pdf/generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>"
-                                        class="btn btn-sm btn-primary text-white mt-1">Generate</a>
-                                    <?php
-                                    $filePdf = "<?= BASE_URL ?>uploads/sertifikat/" . $sertifikat['file_sertifikat'];
-                                    if (!empty($sertifikat['file_sertifikat']) && file_exists($filePdf)) {
-                                        $link = "<?= BASE_URL ?>pdf/download.php?id=" . $sertifikat['id'];
-                                    } else {
-                                        $link = "<?= BASE_URL ?>pdf/generate_pdf_sertifikat.php?id=" . $sertifikat['id'];
-                                    }
-                                    ?>
-                                    <a href="<?= $link; ?>" class="btn btn-sm btn-success text-white mt-1">Download PDF</a>
+                                        class="btn btn-sm btn-warning text-black">Edit</a>
+                                </div>
+                                <!-- Preview -->
+                                <div>
+                                    <a href="<?= BASE_URL ?>pdf/preview.php?id=<?= $sertifikat['id']; ?>"
+                                        class="btn btn-sm btn-info text-black" target="_blank">Preview</a>
+                                </div>
+                                <!-- Generate -->
+                                <div style="min-width: 110px;">
+                                    <?php if ($sertifikat['status'] === 'approved'): ?>
+                                        <a href="<?= BASE_URL ?>pdf/generate.php?id=<?= $sertifikat['id']; ?>"
+                                            class="btn btn-sm btn-primary w-100 text-white">Generate</a>
+                                    <?php else: ?>
+                                        <span class="badge bg-warning text-dark">Belum divalidasi</span>
+                                    <?php endif; ?>
+                                </div>
+                                <!-- Download -->
+                                <div style="min-width: 90px;">
+                                    <?php if (!empty($sertifikat['file_sertifikat'])): ?>
+                                        <a href="<?= BASE_URL ?>pdf/download.php?id=<?= $sertifikat['id'] ?>"
+                                            class="btn btn-success btn-sm w-100">Download</a>
+                                    <?php endif; ?>
+                                </div>
+                                <!-- Hapus -->
+                                <div>
                                     <a href="<?= BASE_URL ?>admin/sertifikat/hapus.php?id=<?= $sertifikat['id']; ?>"
-                                        class="btn btn-sm btn-danger text-white mt-1"
+                                        class="btn btn-sm btn-danger text-white"
                                         onclick="return confirm('Apakah yakin data sertifikat ini akan dihapus?');">Hapus</a>
-                                </td>
+                                </div>
+                            </div>
+                        </td>
                             </tr>
                         <?php } ?>
                     <?php } else { ?>
@@ -229,7 +245,7 @@ $nomor = $halaman_awal + 1;
 
                 $terbit = !empty($sertifikat['issued_date'])
                     ? date('F d, Y', strtotime($sertifikat['issued_date']))
-                    : '-';
+                    : '<span class="badge bg-warning text-dark">Menunggu Validasi Direktur</span>';
                 ?>
                 <div class="d-block d-md-none">
                     <div class="card mb-2 border-primary shadow-sm">
@@ -267,22 +283,23 @@ $nomor = $halaman_awal + 1;
                                 <a href="<?= BASE_URL ?>admin/sertifikat/edit.php?id=<?= $sertifikat['id']; ?>"
                                     class="btn btn-sm btn-warning text-black w-100">Edit</a>
 
-                                <a href="<?= BASE_URL ?>pdf/generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>&preview=1"
+                                <a href="<?= BASE_URL ?>pdf/preview.php?id=<?= $sertifikat['id']; ?>"
                                     class="btn btn-sm btn-info text-black w-100" target="_blank">Preview</a>
 
-                                <a href="<?= BASE_URL ?>pdf/generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>"
-                                    class="btn btn-sm btn-primary text-white w-100">Generate</a>
+                                <?php if ($sertifikat['status'] === 'approved'): ?>
+                                    <a href="<?= BASE_URL ?>pdf/generate.php?id=<?= $sertifikat['id']; ?>"
+                                        class="btn btn-sm btn-primary text-white w-100">Generate</a>
+                                <?php else: ?>
+                                    <span class="badge bg-warning text-dark w-100">Menunggu Validasi Direktur</span>
+                                <?php endif; ?>
 
-                                <?php
-                                $filePdf = "<?= BASE_URL ?>uploads/sertifikat/" . $sertifikat['file_sertifikat'];
-                                if (!empty($sertifikat['file_sertifikat']) && file_exists($filePdf)) {
-                                    $link = "<?= BASE_URL ?>pdf/download.php?id=" . $sertifikat['id'];
-                                } else {
-                                    $link = "<?= BASE_URL ?>pdf/generate_pdf_sertifikat.php?id=" . $sertifikat['id'];
-                                }
-                                ?>
+                                <?php if (!empty($sertifikat['file_sertifikat'])): ?>
+                                    <a href="<?= BASE_URL ?>pdf/download.php?id=<?= $sertifikat['id'] ?>"
+                                        class="btn btn-success btn-sm w-100">
+                                        Download
+                                    </a>
+                                <?php endif; ?>
 
-                                <a href="<?= $link; ?>" class="btn btn-sm btn-success text-white w-100">Download PDF</a>
                                 <a href="<?= BASE_URL ?>admin/sertifikat/hapus.php?id=<?= $sertifikat['id']; ?>"
                                     class="btn btn-sm btn-danger text-white w-100"
                                     onclick="return confirm('Apakah yakin data sertifikat ini akan dihapus?');">Hapus</a>

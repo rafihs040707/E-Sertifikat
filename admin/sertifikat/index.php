@@ -112,7 +112,7 @@ require_once BASE_PATH . '/config/config.php';
                     }
                     $terbit = !empty($sertifikat['issued_date'])
                         ? date('F d, Y', strtotime($sertifikat['issued_date']))
-                        : '<span class="badge bg-warning text-dark">Menunggu Validasi Direktur</span>';
+                        : '<span class="badge bg-warning text-dark">Belum divalidasi</span>';
                     ?>
                     <tr>
                         <th><?php echo $nomor++; ?>.</th>
@@ -128,31 +128,42 @@ require_once BASE_PATH . '/config/config.php';
                             <?php } ?>
                         </td>
                         <td><?php echo $sertifikat['nama_template']; ?></td>
-                        <td class="text-nowrap">
-
-                            <a href="<?= BASE_URL ?>admin/sertifikat/edit.php?id=<?= $sertifikat['id']; ?>"
-                                class="btn btn-sm btn-warning text-black">Edit</a>
-
-                            <a href="<?= BASE_URL ?>pdf/preview.php?id=<?= $sertifikat['id']; ?>"
-                                class="btn btn-sm btn-info text-black" target="_blank">Preview</a>
-
-                            <?php if ($sertifikat['status'] === 'approved'): ?>
-                                <a href="<?= BASE_URL ?>pdf/generate.php?id=<?= $sertifikat['id']; ?>"
-                                    class="btn btn-sm btn-primary text-white">Generate</a>
-                            <?php else: ?>
-                                <span class="badge bg-warning text-dark">Menunggu Validasi Direktur</span>
-                            <?php endif; ?>
-
-                            <?php if (!empty($sertifikat['file_sertifikat'])): ?>
-                                <a href="<?= BASE_URL ?>pdf/download.php?id=<?= $sertifikat['id'] ?>"
-                                    class="btn btn-success btn-sm">
-                                    Download
-                                </a>
-                            <?php endif; ?>
-
-                            <a href="<?= BASE_URL ?>admin/sertifikat/hapus.php?id=<?= $sertifikat['id']; ?>"
-                                class="btn btn-sm btn-danger text-white"
-                                onclick="return confirm('Apakah yakin data sertifikat ini akan dihapus?');">Hapus</a>
+                        <td style="white-space: nowrap; min-width: 250px;">
+                            <div class="d-flex flex-nowrap gap-1">
+                                <!-- Edit -->
+                                <div>
+                                    <a href="<?= BASE_URL ?>admin/sertifikat/edit.php?id=<?= $sertifikat['id']; ?>"
+                                        class="btn btn-sm btn-warning text-black">Edit</a>
+                                </div>
+                                <!-- Preview -->
+                                <div>
+                                    <a href="<?= BASE_URL ?>pdf/preview.php?id=<?= $sertifikat['id']; ?>"
+                                        class="btn btn-sm btn-info text-black" target="_blank">Preview</a>
+                                </div>
+                                <!-- Generate -->
+                                <div style="min-width: 110px;">
+                                    <?php if ($sertifikat['status'] === 'approved'): ?>
+                                        <a href="<?= BASE_URL ?>pdf/generate.php?id=<?= $sertifikat['id']; ?>"
+                                            class="btn btn-sm btn-primary w-100 text-white">Generate</a>
+                                    <?php else: ?>
+                                        <span class="badge bg-warning text-dark">Belum divalidasi</span>
+                                        <!-- <div class="btn btn-sm bg-warning text-dark pe-none" aria-disabled="true">Belum di-Validasi</div> -->
+                                    <?php endif; ?>
+                                </div>
+                                <!-- Download -->
+                                <div style="min-width: 90px;">
+                                    <?php if (!empty($sertifikat['file_sertifikat'])): ?>
+                                        <a href="<?= BASE_URL ?>pdf/download.php?id=<?= $sertifikat['id'] ?>"
+                                            class="btn btn-success btn-sm w-100">Download</a>
+                                    <?php endif; ?>
+                                </div>
+                                <!-- Hapus -->
+                                <div>
+                                    <a href="<?= BASE_URL ?>admin/sertifikat/hapus.php?id=<?= $sertifikat['id']; ?>"
+                                        class="btn btn-sm btn-danger text-white"
+                                        onclick="return confirm('Apakah yakin data sertifikat ini akan dihapus?');">Hapus</a>
+                                </div>
+                            </div>
                         </td>
                     </tr>
                     <?php

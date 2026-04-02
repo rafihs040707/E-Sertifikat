@@ -17,13 +17,13 @@ require_once BASE_PATH . '/config/config.php';
     <div class="mb-4">
         <label for="nama" class="form-label ms-3">Nama: </label>
         <input type="text" name="nama" placeholder="Example: Arkan Beckham" class="form-control" maxlength="100"
-            required>
+            required autocomplete="off">
     </div>
 
     <div class="mb-4">
         <label for="pelatihan" class="form-label ms-3">Pelatihan: </label>
         <select class="form-select form-select-sm" name="pelatihan" required>
-            <option disabled selected>Pilih Pelatihan</option>
+            <option value="" disabled selected>Pilih Pelatihan</option>
             <?php
             $q = mysqli_query($conn, "SELECT id, nama_pelatihan FROM pelatihan ORDER BY nama_pelatihan ASC");
             while ($p = mysqli_fetch_assoc($q)) {
@@ -45,7 +45,8 @@ require_once BASE_PATH . '/config/config.php';
 
     <div class="mb-4">
         <label for="template_id" class="form-label ms-3">Template Sertifikat: </label>
-        <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="template_id" required>
+        <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="template_id"
+            id="file_layout" required>
             <option selected disabled>Pilih Template Sertifikat</option>
             <?php
             $q = mysqli_query($conn, "SELECT * FROM template");
@@ -56,11 +57,36 @@ require_once BASE_PATH . '/config/config.php';
         </select>
     </div>
 
+    <div id="materi-section" style="display:none;">
+
+        <div id="materi-wrapper">
+
+            <div class="row materi-item mb-3">
+
+                <div class="col-md-4">
+                    <input type="text" name="materi[]" class="form-control materi-input" placeholder="Materi" autocomplete="off">
+                </div>
+                <div class="col-md-4">
+                    <input type="text" name="durasi[]" class="form-control" placeholder="Masukan durasi/jam atau nilai atau skor" autocomplete="off">
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-danger hapus">Hapus</button>
+                </div>
+
+            </div>
+        </div>
+
+        <button type="button" id="tambah" class="btn btn-primary mb-3">
+            + Tambah Materi
+        </button>
+
+    </div>
+
     <div class="d-grid gap-2 d-flex justify-content-center mt-3 pb-5">
         <button type="submit" name="submit" class="btn btn-primary ms-2 col-3">Submit</button>
         <button type="reset" class="btn btn-warning ms-2 col-3">Reset Form</button>
         <a href="<?= BASE_URL ?>admin/sertifikat/index.php" style="background-color: #6C7301;"
-            class="btn text-decoration-none text-white">Kembali Ke Halaman
+            class="btn text-decoration-none text-white ms-2 col-3">Kembali Ke Halaman
             Sertifikat</a>
     </div>
 </form>
@@ -73,8 +99,13 @@ require_once BASE_PATH . '/config/config.php';
 </div>
 </div>
 
+
 <script src="<?= BASE_URL ?>vendor/bs.bundle.min.js"></script>
 <script src="<?= BASE_URL ?>vendor/sidebar.js"></script>
+<script>
+    const BASE_URL = "<?= BASE_URL ?>";
+</script>
+<script src="<?= BASE_URL ?>vendor/autocomplete.js"></script>
 
 </body>
 
