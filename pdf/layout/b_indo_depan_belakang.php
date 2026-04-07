@@ -113,25 +113,21 @@
         }
 
         .judul_belakang {
-            position: absolute;
-            bottom: 200px;
+            position: relative;
+            top: 155px;
             width: 100%;
             text-align: center;
-            font-size: 20px;
+            font-size: 17px;
             font-weight: bold;
         }
 
         .info_peserta {
             position: relative;
-            top: 180px;
-            width: 500px;
+            top: 205px;
+            width: 550px;
             margin: auto;
-            display: flex;
             font-size: 16px;
-        }
-
-        .info_peserta div:first-child {
-            width: 150px;
+            border-collapse: collapse;
         }
 
         .tabel_materi {
@@ -160,10 +156,10 @@
         table {
             page-break-inside: avoid;
         }
-        .text-center{
+
+        .text-center {
             text-align: center;
         }
-
     </style>
 </head>
 
@@ -214,15 +210,19 @@
             DAFTAR MATERI PELATIHAN
         </div>
 
-        <div class="info_peserta">
-            <div>Nama</div>
-            <div>: <?= $data['nama'] ?></div>
-        </div>
+        <table class="info_peserta">
+            <tr>
+                <td width="85">Nama</td>
+                <td>: <?= $data['nama'] ?></td>
+            </tr>
+        </table>
 
-        <div class="info_peserta">
-            <div>Nomor Sertifikat</div>
-            <div>: 202604010001</div>
-        </div>
+        <table class="info_peserta">
+            <tr>
+                <td width="85">Nomor Sertifikat</td>
+                <td>: <?= $data['nomor_sertifikat'] ?></td>
+            </tr>
+        </table>
 
         <table class="tabel_materi">
             <thead>
