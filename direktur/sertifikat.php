@@ -207,7 +207,7 @@ while ($row = mysqli_fetch_assoc($query)) {
                             }
                             $terbit = !empty($sertifikat['issued_date'])
                                 ? date('F d, Y', strtotime($sertifikat['issued_date']))
-                                : '-';
+                                : '<span class="badge bg-warning text-dark">Belum divalidasi</span>';
                             ?>
                             <tr>
                                 <td>
@@ -282,7 +282,7 @@ while ($row = mysqli_fetch_assoc($query)) {
                 }
                 $terbit = !empty($sertifikat['issued_date'])
                     ? date('F d, Y', strtotime($sertifikat['issued_date']))
-                    : '-';
+                    : '<span class="badge bg-warning text-dark">Belum divalidasi</span>';
                 ?>
                 <div class="card mb-2 border-primary shadow-sm">
                     <div class="card-body p-2">
