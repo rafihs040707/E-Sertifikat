@@ -4,6 +4,7 @@ require_once __DIR__ . '/../../bootstrap.php';
 require_once BASE_PATH . '/auth/cek_login.php';
 require_once BASE_PATH . '/admin/header.php';
 require_once BASE_PATH . '/config/config.php';
+
 $id = $_GET['id'];
 $qMateri = mysqli_query($conn, "
     SELECT sm.*, mm.nama_materi 
@@ -73,53 +74,57 @@ $sertifikat = mysqli_fetch_assoc($data_sertifikat);
     </div>
 
     <div class="mb-4" id="materi-section">
-    <label class="form-label ms-3">Materi & Durasi</label>
+        <div class="d-flex">
+            <div class="col-md-4">
+                <label class="form-label ms-3">Materi</label>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label ms-3">Durasi</label>
+            </div>
+        </div>
 
-    <div id="materi-wrapper">
+        <div id="materi-wrapper">
 
-        <?php if (mysqli_num_rows($qMateri) > 0): ?>
-            <?php while ($m = mysqli_fetch_assoc($qMateri)): ?>
+            <?php if (mysqli_num_rows($qMateri) > 0): ?>
+                <?php while ($m = mysqli_fetch_assoc($qMateri)): ?>
+                    <div class="row materi-item mb-3">
+
+                        <div class="col-md-4 mt-2">
+                            <input type="text" name="materi[]" value="<?= $m['nama_materi'] ?>"
+                                class="form-control materi-input">
+                        </div>
+
+                        <div class="col-md-4 mt-2">
+                            <input type="text" name="durasi[]" value="<?= $m['durasi'] ?>" class="form-control">
+                        </div>
+
+                        <div class="col-md-2 mt-2">
+                            <button type="button" class="btn btn-danger hapus">Hapus</button>
+                        </div>
+
+                    </div>
+                <?php endwhile; ?>
+            <?php else: ?>
+                <!-- fallback kalau belum ada -->
                 <div class="row materi-item mb-3">
-
-                    <div class="col-md-4">
-                        <input type="text" name="materi[]" 
-                               value="<?= $m['nama_materi'] ?>" 
-                               class="form-control materi-input">
+                    <div class="col-md-4 mt-2">
+                        <input type="text" name="materi[]" class="form-control materi-input">
                     </div>
-
-                    <div class="col-md-4">
-                        <input type="text" name="durasi[]" 
-                               value="<?= $m['durasi'] ?>" 
-                               class="form-control">
+                    <div class="col-md-4 mt-2">
+                        <input type="text" name="durasi[]" class="form-control">
                     </div>
-
-                    <div class="col-md-2">
+                    <div class="col-md-2 mt-2">
                         <button type="button" class="btn btn-danger hapus">Hapus</button>
                     </div>
+                </div>
+            <?php endif; ?>
 
-                </div>
-            <?php endwhile; ?>
-        <?php else: ?>
-            <!-- fallback kalau belum ada -->
-            <div class="row materi-item mb-3">
-                <div class="col-md-4">
-                    <input type="text" name="materi[]" class="form-control materi-input">
-                </div>
-                <div class="col-md-4">
-                    <input type="text" name="durasi[]" class="form-control">
-                </div>
-                <div class="col-md-2">
-                    <button type="button" class="btn btn-danger hapus">Hapus</button>
-                </div>
-            </div>
-        <?php endif; ?>
+        </div>
 
+        <button type="button" id="tambah" class="btn btn-primary mt-2">
+            + Tambah Materi
+        </button>
     </div>
-
-    <button type="button" id="tambah" class="btn btn-primary mt-2">
-        + Tambah Materi
-    </button>
-</div>
 
     <div class="d-grid gap-2 d-flex justify-content-center mt-3 pb-5">
         <button type="submit" name="submit" class="btn btn-primary ms-2 col-3">Update</button>

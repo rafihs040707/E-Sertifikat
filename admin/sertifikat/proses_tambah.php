@@ -141,7 +141,7 @@ if (isset($_POST['submit'])) {
         // ======================
         $conn->commit();
 
-        $_SESSION['success'] = "Data sertifikat & materi berhasil disimpan!";
+        $_SESSION['success'] = "Data sertifikat berhasil disimpan!";
         header("Location:" . BASE_URL . "admin/sertifikat/index.php?id=$last_id");
         exit;
 

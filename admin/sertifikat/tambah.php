@@ -63,13 +63,13 @@ require_once BASE_PATH . '/config/config.php';
 
             <div class="row materi-item mb-3">
 
-                <div class="col-md-4">
+                <div class="col-md-4 mt-2">
                     <input type="text" name="materi[]" class="form-control materi-input" placeholder="Materi" autocomplete="off">
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 mt-2">
                     <input type="text" name="durasi[]" class="form-control" placeholder="Masukan durasi/jam atau nilai atau skor" autocomplete="off">
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-2 mt-2">
                     <button type="button" class="btn btn-danger hapus">Hapus</button>
                 </div>
 

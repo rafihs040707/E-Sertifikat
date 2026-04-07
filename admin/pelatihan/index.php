@@ -30,7 +30,8 @@ require_once BASE_PATH . '/config/config.php';
             }
         }, 6000);
     </script>
-<?php unset($_SESSION['success']); } ?>
+    <?php unset($_SESSION['success']);
+} ?>
 
 <?php if (isset($_SESSION['error'])) { ?>
     <div id="errorAlert" class="alert alert-danger fade show d-flex position-absolute w-100" role="alert">
@@ -52,15 +53,16 @@ require_once BASE_PATH . '/config/config.php';
             }
         }, 6000);
     </script>
-<?php unset($_SESSION['error']); } ?>
+    <?php unset($_SESSION['error']);
+} ?>
 
 <div class="container">
     <h2 class="my-2 ms-3">Data Pelatihan</h2>
     <form action="<?= BASE_URL ?>admin/pelatihan/cari.php" method="GET" class="col-sm-3 mb-3 ms-4 mt-4">
         <label for="cari" class="ms-3">Masukkan Kata Kunci:</label>
         <div class="d-inline-flex ms-2">
-            <input class="form-control form-control-ms" type="text" id="cari" name="cari" placeholder="Cari"
-                required>
+            <input class="form-control form-control-ms" type="text" id="cari" name="cari" placeholder="Cari" required
+                autocomplete="off">
             <button type="submit" class="btn btn-secondary ms-3">Cari</button>
         </div>
     </form>
@@ -83,7 +85,7 @@ require_once BASE_PATH . '/config/config.php';
             <tbody>
                 <?php
                 $batas = 5;
-                $halaman = isset($_GET['halaman']) ? (int)$_GET['halaman'] : 1;
+                $halaman = isset($_GET['halaman']) ? (int) $_GET['halaman'] : 1;
                 $halaman_awal = ($halaman > 1) ? ($halaman * $batas) - $batas : 0;
 
                 $previous = $halaman - 1;
@@ -96,17 +98,18 @@ require_once BASE_PATH . '/config/config.php';
                 $data_pelatihan = mysqli_query($conn, "select * from pelatihan limit $batas OFFSET $halaman_awal");
                 $nomor = $halaman_awal + 1;
                 while ($pelatihan = mysqli_fetch_array($data_pelatihan)) {
-                ?>
+                    ?>
                     <tr>
                         <th><?php echo $nomor++; ?></th>
                         <td><?php echo $pelatihan['nama_pelatihan']; ?></td>
                         <td><?php echo $pelatihan['instruktur']; ?></td>
                         <td><?php echo $pelatihan['deskripsi']; ?></td>
                         <td>
-                            <a href="<?= BASE_URL ?>admin/pelatihan/edit.php?id=<?= $pelatihan['id']; ?>" class="btn btn-sm btn-info text-black mt-2">Edit</a>
+                            <a href="<?= BASE_URL ?>admin/pelatihan/edit.php?id=<?= $pelatihan['id']; ?>"
+                                class="btn btn-sm btn-info text-black mt-2">Edit</a>
                         </td>
                     </tr>
-                <?php
+                    <?php
                 }
                 ?>
             </tbody>
@@ -115,20 +118,20 @@ require_once BASE_PATH . '/config/config.php';
             <ul class="pagination justify-content-end">
                 <li class="page-item">
                     <a class="page-link" <?php if ($halaman > 1) {
-                                                echo "href='?halaman=$previous'";
-                                            } ?>>Previous</a>
+                        echo "href='?halaman=$previous'";
+                    } ?>>Previous</a>
                 </li>
                 <?php
                 for ($x = 1; $x <= $total_halaman; $x++) {
-                ?>
+                    ?>
                     <li class="page-item"><a class="page-link" href="?halaman=<?php echo $x ?>"><?php echo $x; ?></a></li>
-                <?php
+                    <?php
                 }
                 ?>
                 <li class="page-item">
                     <a class="page-link" <?php if ($halaman < $total_halaman) {
-                                                echo "href='?halaman=$next'";
-                                            } ?>>Next</a>
+                        echo "href='?halaman=$next'";
+                    } ?>>Next</a>
                 </li>
             </ul>
         </nav>

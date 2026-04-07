@@ -61,7 +61,8 @@ require_once BASE_PATH . '/config/config.php';
     <form action="<?= BASE_URL ?>admin/user/cari.php" method="GET" class="col-sm-3 mb-3 ms-4 mt-4">
         <label for="cari" class="ms-3">Masukkan Kata Kunci:</label>
         <div class="d-inline-flex ms-2">
-            <input class="form-control form-control-ms" type="text" id="cari" name="cari" placeholder="Cari" required>
+            <input class="form-control form-control-ms" type="text" id="cari" name="cari" placeholder="Cari" required
+                autocomplete="off">
             <button type="submit" class="btn btn-secondary ms-3">Cari</button>
         </div>
     </form>
