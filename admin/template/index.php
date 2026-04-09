@@ -81,6 +81,7 @@ require_once BASE_PATH . '/config/config.php';
                     <th>Tampak Depan</th>
                     <th>Tampak Belakang</th>
                     <th>Layout</th>
+                    <th>Format Tanggal</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -115,6 +116,7 @@ require_once BASE_PATH . '/config/config.php';
                             <?php } ?>
                         </td>
                         <td><?= str_replace('.php', '', $template['file_layout']) ?></td>
+                        <td><?= ($template['locale'] == 'en') ? 'Inggris' : 'Indonesia' ?></td>
                         <td>
                             <a href="<?= BASE_URL ?>admin/template/edit.php?id=<?= $template['id']; ?>"
                                 class="btn btn-sm btn-info text-black mt-2">Edit</a>

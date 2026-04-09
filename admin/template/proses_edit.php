@@ -10,55 +10,67 @@ if (isset($_POST['update'])) {
     $nama_template = $_POST['nama_template'];
     $penyelenggara = $_POST['penyelenggara'];
     $file_layout = $_POST['file_layout'];
+    $locale = $_POST['locale'];
 
-    $tampak_depan_lama    = $_POST['tampak_depan_lama'];
-    $tampak_belakang_lama    = $_POST['tampak_belakang_lama'];
+    $tampak_depan_lama = $_POST['tampak_depan_lama'];
+    $tampak_belakang_lama = $_POST['tampak_belakang_lama'];
 
-    // folder upload
     $folder = BASE_PATH . "/uploads/template/";
 
-    // === PROSES GAMBAR DEPAN ===
-    if ($_FILES['tampak_depan']['name'] != "") {
+    // === GAMBAR DEPAN ===
+    if (!empty($_FILES['tampak_depan']['name'])) {
         $tampak_depan = time() . "_" . $_FILES['tampak_depan']['name'];
         move_uploaded_file($_FILES['tampak_depan']['tmp_name'], $folder . $tampak_depan);
 
-        // hapus file lama
-        if ($tampak_depan_lama != "" && file_exists($folder . $tampak_depan_lama)) {
+        if (!empty($tampak_depan_lama) && file_exists($folder . $tampak_depan_lama)) {
             unlink($folder . $tampak_depan_lama);
         }
     } else {
         $tampak_depan = $tampak_depan_lama;
     }
 
-    // === PROSES GAMBAR BELAKANG ===
-    if ($_FILES['tampak_belakang']['name'] != "") {
-        $tampak_depan = time() . "_" . $_FILES['tampak_belakang']['name'];
-        move_uploaded_file($_FILES['tampak_belakang']['tmp_name'], $folder . $tampak_depan);
+    // === GAMBAR BELAKANG ===
+    if (!empty($_FILES['tampak_belakang']['name'])) {
+        $tampak_belakang = time() . "_" . $_FILES['tampak_belakang']['name'];
+        move_uploaded_file($_FILES['tampak_belakang']['tmp_name'], $folder . $tampak_belakang);
 
-        // hapus file lama
-        if ($tampak_belakang_lama != "" && file_exists($folder . $tampak_belakang_lama)) {
+        if (!empty($tampak_belakang_lama) && file_exists($folder . $tampak_belakang_lama)) {
             unlink($folder . $tampak_belakang_lama);
         }
     } else {
         $tampak_belakang = $tampak_belakang_lama;
     }
 
-    // === UPDATE DATABASE ===
-    $query = "UPDATE template SET 
-                nama_template='$nama_template',
-                penyelenggara='$penyelenggara',
-                tampak_depan='$tampak_depan',
-                tampak_belakang='$tampak_belakang',
-                file_layout='$file_layout'
-                WHERE id='$id'";
+    // === PREPARED STATEMENT ===
+    $stmt = mysqli_prepare($conn, "UPDATE template SET 
+        nama_template=?,
+        penyelenggara=?,
+        tampak_depan=?,
+        tampak_belakang=?,
+        file_layout=?,
+        locale=?
+        WHERE id=?");
 
-    if (mysqli_query($conn, $query)) {
+    mysqli_stmt_bind_param(
+        $stmt,
+        "ssssssi",
+        $nama_template,
+        $penyelenggara,
+        $tampak_depan,
+        $tampak_belakang,
+        $file_layout,
+        $locale,
+        $id
+    );
+
+    if (mysqli_stmt_execute($stmt)) {
         $_SESSION['success'] = "Data template berhasil diperbarui.";
-        header("Location:" . BASE_URL . "admin/template/index.php");
-        exit;
     } else {
-        $_SESSION['error'] = "Data template gagal diperbarui. Silakan coba lagi.";
-        header("Location:" . BASE_URL . "admin/template/index.php");
-        exit;
+        $_SESSION['error'] = "Data template gagal diperbarui.";
     }
+
+    mysqli_stmt_close($stmt);
+
+    header("Location:" . BASE_URL . "admin/template/index.php");
+    exit;
 }

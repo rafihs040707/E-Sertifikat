@@ -21,19 +21,19 @@ require_once BASE_PATH . '/admin/header.php';
 
     <div class="mb-2">
         <label for="email" class="form-label ms-3">Email: </label>
-        <input type="email" name="email" placeholder="Example@gmail.com" class="form-control" maxlength="64" autocomplete="off"><br>
+        <input type="email" name="email" placeholder="Example@gmail.com" class="form-control" maxlength="64" autocomplete="off" required><br>
     </div>
 
     <div class="mb-2">
         <label for="password" class="form-label ms-3">Password: </label>
         <input type="password" name="password" placeholder="12345678" class="form-control" minlength="8"
-            maxlength="64"><br>
+            maxlength="64" required><br>
     </div>
 
     <div class="mb-4">
         <label for="role" class="form-label ms-3">Role: </label>
         <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="role" required>
-            <option selected disabled>Pilih Role</option>
+            <option value="" selected disabled>Pilih Role</option>
             <option value="admin">Admin</option>
             <option value="lo">LO</option>
             <option value="direktur">Direktur</option>

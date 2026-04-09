@@ -47,7 +47,7 @@ require_once BASE_PATH . '/config/config.php';
         <label for="template_id" class="form-label ms-3">Template Sertifikat: </label>
         <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="template_id"
             id="file_layout" required>
-            <option selected disabled>Pilih Template Sertifikat</option>
+            <option value="" selected disabled>Pilih Template Sertifikat</option>
             <?php
             $q = mysqli_query($conn, "SELECT * FROM template");
             while ($t = mysqli_fetch_assoc($q)) {

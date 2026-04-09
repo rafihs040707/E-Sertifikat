@@ -51,6 +51,16 @@ require_once BASE_PATH . '/admin/header.php';
         </select>
     </div>
 
+    <div class="mb-2">
+        <label class="form-label ms-3 mt-4">Format Tanggal:</label><br>
+
+        <input type="radio" name="locale" value="en" id="lang_en" checked>
+        <label for="lang_en">English</label>
+
+        <input type="radio" name="locale" value="id" id="lang_id" class="ms-3">
+        <label for="lang_id">Indonesia</label>
+    </div>
+
     <div class="d-grid gap-2 d-flex justify-content-center mt-3">
         <button type="submit" name="submit" class="btn btn-primary ms-2 col-3">Submit</button>
         <button type="reset" class="btn btn-warning ms-2 col-3">Reset Form</button>

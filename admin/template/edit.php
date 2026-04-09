@@ -8,6 +8,7 @@ require_once BASE_PATH . '/config/config.php';
 $id = $_GET['id'];
 $data_template = mysqli_query($conn, "SELECT * FROM template WHERE id='$id'");
 $template = mysqli_fetch_assoc($data_template);
+$locale = $template['locale'];
 $layouts = glob(BASE_PATH . "/pdf/layout/*.php");
 ?>
 
@@ -40,7 +41,11 @@ $layouts = glob(BASE_PATH . "/pdf/layout/*.php");
     <div class="mb-2">
         <p class="ms-2">Gambar tampak belakang lama:</p>
 
-        <img src="<?= BASE_URL ?>uploads/template/<?= $template['tampak_belakang']; ?>" width="100px" class="ms-5"><br>
+        <?php if (!empty($template['tampak_belakang'])) { ?>
+            <img src="<?= BASE_URL ?>uploads/template/<?= $template['tampak_belakang']; ?>" width="100px" class="ms-5">
+        <?php } else { ?>
+            <span class="badge bg-secondary">Tidak ada Tampak Belakang</span>
+        <?php } ?><br>
 
         <label class="form-label ms-3">Tampak Belakang:</label>
         <input type="file" name="tampak_belakang" class="form-control" accept="image/*">
@@ -59,6 +64,16 @@ $layouts = glob(BASE_PATH . "/pdf/layout/*.php");
                 </option>
             <?php endforeach; ?>
         </select>
+    </div>
+
+    <div class="mb-2">
+        <label class="form-label ms-3 mt-4">Format Tanggal:</label><br>
+
+        <input type="radio" name="locale" value="en" id="lang_en" <?= ($locale == 'en') ? 'checked' : '' ?>>
+        <label for="lang_en">English</label>
+
+        <input type="radio" name="locale" value="id" id="lang_id" class="ms-3" <?= ($locale == 'id') ? 'checked' : '' ?>>
+        <label for="lang_id">Indonesia</label>
     </div>
 
     <div class="d-flex justify-content-center mt-3">

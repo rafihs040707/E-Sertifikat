@@ -9,12 +9,27 @@ if (isset($_POST['submit'])) {
     $nama_template = mysqli_real_escape_string($conn, $_POST['nama_template']);
     $penyelenggara = mysqli_real_escape_string($conn, $_POST['penyelenggara']);
     $file_layout = mysqli_real_escape_string($conn, $_POST['file_layout']);
+    $locale = $_POST['locale'] ?? 'en';
     $targetDir = BASE_PATH . "/uploads/template/";
 
+    // ========================
+    // VALIDASI LOCALE
+    // ========================
+    $allowedLocales = ['id', 'en'];
+    if (!in_array($locale, $allowedLocales)) {
+        $locale = 'en';
+    }
+
+    // ====================
+    // SET FOLDER UPLOAD
+    // ====================
     if (!is_dir($targetDir)) {
         mkdir($targetDir, 0777, true);
     }
 
+    // ====================
+    // FUNCTION UPLOAD FILE
+    // ====================
     function uploadFile($fieldName, $targetDir)
     {
         if (!isset($_FILES[$fieldName]) || $_FILES[$fieldName]['error'] != 0) {
@@ -38,12 +53,21 @@ if (isset($_POST['submit'])) {
         return null;
     }
 
+    // ==============
+    // UPLOAD FILE
+    // ==============
     $tampak_depan = uploadFile('tampak_depan', $targetDir);
     $tampak_belakang = uploadFile('tampak_belakang', $targetDir);
 
-    $stmt = $conn->prepare("INSERT INTO template (nama_template, penyelenggara, tampak_depan, tampak_belakang, file_layout) VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssss", $nama_template, $penyelenggara, $tampak_depan, $tampak_belakang, $file_layout);
+    // ==================
+    // INSERT DATABASE
+    // ==================
+    $stmt = $conn->prepare("INSERT INTO template (nama_template, penyelenggara, tampak_depan, tampak_belakang, file_layout, locale) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssss", $nama_template, $penyelenggara, $tampak_depan, $tampak_belakang, $file_layout, $locale);
 
+    // ===========
+    // EKSEKUSI
+    // ===========
     if ($stmt->execute()) {
         $_SESSION['success'] = "Data template berhasil ditambahkan dan tersimpan!";
         header("Location:" . BASE_URL . "admin/template/index.php");
