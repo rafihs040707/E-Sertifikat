@@ -22,8 +22,8 @@ $id = $_GET['id'] ?? null;
 $mode = $_GET['mode'] ?? 'generate';
 $isPreview = ($mode === 'preview');
 
-if (!$id) {
-    die("ID tidak ditemukan");
+if (!ctype_digit($id)) {
+    die("ID tidak valid");
 }
 
 function randomLetters($length, $chars)
@@ -122,7 +122,7 @@ function formatTanggalIssued($tanggal, $locale = 'en')
     return date('F d, Y', $ts);
 }
 
-$q = mysqli_query($conn, "
+$stmt = mysqli_prepare($conn, "
 SELECT 
     s.*, 
     t.tampak_depan,
@@ -133,10 +133,14 @@ SELECT
 FROM sertifikat s
 JOIN template t ON s.template_id = t.id
 LEFT JOIN pelatihan p ON s.pelatihan_id = p.id
-WHERE s.id = '$id'
+WHERE s.id = ?
 ");
 
+mysqli_stmt_bind_param($stmt, "i", $id);
+mysqli_stmt_execute($stmt);
+$q = mysqli_stmt_get_result($stmt);
 $data = mysqli_fetch_assoc($q);
+
 
 $bg_depan = $data['tampak_depan'];
 $bg_belakang = $data['tampak_belakang'];
@@ -178,16 +182,21 @@ if (!$isPreview && empty($data['nomor_sertifikat'])) {
 
     try {
 
-        $prefix = "$tahun$bulan$kategori";
+        $prefix = "$tahun$kategori$bulan";
 
-        $q2 = mysqli_query($conn, "
-        SELECT MAX(
-            CAST(SUBSTRING(nomor_sertifikat,9,4) AS UNSIGNED)
-        ) AS last_no
-        FROM sertifikat
-        WHERE nomor_sertifikat LIKE '$prefix%'
-        FOR UPDATE
-        ");
+        $stmt2 = mysqli_prepare($conn, "
+SELECT MAX(
+    CAST(SUBSTRING(nomor_sertifikat,9,4) AS UNSIGNED)
+) AS last_no
+FROM sertifikat
+WHERE nomor_sertifikat LIKE CONCAT(?, '%')
+FOR UPDATE
+");
+
+mysqli_stmt_bind_param($stmt2, "s", $prefix);
+mysqli_stmt_execute($stmt2);
+$q2 = mysqli_stmt_get_result($stmt2);
+$row = mysqli_fetch_assoc($q2);
 
         $row = mysqli_fetch_assoc($q2);
 
@@ -202,13 +211,16 @@ if (!$isPreview && empty($data['nomor_sertifikat'])) {
             randomLetters(2, $upper) .
             randomLetters(2, $lower);
 
-        $nomor_sertifikat = "{$tahun}{$bulan}{$kategori}{$nomorUrut}/{$unique6}{$inisialBelakang}";
+        $nomor_sertifikat = "{$tahun}{$kategori}{$bulan}{$nomorUrut}/{$unique6}{$inisialBelakang}";
 
-        mysqli_query($conn, "
-        UPDATE sertifikat 
-        SET nomor_sertifikat='$nomor_sertifikat'
-        WHERE id='$id'
-        ");
+       $stmt3 = mysqli_prepare($conn, "
+UPDATE sertifikat 
+SET nomor_sertifikat=?
+WHERE id=?
+");
+
+mysqli_stmt_bind_param($stmt3, "si", $nomor_sertifikat, $id);
+mysqli_stmt_execute($stmt3);
 
         mysqli_commit($conn);
 
@@ -277,16 +289,20 @@ if ($approved) {
     $ttdDirektur = "<img src='{$ttdPath}' width='200'>";
 }
 
-$qMateri = mysqli_query($conn, "
-    SELECT 
-        sm.urutan,
-        sm.durasi,
-        mm.nama_materi
-    FROM sertifikat_materi sm
-    JOIN materi_master mm ON sm.materi_id = mm.id
-    WHERE sm.sertifikat_id = '$id'
-    ORDER BY sm.urutan ASC
+$stmt4 = mysqli_prepare($conn, "
+SELECT 
+    sm.urutan,
+    sm.durasi,
+    mm.nama_materi
+FROM sertifikat_materi sm
+JOIN materi_master mm ON sm.materi_id = mm.id
+WHERE sm.sertifikat_id = ?
+ORDER BY sm.urutan ASC
 ");
+
+mysqli_stmt_bind_param($stmt4, "i", $id);
+mysqli_stmt_execute($stmt4);
+$qMateri = mysqli_stmt_get_result($stmt4);
 
 $materiList = [];
 $totalDurasi = 0;
@@ -346,14 +362,17 @@ if (file_exists($pdfPath)) {
 
 file_put_contents($pdfPath, $dompdf->output());
 
-mysqli_query($conn, "
+$stmt5 = mysqli_prepare($conn, "
 UPDATE sertifikat
 SET 
-qr_code='$qrText',
-qr_image='$qrFilename',
-file_sertifikat='$filename'
-WHERE id='$id'
+qr_code=?,
+qr_image=?,
+file_sertifikat=?
+WHERE id=?
 ");
+
+mysqli_stmt_bind_param($stmt5, "sssi", $qrText, $qrFilename, $filename, $id);
+mysqli_stmt_execute($stmt5);
 
 $role = $_SESSION['role'] ?? '';
 
