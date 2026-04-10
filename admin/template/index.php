@@ -117,14 +117,16 @@ require_once BASE_PATH . '/config/config.php';
                         </td>
                         <td><?= str_replace('.php', '', $template['file_layout']) ?></td>
                         <td><?= ($template['locale'] == 'en') ? 'Inggris' : 'Indonesia' ?></td>
-                        <td>
-                            <a href="<?= BASE_URL ?>admin/template/edit.php?id=<?= $template['id']; ?>"
-                                class="btn btn-sm btn-info text-black mt-2">Edit</a>
-                            <button class="btn btn-sm btn-secondary text-white mt-2" data-bs-toggle="modal"
-                                data-bs-target="#modalGambar<?= $template['id']; ?>">Preview</button>
-                            <a href="<?= BASE_URL ?>admin/template/hapus.php?id=<?= $template['id']; ?>"
-                                class="btn btn-sm btn-danger text-white mt-2"
-                                onclick="return confirm('Apakah yakin data template ini akan dihapus?');">Hapus</a>
+                        <td style="white-space: nowrap; min-width: 190px;">
+                            <div class="d-flex flex-nowrap gap-1">
+                                <a href="<?= BASE_URL ?>admin/template/edit.php?id=<?= $template['id']; ?>"
+                                    class="btn btn-sm btn-info text-black mt-2">Edit</a>
+                                <button class="btn btn-sm btn-secondary text-white mt-2" data-bs-toggle="modal"
+                                    data-bs-target="#modalGambar<?= $template['id']; ?>">Preview</button>
+                                <a href="<?= BASE_URL ?>admin/template/hapus.php?id=<?= $template['id']; ?>"
+                                    class="btn btn-sm btn-danger text-white mt-2"
+                                    onclick="return confirm('Apakah yakin data template ini akan dihapus?');">Hapus</a>
+                            </div>
                         </td>
                     </tr>
 
