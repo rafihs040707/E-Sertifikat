@@ -39,7 +39,7 @@ if ($status != '') {
 if ($bulan != '') {
     $start = $bulan . "-01";
     $end = date('Y-m-d', strtotime("$start +1 month"));
-    $where .= " AND s.issued_date >= '$start' AND s.issued_date < '$end'";
+    $where .= " AND s.periode_awal >= '$start' AND s.periode_awal < '$end'";
 }
 
 /* =============================
