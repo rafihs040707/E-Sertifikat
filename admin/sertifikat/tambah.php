@@ -86,7 +86,7 @@ require_once BASE_PATH . '/config/config.php';
         <button type="submit" name="submit" class="btn btn-primary ms-2 col-3">Submit</button>
         <button type="reset" class="btn btn-warning ms-2 col-3">Reset Form</button>
         <a href="<?= BASE_URL ?>admin/sertifikat/index.php" style="background-color: #6C7301;"
-            class="btn text-decoration-none text-white ms-2 col-3">Kembali Ke Halaman
+            class="btn text-decoration-none text-white">Kembali Ke Halaman
             Sertifikat</a>
     </div>
 </form>
